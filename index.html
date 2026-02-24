@@ -15,115 +15,94 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: #000814;
+    background: #0a0f1a; /* matte dark blue-black */
     color: white;
-    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* INTRO SCREEN */
+/* INTRO */
 #intro {
     position: fixed;
     width: 100%;
     height: 100vh;
-    background: #000814;
+    background: #0a0f1a;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     z-index: 10;
-    transition: opacity 1s ease;
+    transition: opacity 0.8s ease;
 }
 
 .enter-btn {
-    padding: 18px 40px;
-    font-size: 1.1rem;
+    padding: 16px 40px;
+    font-size: 1rem;
     font-weight: 600;
-    border-radius: 40px;
-    border: 1px solid #00aaff;
+    border-radius: 50px;
+    border: 1px solid #1e90ff;
     background: transparent;
-    color: #00aaff;
+    color: #1e90ff;
     cursor: pointer;
     transition: 0.3s ease;
 }
 
 .enter-btn:hover {
-    background: #0084ff;
-    color: white;
-    box-shadow: 0 0 25px #0084ff;
-    transform: scale(1.05);
+    background: #1e90ff;
+    color: #0a0f1a;
 }
 
-/* MAIN CONTENT */
+/* MAIN CARD */
 #main {
     opacity: 0;
-    transition: opacity 1.2s ease;
-}
-
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 0;
+    transition: opacity 1s ease;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .card {
-    position: relative;
-    z-index: 2;
     width: 90%;
     max-width: 420px;
-    margin: 100px auto;
-    padding: 40px 25px;
-    border-radius: 24px;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 132, 255, 0.4);
-    box-shadow: 0 0 60px rgba(0, 132, 255, 0.2);
+    padding: 50px 30px;
     text-align: center;
 }
 
 .username {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
     font-weight: 800;
-    color: #00aaff;
-    text-shadow: 0 0 15px #00aaff;
-    margin-bottom: 8px;
+    letter-spacing: 2px;
+    color: #1e90ff;
+    margin-bottom: 10px;
 }
 
 .subtitle {
-    opacity: 0.7;
-    margin-bottom: 30px;
+    opacity: 0.6;
+    margin-bottom: 35px;
+    font-size: 0.95rem;
 }
 
+/* SOCIAL LINKS */
 .links {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    margin-bottom: 30px;
+    gap: 15px;
 }
 
 .links a {
     text-decoration: none;
-    color: #00aaff;
+    color: #1e90ff;
     padding: 14px;
-    border-radius: 14px;
-    border: 1px solid rgba(0, 132, 255, 0.5);
-    transition: 0.3s ease;
+    border-radius: 10px;
+    border: 1px solid rgba(30, 144, 255, 0.4);
     font-weight: 600;
-    background: rgba(0, 132, 255, 0.05);
+    transition: 0.25s ease;
 }
 
 .links a:hover {
-    background: #0084ff;
-    color: white;
-    box-shadow: 0 0 25px #0084ff;
-    transform: translateY(-3px);
-}
-
-/* MOBILE */
-@media (max-width: 480px) {
-    .card {
-        margin-top: 80px;
-    }
+    background: #1e90ff;
+    color: #0a0f1a;
 }
 </style>
 </head>
@@ -136,8 +115,6 @@ canvas {
 
 <!-- MAIN CONTENT -->
 <div id="main">
-    <canvas id="stars"></canvas>
-
     <div class="card">
         <div class="username">jobless.g</div>
         <div class="subtitle">digital presence</div>
@@ -170,52 +147,8 @@ function enterSite() {
     setTimeout(() => {
         intro.style.display = "none";
         main.style.opacity = "1";
-    }, 1000);
+    }, 800);
 }
-
-/* STARS */
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let stars = [];
-const starCount = window.innerWidth < 600 ? 80 : 150;
-
-for (let i = 0; i < starCount; i++) {
-    stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 1.4,
-        speed: Math.random() * 0.5
-    });
-}
-
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#00aaff";
-
-    stars.forEach(star => {
-        star.y += star.speed;
-        if (star.y > canvas.height) {
-            star.y = 0;
-            star.x = Math.random() * canvas.width;
-        }
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fill();
-    });
-
-    requestAnimationFrame(animate);
-}
-
-animate();
-
-window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-});
 </script>
 
 </body>
