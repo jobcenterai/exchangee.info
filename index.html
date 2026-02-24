@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>jobless.g</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
-<style>
 
+<style>
 * {
     margin: 0;
     padding: 0;
@@ -15,9 +15,7 @@
 
 body {
     height: 100vh;
-    background: linear-gradient(-45deg, #050505, #0a0f1f, #000814, #001d3d);
-    background-size: 400% 400%;
-    animation: gradientMove 12s ease infinite;
+    background: #000814;
     font-family: 'Inter', sans-serif;
     color: white;
     display: flex;
@@ -26,15 +24,23 @@ body {
     overflow: hidden;
 }
 
+/* STAR CANVAS */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
 .container {
+    position: relative;
+    z-index: 2;
     text-align: center;
-    backdrop-filter: blur(10px);
     padding: 40px 60px;
     border-radius: 20px;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(0, 132, 255, 0.3);
     box-shadow: 0 0 40px rgba(0, 132, 255, 0.2);
-    animation: fadeIn 1.5s ease forwards;
 }
 
 .username {
@@ -49,7 +55,6 @@ body {
 }
 
 .subtitle {
-    font-weight: 300;
     opacity: 0.7;
     margin-bottom: 30px;
 }
@@ -68,7 +73,6 @@ body {
     border-radius: 30px;
     transition: 0.3s ease;
     font-size: 0.9rem;
-    backdrop-filter: blur(5px);
 }
 
 .links a:hover {
@@ -77,32 +81,81 @@ body {
     box-shadow: 0 0 20px #0084ff;
     transform: translateY(-4px);
 }
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
 </style>
 </head>
 <body>
 
+<canvas id="stars"></canvas>
+
 <div class="container">
     <div class="username">jobless.g</div>
     <div class="subtitle">digital presence</div>
-    
     <div class="links">
         <a href="#">Instagram</a>
         <a href="#">GitHub</a>
         <a href="#">Contact</a>
     </div>
 </div>
+
+<!-- Hidden Audio -->
+<audio id="bg-music" loop>
+    <!-- Put your own MP3 file in same folder and name it transportin.mp3 -->
+    <source src="transportin.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* ===== STAR BACKGROUND ===== */
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let starsArray = [];
+
+for (let i = 0; i < 150; i++) {
+    starsArray.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.5,
+        velocity: Math.random() * 0.5
+    });
+}
+
+function animateStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00aaff";
+    starsArray.forEach(star => {
+        star.y += star.velocity;
+        if (star.y > canvas.height) {
+            star.y = 0;
+            star.x = Math.random() * canvas.width;
+        }
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+    });
+
+    requestAnimationFrame(animateStars);
+}
+
+animateStars();
+
+/* ===== AUDIO AUTOPLAY ON FIRST CLICK ===== */
+const music = document.getElementById("bg-music");
+music.volume = 0.3;
+
+document.addEventListener("click", () => {
+    music.play();
+}, { once: true });
+
+/* RESPONSIVE */
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+</script>
 
 </body>
 </html>
