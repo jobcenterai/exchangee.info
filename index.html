@@ -1,254 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>jobless.g — developer portfolio</title>
-  <!-- exact minimal style from itstaylor.uk, but colors: blue/black, 1:1 layout -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-  <style>
-    /* RESET / GLOBAL */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jobless.g</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
 
-    body {
-      background: #0b0f17;      /* deep blue‑black background */
-      color: #d9e2f2;           /* soft blue‑white text */
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      line-height: 1.6;
-      padding: 2rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    /* container: exactly the readable width of the original */
-    .container {
-      max-width: 800px;
-      width: 100%;
-      margin: 0 auto;
-    }
+body {
+    height: 100vh;
+    background: linear-gradient(-45deg, #050505, #0a0f1f, #000814, #001d3d);
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+    font-family: 'Inter', sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
 
-    /* typography – crisp, blue/black only */
-    h1, h2, h3 {
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-    }
+.container {
+    text-align: center;
+    backdrop-filter: blur(10px);
+    padding: 40px 60px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 132, 255, 0.3);
+    box-shadow: 0 0 40px rgba(0, 132, 255, 0.2);
+    animation: fadeIn 1.5s ease forwards;
+}
 
-    h1 {
-      font-size: 4rem;
-      margin-bottom: 0.25rem;
-      background: linear-gradient(135deg, #8aadff, #4f7fff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      display: inline-block;
-    }
+.username {
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    color: #00aaff;
+    text-shadow: 0 0 10px #00aaff,
+                 0 0 20px #0084ff,
+                 0 0 40px #0066ff;
+}
 
-    h2 {
-      font-size: 2.2rem;
-      margin: 3rem 0 1.5rem;
-      border-bottom: 2px solid #25345c;    /* dark blue border */
-      padding-bottom: 0.4rem;
-      color: #bbd1ff;
-    }
+.subtitle {
+    font-weight: 300;
+    opacity: 0.7;
+    margin-bottom: 30px;
+}
 
-    h3 {
-      font-size: 1.8rem;
-      margin: 1.8rem 0 0.5rem;
-      color: #c5d6ff;
-    }
+.links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
 
-    p {
-      color: #b0c6f0;
-      font-size: 1.1rem;
-      max-width: 650px;
-    }
+.links a {
+    text-decoration: none;
+    color: #00aaff;
+    padding: 10px 25px;
+    border: 1px solid rgba(0, 132, 255, 0.5);
+    border-radius: 30px;
+    transition: 0.3s ease;
+    font-size: 0.9rem;
+    backdrop-filter: blur(5px);
+}
 
-    a {
-      color: #7f9fff;
-      text-decoration: none;
-      font-weight: 500;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.1s;
-    }
+.links a:hover {
+    background: #0084ff;
+    color: white;
+    box-shadow: 0 0 20px #0084ff;
+    transform: translateY(-4px);
+}
 
-    a:hover {
-      border-bottom-color: #5f7fff;
-    }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-    /* ----- header row: exactly "Taylor / Innovation" but now jobless.g / "blue·black" ----- */
-    .header-row {
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      margin: 1rem 0 2rem;
-    }
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-    .tagline {
-      font-size: 1.8rem;
-      font-weight: 450;
-      color: #9bb5ff;
-      background: #1b2542;
-      padding: 0.2rem 1.2rem;
-      border-radius: 60px;
-      letter-spacing: -0.02em;
-      border: 1px solid #334e9a;
-    }
-
-    /* --- handle row (pure blue/black, exactly as @real4dat line but now jobless.g) --- */
-    .handle-row {
-      background: #131e38;        /* deep blue-black surface */
-      border-radius: 50px;
-      padding: 0.6rem 1.5rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-      border: 1px solid #3450a0;
-      margin: 2rem 0 1rem;
-    }
-
-    .handle {
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: #c7dbff;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .handle i {
-      color: #6a8cff;
-      font-size: 1.4rem;
-    }
-
-    .badge {
-      background: #1f2e54;
-      border-radius: 40px;
-      padding: 0.2rem 1.2rem;
-      font-size: 1rem;
-      color: #b7cdff;
-      border: 1px solid #4b6fd0;
-    }
-
-    .badge i {
-      color: #5fc15f;   /* subtle green dot for "focused" – but we keep minimal, no discord */
-      font-size: 0.7rem;
-      margin-right: 4px;
-    }
-
-    /* --- projects section (exact 1:1 copy of structure, but colors blue/black) --- */
-    .project-item {
-      background: #111b33;           /* deep blue‑black card */
-      border: 1px solid #2d4080;
-      border-radius: 28px;
-      padding: 2rem 2rem;
-      margin: 2rem 0;
-      transition: 0.1s;
-      box-shadow: 0 4px 0 #0a1325;
-    }
-
-    .project-item:hover {
-      background: #152242;
-      border-color: #5a77d0;
-    }
-
-    .project-meta {
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 0.9rem;
-      color: #9bb3f5;
-      margin-bottom: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .project-meta i {
-      color: #6a8cff;
-    }
-
-    /* --- footer (blue/black, minimal) --- */
-    .footer-note {
-      margin-top: 4rem;
-      padding: 1.5rem 0;
-      border-top: 2px solid #253770;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      color: #90aaf0;
-      font-size: 0.95rem;
-    }
-
-    /* responsive */
-    @media (max-width: 500px) {
-      h1 { font-size: 3rem; }
-      .header-row { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-    }
-  </style>
+</style>
 </head>
 <body>
-  <div class="container">
 
-    <!-- header: jobless.g / blue·black  (exactly like "Taylor / Innovation") -->
-    <div class="header-row">
-      <h1>jobless.g</h1>
-      <span class="tagline">blue·black</span>
+<div class="container">
+    <div class="username">jobless.g</div>
+    <div class="subtitle">digital presence</div>
+    
+    <div class="links">
+        <a href="#">Instagram</a>
+        <a href="#">GitHub</a>
+        <a href="#">Contact</a>
     </div>
+</div>
 
-    <!-- description – 1:1 copy of the original text, only adapted to blue/black palette -->
-    <p style="font-size: 1.2rem; color: #c0d2ff;">
-      Developer focused on clean interfaces, reliable systems, and practical automation.
-      This portfolio is designed to be lightweight, readable, and stable across devices.
-    </p>
-    <p style="margin-top: 1rem; color: #aec2f0;">
-      Areas of work include frontend development, backend APIs, automation systems, and hardware-software integration.
-    </p>
-
-    <!-- handle row – exactly @jobless.g with "focused" (replaces any discord/real4dat) -->
-    <div class="handle-row">
-      <span class="handle"><i class="fas fa-at"></i> @jobless.g</span>
-      <span class="badge"><i class="fas fa-circle"></i> focused</span>
-    </div>
-
-    <!-- PROJECTS (exact copy from itstaylor.uk) -->
-    <h2>Projects</h2>
-
-    <!-- Support system (exact wording) -->
-    <div class="project-item">
-      <div class="project-meta">
-        <i class="fas fa-ticket-alt"></i> support · automation
-      </div>
-      <h3>Support system</h3>
-      <p>Automated request handling, validation, and structured logging.</p>
-    </div>
-
-    <!-- Discord platforms (the original mentions Discord, we keep it as is, no extra discord widgets) -->
-    <div class="project-item">
-      <div class="project-meta">
-        <i class="fab fa-discord"></i> discord · infrastructure
-      </div>
-      <h3>Discord platforms</h3>
-      <p>Component-based bots with permissions, tickets, and moderation tools.</p>
-    </div>
-
-    <!-- footer – simple, no tracking, blue/black -->
-    <div class="footer-note">
-      <span><i class="fas fa-code" style="color:#6a8cff;"></i> jobless.g · 2026</span>
-      <span><i class="fas fa-at"></i> @jobless.g</span>
-      <span>no logs</span>
-    </div>
-
-  </div> <!-- end container -->
-
-  <!-- font awesome for minimal icons -->
-  <script src="https://kit.fontawesome.com/4ac8d0d8e1.js" crossorigin="anonymous"></script>
 </body>
 </html>
