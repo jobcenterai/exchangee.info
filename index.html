@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>jobless.g · black site (smaller)</title>
-  <!-- Font Awesome 6 -->
+  <title>jobless.g · blue black · mini</title>
+  <!-- Font Awesome 6 (minimal) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
   <style>
@@ -15,422 +15,323 @@
     }
 
     body {
-      background: #030603;   /* more black, just a hint of green */
+      background: #030614;        /* deep blue-black */
       font-family: 'Inter', sans-serif;
-      color: #c5d6c5;
+      color: #c9d6eb;             /* soft blue-white */
       line-height: 1.5;
-      padding: 1.5rem 1rem;
+      padding: 1rem;
       display: flex;
       justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
 
-    /* smaller container – like a compact card */
+    /* super small container – like a compact card */
     .container {
-      max-width: 960px;       /* significantly smaller than before */
+      max-width: 580px;           /* noticeably smaller */
       width: 100%;
-      background: #0a100a;    /* very dark green/black */
-      border-radius: 42px;
-      padding: 2rem 2rem;
-      border: 1px solid #1f3a1f;
-      box-shadow: 0 20px 40px -20px black;
+      background: #0b0f1a;        /* blue-black background */
+      border-radius: 32px;
+      padding: 1.8rem 1.8rem;
+      border: 1px solid #1f2b4a;
+      box-shadow: 0 15px 25px -15px #03060e;
     }
 
-    /* more black, less green */
+    /* blue-black palette – no green, no discord */
     :root {
-      --green-dim: #163016;
-      --green-soft: #204320;
-      --green-neon: #5bb55b;   /* kept a bit for accents */
-      --black-rich: #050805;
+      --blue-deep: #0e1629;
+      --blue-soft: #1e2b48;
+      --blue-accent: #3d5a9b;
+      --blue-neon: #6d8ae0;
+      --text-light: #dfe7fa;
     }
 
     h1 {
-      font-size: 2.8rem;       /* smaller */
+      font-size: 2.4rem;
       font-weight: 700;
-      background: linear-gradient(145deg, #b0f0b0, #60b060);
+      background: linear-gradient(145deg, #a6bcff, #5f7ed9);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.1rem;
+      letter-spacing: -0.5px;
     }
 
     h2 {
-      font-size: 2rem;
-      color: #d0ead0;
-      margin: 2rem 0 1.2rem;
-      border-bottom: 2px solid #265226;
+      font-size: 1.6rem;
+      color: #cedcf5;
+      margin: 1.8rem 0 1rem;
+      border-bottom: 2px solid #28375a;
       padding-bottom: 0.4rem;
       display: inline-block;
     }
 
     h3 {
-      font-size: 1.5rem;
-      color: #c5e5c5;
-      margin-bottom: 0.4rem;
+      font-size: 1.3rem;
+      color: #d3e0fd;
+      margin-bottom: 0.3rem;
     }
 
     a {
-      color: #72cf72;
+      color: #8ba3f0;
       text-decoration: none;
+      font-weight: 500;
     }
 
-    /* ----- navbar smaller & black ----- */
+    /* ----- no discord navbar – simple, blue-black ----- */
     .navbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #0b130b;
-      border: 1px solid #265226;
-      border-radius: 60px;
-      padding: 0.6rem 1.5rem;
-      margin-bottom: 2.5rem;
+      background: #0d1423;
+      border: 1px solid #253458;
+      border-radius: 50px;
+      padding: 0.5rem 1.2rem;
+      margin-bottom: 2rem;
     }
 
     .logo {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-weight: 700;
-      background: linear-gradient(145deg, #b8f8b8, #60b060);
+      background: linear-gradient(145deg, #b3c8ff, #5f7ed9);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     .logo i {
-      color: #5fb85f;
+      color: #6280db;
       -webkit-text-fill-color: initial;
+      margin-right: 4px;
     }
 
     .nav-links {
       display: flex;
-      gap: 1.5rem;
+      gap: 1.2rem;
       align-items: center;
     }
     .nav-links a {
-      color: #beddbe;
-      font-weight: 500;
-      font-size: 0.95rem;
-    }
-
-    /* discord presence smaller */
-    .discord-presence {
-      background: #162916;
-      border-radius: 40px;
-      padding: 0.3rem 1.2rem 0.3rem 0.8rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      border: 1px solid #3f783f;
-    }
-    .discord-presence i {
-      font-size: 1.4rem;
-      color: #5865f2;
-    }
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      background: #4bef4b;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #70ff70;
-    }
-    .status-text {
+      color: #b8c9f0;
       font-weight: 500;
       font-size: 0.9rem;
     }
+    .nav-links a:hover {
+      color: white;
+    }
 
-    /* hero grid smaller */
+    /* hero – smaller, clean, blue-black, no discord */
     .hero-grid {
       display: flex;
       align-items: center;
-      gap: 2rem;
+      gap: 1.8rem;
       flex-wrap: wrap;
-      margin: 2rem 0 3rem;
+      margin: 1.2rem 0 1.8rem;
     }
     .hero-about {
-      flex: 1 1 300px;
+      flex: 1 1 240px;
     }
     .hero-about p {
-      font-size: 1rem;
-      color: #b2cfb2;
-      margin: 0.8rem 0 1.2rem;
+      font-size: 0.95rem;
+      color: #b3c6e5;
+      margin: 0.6rem 0 1rem;
     }
 
     .hero-avatar {
-      flex: 1 1 240px;
-      background: #0f1b0f;
+      flex: 1 1 160px;
+      background: #111b30;
       border-radius: 40% 60% 40% 60%;
-      border: 2px solid #48a848;
-      padding: 1.5rem;
+      border: 2px solid #3f5cb0;
+      padding: 1.2rem;
       text-align: center;
     }
     .avatar-icon {
-      font-size: 5rem;
-      color: #b0e6b0;
+      font-size: 4rem;
+      color: #9eb1f0;
     }
     .avatar-handle {
-      font-size: 1.6rem;
+      font-size: 1.3rem;
       font-weight: 600;
-      background: linear-gradient(145deg, #c0ffc0, #80c080);
+      background: linear-gradient(145deg, #c6d5ff, #7f9df0);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      margin-top: 0.2rem;
     }
 
-    /* handle row smaller */
+    /* handle row – minimal, blue-black, no dnd discord */
     .handle-row {
-      background: #142314;
+      background: #121b30;
       border-radius: 40px;
-      padding: 0.7rem 1.2rem;
+      padding: 0.5rem 1.2rem;
       display: inline-flex;
       align-items: center;
-      gap: 1.2rem;
+      gap: 1rem;
       flex-wrap: wrap;
-      border: 1px solid #3a763a;
+      border: 1px solid #2e4070;
       margin: 1rem 0;
     }
     .handle {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: 600;
-      color: #b3f0b3;
+      color: #c2d4ff;
     }
-    .dnd-badge {
-      background: #283f28;
-      border-radius: 40px;
-      padding: 0.3rem 1.2rem;
-      font-size: 0.9rem;
-      color: #ecc9c9;
-      border: 1px solid #b76262;
+    .handle i {
+      color: #5f7ed9;
+      margin-right: 4px;
     }
-    .dnd-badge i {
-      color: #ff7b7b;
-      margin-right: 6px;
+    .status-badge {
+      background: #1e2b48;
+      border-radius: 30px;
+      padding: 0.2rem 1rem;
+      font-size: 0.8rem;
+      color: #b5ceff;
+      border: 1px solid #3e5da0;
     }
-
-    /* features cards more black / compact */
-    .discord-features {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.2rem;
-      margin: 2rem 0;
-    }
-    .discord-card {
-      background: #0e170e;
-      border: 1px solid #2d552d;
-      border-radius: 28px;
-      padding: 1.5rem 1.2rem;
-      flex: 1 1 200px;
-      box-shadow: 0 4px 0 #142314;
-    }
-    .discord-card i {
-      font-size: 2rem;
-      color: #5865f2;
-      margin-bottom: 0.8rem;
-    }
-    .discord-card h4 {
-      font-size: 1.4rem;
-      color: #d0f0d0;
-      margin-bottom: 0.3rem;
-    }
-    .discord-card p {
-      color: #a0bda0;
-      font-size: 0.9rem;
+    .status-badge i {
+      color: #4f9e4f;  /* subtle green dot – but no discord */
+      margin-right: 5px;
+      font-size: 0.6rem;
     }
 
-    /* project grid smaller */
+    /* projects – no discord icons, just code/minimal */
     .project-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.2rem;
-      margin-top: 1.5rem;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin: 1.2rem 0;
     }
     .project-item {
-      background: #121f12;
-      border: 1px solid #336033;
-      border-radius: 28px;
-      padding: 1.6rem 1.4rem;
-      box-shadow: 0 5px 0 #1c301c;
+      background: #0f182b;
+      border: 1px solid #253764;
+      border-radius: 24px;
+      padding: 1.4rem 1.4rem;
+      box-shadow: 0 4px 0 #0a1220;
     }
     .project-tag {
-      font-size: 0.85rem;
-      color: #a5d8a5;
-      margin-bottom: 0.8rem;
+      font-size: 0.8rem;
+      color: #9bb0e0;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    .project-item h3 {
-      font-size: 1.6rem;
-      margin-bottom: 0.4rem;
+    .project-tag i {
+      color: #5f7ed9;
+      font-size: 0.9rem;
     }
     .project-item p {
-      font-size: 0.95rem;
-    }
-
-    /* contact block smaller */
-    .contact-discord-block {
-      background: #102210;
-      border-radius: 50px;
-      padding: 2rem 2rem;
-      margin: 3rem 0;
-      border: 2px solid #3f943f;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 2rem;
-      justify-content: space-between;
-    }
-    .contact-text h2 {
-      font-size: 2.2rem;
-      border-bottom: none;
-      margin: 0 0 0.3rem;
-    }
-    .contact-text p {
-      font-size: 1rem;
-    }
-    .discord-big-button {
-      background: #244824;
-      border: 2px solid #72d672;
-      padding: 0.8rem 2rem;
-      border-radius: 60px;
-      font-size: 1.5rem;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .discord-big-button i {
-      font-size: 2rem;
-    }
-
-    /* bottom row smaller */
-    .bottom-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      background: #0f1b0f;
-      border-radius: 60px;
-      padding: 0.8rem 1.8rem;
-      border: 1px solid #2d6a2d;
-      margin: 2rem 0;
-      font-size: 0.95rem;
-    }
-
-    .footer {
-      margin-top: 3rem;
-      padding: 1.5rem 0 0.5rem;
-      border-top: 2px solid #1f3f1f;
       font-size: 0.9rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: space-between;
-      color: #7fa07f;
+      color: #b3c9f0;
     }
 
-    @media (max-width: 600px) {
-      .container { padding: 1.5rem; }
-      h1 { font-size: 2.3rem; }
+    /* contact row – minimal, no discord */
+    .contact-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      background: #0f1829;
+      border-radius: 50px;
+      padding: 0.7rem 1.5rem;
+      border: 1px solid #2f4580;
+      margin: 2rem 0 1.2rem;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #c5d7ff;
+      font-size: 0.9rem;
+    }
+    .contact-item i {
+      color: #5f7ed9;
+      width: 1.2rem;
+    }
+
+    /* footer – super simple */
+    .footer {
+      margin-top: 2rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid #1f2d4e;
+      font-size: 0.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      color: #859fd8;
+    }
+
+    /* no discord elements anywhere – clean blue-black */
+    @media (max-width: 400px) {
+      .container { padding: 1.2rem; }
+      h1 { font-size: 2rem; }
     }
   </style>
 </head>
 <body>
-<div class="container">   <!-- much smaller + black background -->
+<div class="container">   <!-- mini blue-black card -->
 
-  <!-- nav -->
+  <!-- navbar – no discord references -->
   <nav class="navbar">
-    <div class="logo"><i class="fas fa-dragon"></i> jobless.g</div>
+    <div class="logo"><i class="fas fa-code"></i> jobless.g</div>
     <div class="nav-links">
       <a href="#">work</a>
       <a href="#">projects</a>
-      <a href="#">discord</a>
-      <div class="discord-presence">
-        <i class="fab fa-discord"></i>
-        <div class="status-dot"></div>
-        <div class="status-text">online</div>
-      </div>
+      <a href="#">contact</a>
     </div>
   </nav>
 
-  <!-- hero -->
+  <!-- hero – about me, blue-black, no discord -->
   <div class="hero-grid">
     <div class="hero-about">
       <h1>jobless.g</h1>
-      <p>Developer focused on clean interfaces, reliable systems, practical automation. Building Discord tools, support platforms, backends.</p>
+      <p>Developer focused on clean interfaces, reliable systems, and practical automation. Building tools, backends, and lightweight solutions.</p>
+      <!-- simple handle row – no discord status -->
       <div class="handle-row">
         <span class="handle"><i class="fas fa-at"></i> @jobless.g</span>
-        <span class="dnd-badge"><i class="fas fa-circle"></i> DND</span>
+        <span class="status-badge"><i class="fas fa-circle"></i> focused</span>
       </div>
-      <a href="#" style="display: inline-block; background:#1f421f; padding:0.5rem 1.5rem; border-radius:40px; font-size:0.9rem; border:1px solid #57a557;"><i class="fab fa-discord"></i> Message</a>
+      <!-- minimal contact link (not discord) -->
+      <a href="#" style="display: inline-block; background:#1e2c4a; padding:0.4rem 1.2rem; border-radius:30px; font-size:0.85rem; border:1px solid #4565b0;"><i class="fas fa-envelope"></i> contact</a>
     </div>
     <div class="hero-avatar">
-      <i class="fas fa-user-ninja avatar-icon"></i>
+      <i class="fas fa-user-astronaut avatar-icon"></i>
       <div class="avatar-handle">@jobless.g</div>
-      <div style="margin-top: 0.5rem; font-size:0.9rem;">Rust · TS · Python</div>
+      <div style="margin-top: 0.4rem; font-size:0.8rem; color:#9eb1e0;">Rust · TS · Python</div>
     </div>
   </div>
 
-  <!-- discord features (smaller cards) -->
-  <h2>⚡ discord features</h2>
-  <div class="discord-features">
-    <div class="discord-card">
-      <i class="fab fa-discord"></i>
-      <h4>bot operator</h4>
-      <p>20+ bots · moderation, tickets, low-latency</p>
-    </div>
-    <div class="discord-card">
-      <i class="fas fa-ticket-alt"></i>
-      <h4>support systems</h4>
-      <p>Ticket workflows, transcripts, 6k+ servers</p>
-    </div>
-    <div class="discord-card">
-      <i class="fas fa-shield-alt"></i>
-      <h4>permissions</h4>
-      <p>Component‑based perm trees, audit logs</p>
-    </div>
-  </div>
-
-  <!-- projects (smaller) -->
+  <!-- projects – pure code, no discord icons, no discord words -->
   <h2>📁 projects</h2>
   <div class="project-grid">
     <div class="project-item">
-      <div class="project-tag"><i class="fas fa-ticket-alt"></i> support · automation</div>
+      <div class="project-tag"><i class="fas fa-ticket"></i> support · automation</div>
       <h3>Support system</h3>
-      <p>Automated handling, validation, logging — Discord modals & threads.</p>
+      <p>Automated request handling, validation, structured logging — lightweight and stable.</p>
     </div>
     <div class="project-item">
-      <div class="project-tag"><i class="fab fa-discord"></i> discord · infra</div>
-      <h3>Discord platforms</h3>
-      <p>Component bots, permissions, tickets, real‑time dashboards.</p>
+      <div class="project-tag"><i class="fas fa-comments"></i> chat platforms</div>
+      <h3>Modular bots</h3>
+      <p>Component-based bots with permissions, tickets, and real‑time dashboards.</p>
     </div>
     <div class="project-item">
-      <div class="project-tag"><i class="fas fa-robot"></i> automation</div>
+      <div class="project-tag"><i class="fas fa-shield"></i> utility</div>
       <h3>AutoMod suite</h3>
-      <p>Smart filtering, anti‑raid, webhook logs.</p>
+      <p>Smart filtering, rule engines, and detailed logging with webhook support.</p>
     </div>
   </div>
 
-  <!-- big discord contact (smaller) -->
-  <div class="contact-discord-block">
-    <div class="contact-text">
-      <h2><i class="fab fa-discord"></i> let's build</h2>
-      <p><strong>@jobless.g</strong> — DND but replies fast.</p>
-      <div style="display: flex; gap: 1.5rem; margin-top: 0.8rem; color:#9fd89f; font-size:0.9rem;">
-        <span><i class="fas fa-check-circle"></i> 12k commands</span>
-        <span><i class="fas fa-users"></i> 45 servers</span>
-      </div>
-    </div>
-    <a href="#" class="discord-big-button">
-      <i class="fab fa-discord"></i> jobless.g
-    </a>
+  <!-- contact row – no discord, just email/handle -->
+  <div class="contact-row">
+    <span class="contact-item"><i class="fas fa-envelope"></i> jobless@proton.me</span>
+    <span class="contact-item"><i class="fab fa-github"></i> /joblessg</span>
+    <span class="contact-item"><i class="fas fa-at"></i> @jobless.g</span>
   </div>
 
-  <!-- bottom handle row (more black) -->
-  <div class="bottom-row">
-    <span><i class="fas fa-skull" style="color:#5fb85f;"></i> <strong>@jobless.g</strong> · dev</span>
-    <span class="dnd-badge" style="background:#283e28;"><i class="fas fa-circle" style="color:#f55e5e;"></i> Do Not Disturb</span>
-    <span><i class="fab fa-discord"></i> jobless.g_</span>
-  </div>
-
-  <!-- footer -->
+  <!-- small note / footer -->
   <div class="footer">
-    <span><i class="fas fa-dragon"></i> jobless.g – black site</span>
-    <span><i class="fab fa-discord"></i> @jobless.g <i class="fas fa-circle" style="color:#5fdf5f; font-size:0.6rem;"></i></span>
-    <span>· 2026 · no logs</span>
+    <span><i class="fas fa-dragon" style="color:#5f7ed9;"></i> jobless.g – blue black mini</span>
+    <span>· 2026 · no tracking</span>
+    <span>vim · wezterm</span>
   </div>
 
-</div> <!-- end container -->
+  <!-- absolutely zero discord mentions, no discord widgets, no discord buttons -->
+</div>
 </body>
 </html>
