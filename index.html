@@ -1,2 +1,248 @@
-in development 
-contact Discord: jobless.g
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jobless.g — Developer Portfolio</title>
+  <!-- keeping the exact minimal, readable style from itstaylor.uk -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f6f9f6;
+      color: #1d2f1d;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* main container – mimics the simple, centered, readable layout */
+    .container {
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* typography – exactly the clean feeling from the original */
+    h1, h2, h3 {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 4rem;
+      margin-bottom: 0.25rem;
+      background: linear-gradient(135deg, #1d3a1d, #3f6e3f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: inline-block;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      margin: 3rem 0 1.5rem;
+      border-bottom: 2px solid #cde0cd;
+      padding-bottom: 0.4rem;
+      color: #1a3a1a;
+    }
+
+    h3 {
+      font-size: 1.8rem;
+      margin: 1.8rem 0 0.5rem;
+      color: #234623;
+    }
+
+    p {
+      color: #345e34;
+      font-size: 1.1rem;
+      max-width: 650px;
+    }
+
+    a {
+      color: #2b682b;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.1s;
+    }
+
+    a:hover {
+      border-bottom-color: #5f9e5f;
+    }
+
+    /* header area: exactly the "Taylor / Innovation" style but with jobless.g */
+    .header-row {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 1rem 0 2rem;
+    }
+
+    .tagline {
+      font-size: 1.8rem;
+      font-weight: 450;
+      color: #477a47;
+      background: #e3f0e3;
+      padding: 0.2rem 1.2rem;
+      border-radius: 60px;
+      letter-spacing: -0.02em;
+    }
+
+    /* jobless.g handle line – inspired by the clean @real4dat but now @jobless.g */
+    .handle-row {
+      background: #e4f0e4;
+      border-radius: 50px;
+      padding: 0.6rem 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      border: 1px solid #b9dcb9;
+      margin: 2rem 0 1rem;
+    }
+
+    .handle {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #1c501c;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .handle i {
+      color: #3e8e3e;
+      font-size: 1.4rem;
+    }
+
+    .badge {
+      background: #cbe5cb;
+      border-radius: 40px;
+      padding: 0.2rem 1.2rem;
+      font-size: 1rem;
+      color: #1e481e;
+      border: 1px solid #86bb86;
+    }
+
+    /* projects section – simple cards, no icons overload */
+    .project-item {
+      background: #ffffffdb;
+      border: 1px solid #d0e6d0;
+      border-radius: 28px;
+      padding: 2rem 2rem;
+      margin: 2rem 0;
+      transition: 0.1s;
+      box-shadow: 0 4px 0 #caddca;
+    }
+
+    .project-item:hover {
+      background: white;
+      border-color: #a8d0a8;
+    }
+
+    .project-meta {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.9rem;
+      color: #5f8b5f;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .project-meta i {
+      color: #5f8b5f;
+    }
+
+    /* footer / tiny */
+    .footer-note {
+      margin-top: 4rem;
+      padding: 1.5rem 0;
+      border-top: 2px solid #cde0cd;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      color: #608560;
+      font-size: 0.95rem;
+    }
+
+    /* no discord stuff – pure and minimal */
+    @media (max-width: 500px) {
+      h1 { font-size: 3rem; }
+      .header-row { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- exactly the structure of itstaylor.uk : Taylor / Innovation replaced by jobless.g / minimal tagline -->
+    <div class="header-row">
+      <h1>jobless.g</h1>
+      <span class="tagline">clean · stable</span>
+    </div>
+
+    <!-- main description – adapted from original but with jobless.g tone -->
+    <p style="font-size: 1.2rem; color: #2d542d;">
+      Developer focused on clean interfaces, reliable systems, and practical automation.
+      This portfolio is designed to be lightweight, readable, and stable across devices.
+    </p>
+    <p style="margin-top: 1rem; color: #3d6b3d;">
+      Areas of work include frontend development, backend APIs, automation systems, and hardware-software integration.
+    </p>
+
+    <!-- handle row – exactly @jobless.g with a "focused" badge (replaces any discord ref) -->
+    <div class="handle-row">
+      <span class="handle"><i class="fas fa-at" style="font-family: 'Font Awesome 6 Free'; font-weight: 900;"></i> @jobless.g</span>
+      <span class="badge"><i class="fas fa-circle" style="color: #46b446; font-size: 0.7rem;"></i> focused</span>
+    </div>
+
+    <!-- projects section (exact copy from itstaylor.uk but with consistent handle) -->
+    <h2>Projects</h2>
+
+    <!-- Support system (exactly as in original, no discord icons) -->
+    <div class="project-item">
+      <div class="project-meta">
+        <i class="fas fa-ticket-alt" style="font-family: 'Font Awesome 6 Free'; font-weight: 900;"></i> support · automation
+      </div>
+      <h3>Support system</h3>
+      <p>Automated request handling, validation, and structured logging.</p>
+    </div>
+
+    <!-- Discord platforms – but note: the original mentions Discord, we keep it because it's part of the project description, but we do not add any extra discord widgets/icons beyond that -->
+    <div class="project-item">
+      <div class="project-meta">
+        <i class="fab fa-discord" style="font-family: 'Font Awesome 6 Brands';"></i> discord · infrastructure
+      </div>
+      <h3>Discord platforms</h3>
+      <p>Component-based bots with permissions, tickets, and moderation tools.</p>
+    </div>
+
+    <!-- optional third project to match the clean vibe (but original had only two, we keep two for fidelity; however we can add one more to fill, but let's stick exactly to the provided content: two projects. If you want exactly two, that's perfect. I'll keep the two from the original. -->
+
+    <!-- contact / footer line – simple, no discord button, just handle -->
+    <div class="footer-note">
+      <span><i class="fas fa-code" style="color: #477a47;"></i> jobless.g · 2026</span>
+      <span><i class="fas fa-at"></i> @jobless.g</span>
+      <span>no tracking</span>
+    </div>
+
+    <!-- small note: completely replaced real4dat with jobless.g, no discord extras, clean -->
+  </div>
+
+  <!-- font awesome for icons (used minimally) -->
+  <script src="https://kit.fontawesome.com/4ac8d0d8e1.js" crossorigin="anonymous"></script>
+  <!-- fallback for icons in case kit delays, but it's fine -->
+</body>
+</html>
