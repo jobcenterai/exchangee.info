@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
-
 *{
     margin:0;
     padding:0;
@@ -37,6 +36,8 @@ body{
     max-width:420px;
     padding:50px 30px;
     text-align:center;
+    box-shadow:0 0 40px rgba(30,144,255,.15);
+    border-radius:16px;
 }
 
 .username{
@@ -76,12 +77,13 @@ body{
     color:#0a0f1a;
 }
 
-/* MUSIC (hidden) */
+/* SPOTIFY PLAYER */
 
-audio{
-    display:none;
+.spotify-player{
+    margin-top:30px;
+    border-radius:12px;
+    overflow:hidden;
 }
-
 </style>
 </head>
 
@@ -94,35 +96,26 @@ audio{
         <div class="subtitle">digital presence</div>
 
         <div class="links">
-            <a href="https://instagram.com/yourname">Instagram</a>
-            <a href="https://github.com/yourname">GitHub</a>
-            <a href="https://twitter.com/yourname">Twitter</a>
+            <a href="https://instagram.com/yourname" target="_blank">Instagram</a>
+            <a href="https://github.com/yourname" target="_blank">GitHub</a>
+            <a href="https://twitter.com/yourname" target="_blank">Twitter</a>
             <a href="mailto:youremail@example.com">Contact</a>
+        </div>
+
+        <!-- Spotify Player -->
+        <div class="spotify-player">
+            <iframe 
+                src="https://open.spotify.com/embed/track/1WIZiOuNO3woKfdlSK2gNn"
+                width="100%" 
+                height="80" 
+                frameborder="0" 
+                allowfullscreen="" 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+            </iframe>
         </div>
 
     </div>
 </div>
-
-<!-- MUSIC -->
-<audio id="bgMusic" loop autoplay>
-    <source src="music.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-window.addEventListener("load", () => {
-    const music = document.getElementById("bgMusic");
-
-    music.volume = 0.4;
-
-    const playPromise = music.play();
-
-    if(playPromise !== undefined){
-        playPromise.catch(() => {
-            console.log("Autoplay blocked - waiting for user interaction");
-        });
-    }
-});
-</script>
 
 </body>
 </html>
