@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>jobless.g — Developer Portfolio</title>
-  <!-- keeping the exact minimal, readable style from itstaylor.uk -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>jobless.g — developer portfolio</title>
+  <!-- exact minimal style from itstaylor.uk, but colors: blue/black, 1:1 layout -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
   <style>
+    /* RESET / GLOBAL */
     * {
       margin: 0;
       padding: 0;
@@ -14,9 +17,9 @@
     }
 
     body {
-      background: #f6f9f6;
-      color: #1d2f1d;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0b0f17;      /* deep blue‑black background */
+      color: #d9e2f2;           /* soft blue‑white text */
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       line-height: 1.6;
       padding: 2rem 1.5rem;
       display: flex;
@@ -24,14 +27,14 @@
       align-items: center;
     }
 
-    /* main container – mimics the simple, centered, readable layout */
+    /* container: exactly the readable width of the original */
     .container {
       max-width: 800px;
       width: 100%;
       margin: 0 auto;
     }
 
-    /* typography – exactly the clean feeling from the original */
+    /* typography – crisp, blue/black only */
     h1, h2, h3 {
       font-weight: 600;
       letter-spacing: -0.02em;
@@ -41,7 +44,7 @@
     h1 {
       font-size: 4rem;
       margin-bottom: 0.25rem;
-      background: linear-gradient(135deg, #1d3a1d, #3f6e3f);
+      background: linear-gradient(135deg, #8aadff, #4f7fff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -51,25 +54,25 @@
     h2 {
       font-size: 2.2rem;
       margin: 3rem 0 1.5rem;
-      border-bottom: 2px solid #cde0cd;
+      border-bottom: 2px solid #25345c;    /* dark blue border */
       padding-bottom: 0.4rem;
-      color: #1a3a1a;
+      color: #bbd1ff;
     }
 
     h3 {
       font-size: 1.8rem;
       margin: 1.8rem 0 0.5rem;
-      color: #234623;
+      color: #c5d6ff;
     }
 
     p {
-      color: #345e34;
+      color: #b0c6f0;
       font-size: 1.1rem;
       max-width: 650px;
     }
 
     a {
-      color: #2b682b;
+      color: #7f9fff;
       text-decoration: none;
       font-weight: 500;
       border-bottom: 1px solid transparent;
@@ -77,10 +80,10 @@
     }
 
     a:hover {
-      border-bottom-color: #5f9e5f;
+      border-bottom-color: #5f7fff;
     }
 
-    /* header area: exactly the "Taylor / Innovation" style but with jobless.g */
+    /* ----- header row: exactly "Taylor / Innovation" but now jobless.g / "blue·black" ----- */
     .header-row {
       display: flex;
       align-items: baseline;
@@ -92,69 +95,76 @@
     .tagline {
       font-size: 1.8rem;
       font-weight: 450;
-      color: #477a47;
-      background: #e3f0e3;
+      color: #9bb5ff;
+      background: #1b2542;
       padding: 0.2rem 1.2rem;
       border-radius: 60px;
       letter-spacing: -0.02em;
+      border: 1px solid #334e9a;
     }
 
-    /* jobless.g handle line – inspired by the clean @real4dat but now @jobless.g */
+    /* --- handle row (pure blue/black, exactly as @real4dat line but now jobless.g) --- */
     .handle-row {
-      background: #e4f0e4;
+      background: #131e38;        /* deep blue-black surface */
       border-radius: 50px;
       padding: 0.6rem 1.5rem;
       display: inline-flex;
       align-items: center;
       gap: 1.2rem;
       flex-wrap: wrap;
-      border: 1px solid #b9dcb9;
+      border: 1px solid #3450a0;
       margin: 2rem 0 1rem;
     }
 
     .handle {
       font-size: 1.6rem;
       font-weight: 600;
-      color: #1c501c;
+      color: #c7dbff;
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
     .handle i {
-      color: #3e8e3e;
+      color: #6a8cff;
       font-size: 1.4rem;
     }
 
     .badge {
-      background: #cbe5cb;
+      background: #1f2e54;
       border-radius: 40px;
       padding: 0.2rem 1.2rem;
       font-size: 1rem;
-      color: #1e481e;
-      border: 1px solid #86bb86;
+      color: #b7cdff;
+      border: 1px solid #4b6fd0;
     }
 
-    /* projects section – simple cards, no icons overload */
+    .badge i {
+      color: #5fc15f;   /* subtle green dot for "focused" – but we keep minimal, no discord */
+      font-size: 0.7rem;
+      margin-right: 4px;
+    }
+
+    /* --- projects section (exact 1:1 copy of structure, but colors blue/black) --- */
     .project-item {
-      background: #ffffffdb;
-      border: 1px solid #d0e6d0;
+      background: #111b33;           /* deep blue‑black card */
+      border: 1px solid #2d4080;
       border-radius: 28px;
       padding: 2rem 2rem;
       margin: 2rem 0;
       transition: 0.1s;
-      box-shadow: 0 4px 0 #caddca;
+      box-shadow: 0 4px 0 #0a1325;
     }
 
     .project-item:hover {
-      background: white;
-      border-color: #a8d0a8;
+      background: #152242;
+      border-color: #5a77d0;
     }
 
     .project-meta {
       font-family: 'SF Mono', 'Fira Code', monospace;
       font-size: 0.9rem;
-      color: #5f8b5f;
+      color: #9bb3f5;
       margin-bottom: 0.8rem;
       display: flex;
       align-items: center;
@@ -162,22 +172,22 @@
     }
 
     .project-meta i {
-      color: #5f8b5f;
+      color: #6a8cff;
     }
 
-    /* footer / tiny */
+    /* --- footer (blue/black, minimal) --- */
     .footer-note {
       margin-top: 4rem;
       padding: 1.5rem 0;
-      border-top: 2px solid #cde0cd;
+      border-top: 2px solid #253770;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      color: #608560;
+      color: #90aaf0;
       font-size: 0.95rem;
     }
 
-    /* no discord stuff – pure and minimal */
+    /* responsive */
     @media (max-width: 500px) {
       h1 { font-size: 3rem; }
       .header-row { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
@@ -187,62 +197,58 @@
 <body>
   <div class="container">
 
-    <!-- exactly the structure of itstaylor.uk : Taylor / Innovation replaced by jobless.g / minimal tagline -->
+    <!-- header: jobless.g / blue·black  (exactly like "Taylor / Innovation") -->
     <div class="header-row">
       <h1>jobless.g</h1>
-      <span class="tagline">clean · stable</span>
+      <span class="tagline">blue·black</span>
     </div>
 
-    <!-- main description – adapted from original but with jobless.g tone -->
-    <p style="font-size: 1.2rem; color: #2d542d;">
+    <!-- description – 1:1 copy of the original text, only adapted to blue/black palette -->
+    <p style="font-size: 1.2rem; color: #c0d2ff;">
       Developer focused on clean interfaces, reliable systems, and practical automation.
       This portfolio is designed to be lightweight, readable, and stable across devices.
     </p>
-    <p style="margin-top: 1rem; color: #3d6b3d;">
+    <p style="margin-top: 1rem; color: #aec2f0;">
       Areas of work include frontend development, backend APIs, automation systems, and hardware-software integration.
     </p>
 
-    <!-- handle row – exactly @jobless.g with a "focused" badge (replaces any discord ref) -->
+    <!-- handle row – exactly @jobless.g with "focused" (replaces any discord/real4dat) -->
     <div class="handle-row">
-      <span class="handle"><i class="fas fa-at" style="font-family: 'Font Awesome 6 Free'; font-weight: 900;"></i> @jobless.g</span>
-      <span class="badge"><i class="fas fa-circle" style="color: #46b446; font-size: 0.7rem;"></i> focused</span>
+      <span class="handle"><i class="fas fa-at"></i> @jobless.g</span>
+      <span class="badge"><i class="fas fa-circle"></i> focused</span>
     </div>
 
-    <!-- projects section (exact copy from itstaylor.uk but with consistent handle) -->
+    <!-- PROJECTS (exact copy from itstaylor.uk) -->
     <h2>Projects</h2>
 
-    <!-- Support system (exactly as in original, no discord icons) -->
+    <!-- Support system (exact wording) -->
     <div class="project-item">
       <div class="project-meta">
-        <i class="fas fa-ticket-alt" style="font-family: 'Font Awesome 6 Free'; font-weight: 900;"></i> support · automation
+        <i class="fas fa-ticket-alt"></i> support · automation
       </div>
       <h3>Support system</h3>
       <p>Automated request handling, validation, and structured logging.</p>
     </div>
 
-    <!-- Discord platforms – but note: the original mentions Discord, we keep it because it's part of the project description, but we do not add any extra discord widgets/icons beyond that -->
+    <!-- Discord platforms (the original mentions Discord, we keep it as is, no extra discord widgets) -->
     <div class="project-item">
       <div class="project-meta">
-        <i class="fab fa-discord" style="font-family: 'Font Awesome 6 Brands';"></i> discord · infrastructure
+        <i class="fab fa-discord"></i> discord · infrastructure
       </div>
       <h3>Discord platforms</h3>
       <p>Component-based bots with permissions, tickets, and moderation tools.</p>
     </div>
 
-    <!-- optional third project to match the clean vibe (but original had only two, we keep two for fidelity; however we can add one more to fill, but let's stick exactly to the provided content: two projects. If you want exactly two, that's perfect. I'll keep the two from the original. -->
-
-    <!-- contact / footer line – simple, no discord button, just handle -->
+    <!-- footer – simple, no tracking, blue/black -->
     <div class="footer-note">
-      <span><i class="fas fa-code" style="color: #477a47;"></i> jobless.g · 2026</span>
+      <span><i class="fas fa-code" style="color:#6a8cff;"></i> jobless.g · 2026</span>
       <span><i class="fas fa-at"></i> @jobless.g</span>
-      <span>no tracking</span>
+      <span>no logs</span>
     </div>
 
-    <!-- small note: completely replaced real4dat with jobless.g, no discord extras, clean -->
-  </div>
+  </div> <!-- end container -->
 
-  <!-- font awesome for icons (used minimally) -->
+  <!-- font awesome for minimal icons -->
   <script src="https://kit.fontawesome.com/4ac8d0d8e1.js" crossorigin="anonymous"></script>
-  <!-- fallback for icons in case kit delays, but it's fine -->
 </body>
 </html>
