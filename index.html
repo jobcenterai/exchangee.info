@@ -3,112 +3,129 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CryptoTracking AI PRO | Real-Time EURO</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+<title>CryptoTracking Terminal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 
 body{
-background:radial-gradient(circle at top left,#061a14,#0b1f3a 60%);
-color:#00ffcc;
+background:#0f172a;
+color:#e2e8f0;
 padding:40px 20px;
 min-height:100vh;
 }
 
 h1{
 text-align:center;
-font-size:38px;
-margin-bottom:25px;
-text-shadow:0 0 12px #00ffaa;
+font-size:28px;
+font-weight:600;
+margin-bottom:30px;
+color:#f1f5f9;
 }
 
-.section{
-max-width:1200px;
+.container{
+max-width:1100px;
 margin:auto;
-background:rgba(8,25,25,0.6);
-backdrop-filter:blur(14px);
-border:1px solid rgba(0,255,170,0.2);
-border-radius:20px;
+background:#111827;
+border-radius:12px;
 padding:25px;
+border:1px solid #1f2937;
 }
 
-table{width:100%;border-collapse:collapse;}
-th,td{padding:14px;text-align:left;}
-th{border-bottom:1px solid rgba(0,255,170,0.2);color:#00ffaa;}
+table{
+width:100%;
+border-collapse:collapse;
+}
 
-tr:hover{background:rgba(0,255,170,0.05);cursor:pointer;}
+th{
+text-align:left;
+font-size:13px;
+text-transform:uppercase;
+letter-spacing:0.5px;
+color:#94a3b8;
+padding:14px;
+border-bottom:1px solid #1f2937;
+}
 
-.green{color:#00ff88;}
-.red{color:#ff4d6d;}
-.neutral{color:#ffaa00;}
+td{
+padding:16px 14px;
+border-bottom:1px solid #1f2937;
+font-size:14px;
+}
 
-.confidence-bar{
-height:8px;
-border-radius:5px;
-background:#0d2a27;
-margin-top:5px;
+tr:hover{
+background:#0b1220;
+cursor:pointer;
+}
+
+.positive{color:#22c55e;}
+.negative{color:#ef4444;}
+.neutral{color:#f59e0b;}
+
+.confidence-wrapper{
+margin-top:6px;
+background:#1e293b;
+height:6px;
+border-radius:4px;
 overflow:hidden;
 }
+
 .confidence-fill{
 height:100%;
-background:linear-gradient(90deg,#ff4d6d,#ffaa00,#00ff88);
+background:#3b82f6;
+}
+
+canvas{
+height:40px !important;
 }
 
 .modal{
 display:none;
 position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-background:rgba(0,0,0,0.8);
+inset:0;
+background:rgba(0,0,0,0.7);
 justify-content:center;
 align-items:center;
 }
 
 .modal-content{
-background:#081c1a;
+background:#111827;
 padding:30px;
-border-radius:15px;
+border-radius:12px;
 width:80%;
 max-width:900px;
-position:relative;
+border:1px solid #1f2937;
 }
 
 .close{
-position:absolute;
-top:15px;right:20px;
+text-align:right;
 cursor:pointer;
-font-size:20px;
-color:#ff4d6d;
+color:#ef4444;
+margin-bottom:10px;
 }
 
 .footer{
-margin-top:40px;
+margin-top:30px;
 text-align:center;
-padding:20px;
-background:#081c1a;
-border-radius:12px;
-}
-
-.footer a{
-color:#00ffcc;
-margin:0 10px;
-text-decoration:none;
+color:#64748b;
+font-size:13px;
 }
 </style>
 </head>
+
 <body>
 
-<h1>CryptoTracking AI PRO — Real-Time</h1>
+<h1>CryptoTracking Terminal</h1>
 
-<div class="section">
+<div class="container">
 <table id="cryptoTable">
 <thead>
 <tr>
-<th>Coin</th>
+<th>Asset</th>
 <th>Price (€)</th>
-<th>24h %</th>
+<th>24h</th>
 <th>AI Signal</th>
 <th>Confidence</th>
 <th>Trend</th>
@@ -120,85 +137,84 @@ text-decoration:none;
 
 <div class="modal" id="chartModal">
 <div class="modal-content">
-<span class="close" onclick="closeModal()">X</span>
-<h2 id="modalTitle"></h2>
+<div class="close" onclick="closeModal()">Close</div>
+<h2 id="modalTitle" style="margin-bottom:20px;"></h2>
 <canvas id="modalChart"></canvas>
 </div>
 </div>
 
 <div class="footer">
-<a href="https://discord.gg/yourserver" target="_blank">Discord</a>
-<a href="mailto:your@email.com">Email</a>
-<a href="https://github.com/yourgithub" target="_blank">GitHub</a>
+Discord | Email | GitHub
 </div>
 
 <script>
-const coins = [
-{ id:"bitcoin", symbol:"btcusdt", name:"Bitcoin" },
-{ id:"ethereum", symbol:"ethusdt", name:"Ethereum" },
-{ id:"litecoin", symbol:"ltcusdt", name:"Litecoin" },
-{ id:"xrpusdt", symbol:"xrpusdt", name:"XRP" }
+const assets = [
+{ id:"bitcoin", stream:"btcusdt", name:"Bitcoin" },
+{ id:"ethereum", stream:"ethusdt", name:"Ethereum" },
+{ id:"litecoin", stream:"ltcusdt", name:"Litecoin" },
+{ id:"ripple", stream:"xrpusdt", name:"XRP" }
 ];
 
-let prices = {};
-let histories = {};
+let priceData = {};
+let historyData = {};
 let modalChart;
 
-function formatEuro(n){ return "€"+n.toFixed(2); }
+function formatEUR(n){ return "€" + n.toFixed(2); }
 
-function aiLogic(change){
-let confidence = Math.min(Math.abs(change)*12,100).toFixed(0);
+function aiEngine(change){
+let confidence = Math.min(Math.abs(change)*10,100).toFixed(0);
 let signal="Neutral";
 let className="neutral";
 
-if(change>1.5){ signal="Bullish"; className="green"; }
-if(change<-1.5){ signal="Bearish"; className="red"; }
+if(change>1.5){ signal="Bullish"; className="positive"; }
+if(change<-1.5){ signal="Bearish"; className="negative"; }
 
 return {signal,className,confidence};
 }
 
 function initTable(){
 const tbody=document.querySelector("#cryptoTable tbody");
-tbody.innerHTML="";
-coins.forEach(c=>{
-histories[c.symbol]=[];
+assets.forEach(a=>{
+historyData[a.stream]=[];
 tbody.innerHTML+=`
-<tr id="row-${c.symbol}">
-<td>${c.name}</td>
-<td id="price-${c.symbol}">Loading...</td>
-<td id="change-${c.symbol}">--</td>
-<td id="signal-${c.symbol}">--</td>
-<td id="confidence-${c.symbol}">--</td>
-<td><canvas id="chart-${c.symbol}"></canvas></td>
+<tr id="row-${a.stream}">
+<td>${a.name}</td>
+<td id="price-${a.stream}">--</td>
+<td id="change-${a.stream}">--</td>
+<td id="signal-${a.stream}">--</td>
+<td id="confidence-${a.stream}">--</td>
+<td><canvas id="chart-${a.stream}"></canvas></td>
 </tr>`;
 });
 }
 
-function startSockets(){
-coins.forEach(c=>{
-const socket=new WebSocket(`wss://stream.binance.com:9443/ws/${c.symbol}@trade`);
-socket.onmessage=(event)=>{
-const data=JSON.parse(event.data);
+function startWebSockets(){
+assets.forEach(a=>{
+const ws=new WebSocket(`wss://stream.binance.com:9443/ws/${a.stream}@trade`);
+ws.onmessage=(msg)=>{
+let data=JSON.parse(msg.data);
 let price=parseFloat(data.p);
-prices[c.symbol]=price;
-updatePrice(c.symbol,price);
+priceData[a.stream]=price;
+updatePrice(a.stream,price);
 };
 });
 }
 
-function updatePrice(symbol,price){
-document.getElementById("price-"+symbol).innerText=formatEuro(price*0.92); // approx EUR conversion
-histories[symbol].push(price);
-if(histories[symbol].length>30) histories[symbol].shift();
-drawMiniChart(symbol);
+function updatePrice(stream,price){
+let eur=price*0.92;
+document.getElementById("price-"+stream).innerText=formatEUR(eur);
+
+historyData[stream].push(eur);
+if(historyData[stream].length>30) historyData[stream].shift();
+drawMiniChart(stream);
 }
 
-function drawMiniChart(symbol){
-new Chart(document.getElementById("chart-"+symbol),{
+function drawMiniChart(stream){
+new Chart(document.getElementById("chart-"+stream),{
 type:"line",
-data:{labels:histories[symbol],datasets:[{
-data:histories[symbol],
-borderColor:"#00ffaa",
+data:{labels:historyData[stream],datasets:[{
+data:historyData[stream],
+borderColor:"#3b82f6",
 borderWidth:2,
 pointRadius:0,
 tension:0.3
@@ -207,29 +223,25 @@ options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{display:f
 });
 }
 
-async function calculateAI(){
+async function recalcAI(){
 const res=await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&ids=bitcoin,ethereum,litecoin,ripple");
 const data=await res.json();
 
-data.forEach(coin=>{
-let change=coin.price_change_percentage_24h;
-let ai=aiLogic(change);
+const map={bitcoin:"btcusdt",ethereum:"ethusdt",litecoin:"ltcusdt",ripple:"xrpusdt"};
 
-let symbolMap={
-bitcoin:"btcusdt",
-ethereum:"ethusdt",
-litecoin:"ltcusdt",
-ripple:"xrpusdt"
-};
+data.forEach(c=>{
+let change=c.price_change_percentage_24h;
+let ai=aiEngine(change);
+let stream=map[c.id];
 
-let s=symbolMap[coin.id];
+document.getElementById("change-"+stream).innerText=change.toFixed(2)+"%";
+document.getElementById("change-"+stream).className=change>=0?"positive":"negative";
+document.getElementById("signal-"+stream).innerText=ai.signal;
+document.getElementById("signal-"+stream).className=ai.className;
 
-document.getElementById("change-"+s).innerText=change.toFixed(2)+"%";
-document.getElementById("change-"+s).className=change>=0?"green":"red";
-document.getElementById("signal-"+s).innerText=ai.signal;
-document.getElementById("signal-"+s).className=ai.className;
-document.getElementById("confidence-"+s).innerHTML=
-ai.confidence+"%<div class='confidence-bar'><div class='confidence-fill' style='width:"+ai.confidence+"%'></div></div>";
+document.getElementById("confidence-"+stream).innerHTML=
+ai.confidence+"%"+
+"<div class='confidence-wrapper'><div class='confidence-fill' style='width:"+ai.confidence+"%'></div></div>";
 });
 }
 
@@ -238,9 +250,9 @@ document.getElementById("chartModal").style.display="none";
 }
 
 initTable();
-startSockets();
-calculateAI();
-setInterval(calculateAI,60000);
+startWebSockets();
+recalcAI();
+setInterval(recalcAI,60000);
 </script>
 
 </body>
