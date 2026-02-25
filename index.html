@@ -1,154 +1,130 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CryptoTracking Terminal</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
-body{background:#0b1220;color:#e5e7eb;padding:40px 20px;}
-h1{text-align:center;font-size:24px;font-weight:500;margin-bottom:30px;color:#f9fafb;}
-.container{max-width:1100px;margin:auto;background:#111827;border:1px solid #1f2937;border-radius:10px;overflow:hidden;}
-table{width:100%;border-collapse:collapse;}
-th{font-size:12px;text-transform:uppercase;letter-spacing:0.05em;font-weight:500;color:#9ca3af;padding:14px;border-bottom:1px solid #1f2937;cursor:pointer;}
-td{padding:16px 14px;border-bottom:1px solid #1f2937;font-size:14px;}
-tr:hover{background:#0f1720;}
-.positive{color:#22c55e;}
-.negative{color:#ef4444;}
-canvas{height:36px !important;}
-.footer{margin-top:30px;text-align:center;color:#6b7280;font-size:12px;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Crypto Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Roboto', sans-serif; }
+    body { background-color: #1E2A38; color: #ffffff; }
+
+    header { background-color: #1B2530; padding: 20px; text-align: center; }
+    header h1 { color: #69A3F3; font-weight: 700; }
+    nav { margin-top: 10px; }
+    nav a { color: #69A3F3; margin: 0 10px; text-decoration: none; font-weight: 500; }
+    nav a:hover { text-decoration: underline; }
+
+    main { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+
+    .search-box { margin-top: 20px; text-align: center; }
+    .search-box input { padding: 10px 15px; width: 300px; border-radius: 8px; border: none; outline: none; font-size: 16px; }
+
+    .crypto-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .crypto-table th, .crypto-table td { padding: 12px 15px; text-align: left; }
+    .crypto-table th { background-color: #2C3E50; color: #69A3F3; }
+    .crypto-table tr:nth-child(even) { background-color: #1F2B38; }
+    .crypto-table tr:hover { background-color: #273746; }
+
+    .contact { margin-top: 50px; text-align: center; }
+    .contact a { display: inline-block; margin: 0 15px; color: #69A3F3; text-decoration: none; font-weight: 500; }
+    .contact a:hover { text-decoration: underline; }
+
+    @media(max-width:768px){
+      .crypto-table th, .crypto-table td { padding: 10px; font-size: 14px; }
+      .search-box input { width: 90%; }
+    }
+  </style>
 </head>
 <body>
 
-<h1>CryptoTracking Terminal</h1>
+  <!-- HEADER -->
+  <header>
+    <h1>Advanced Crypto Tracker</h1>
+    <nav>
+      <a href="#cryptos">Cryptos</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-<div class="container">
-<table id="table">
-<thead>
-<tr>
-<th onclick="sortTable('name')">Asset</th>
-<th onclick="sortTable('price')">Price (€)</th>
-<th onclick="sortTable('change')">24h %</th>
-<th>Trend</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-</div>
+  <main>
+    <section id="cryptos">
+      <h2 style="color:#69A3F3;">Cryptocurrency Prices</h2>
 
-<div class="footer">
-Realtime Market Data · Minimalist Terminal
-</div>
+      <div class="search-box">
+        <input type="text" id="search" placeholder="Search for a cryptocurrency (BTC, LTC, ETH...)">
+      </div>
 
-<script>
-const assets = [
-  { id:"bitcoin", stream:"btcusdt", name:"Bitcoin" },
-  { id:"ethereum", stream:"ethusdt", name:"Ethereum" },
-  { id:"litecoin", stream:"ltcusdt", name:"Litecoin" },
-  { id:"ripple", stream:"xrpusdt", name:"XRP" }
-];
+      <table class="crypto-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>24h Change</th>
+            <th>Market Cap</th>
+          </tr>
+        </thead>
+        <tbody id="crypto-data"></tbody>
+      </table>
+    </section>
 
-let state = [];
-let histories = {};
-let charts = {};
-let sortDirection = 1;
+    <!-- CONTACT -->
+    <section id="contact" class="contact">
+      <h2 style="color:#69A3F3;">Contact Me</h2>
+      <a href="mailto:youremail@example.com">Email</a>
+      <a href="https://discord.com/users/yourdiscordid" target="_blank">Discord</a>
+      <a href="https://github.com/yourgithub" target="_blank">GitHub</a>
+    </section>
+  </main>
 
-function formatEUR(n){ return "€" + n.toFixed(2); }
+  <!-- SCRIPT: Fetch many cryptos and search -->
+  <script>
+    const apiURL = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false";
 
-function init(){
-  assets.forEach(a=>{
-    histories[a.stream]=[];
-    state.push({name:a.name, stream:a.stream, price:0, change:0});
-  });
-  render();
-  startSockets();
-  refresh24h();
-  setInterval(refresh24h,60000);
-}
+    let cryptoList = [];
 
-function render(){
-  const tbody=document.querySelector("#table tbody");
-  tbody.innerHTML="";
-  state.forEach(row=>{
-    tbody.innerHTML+=`
-    <tr>
-      <td>${row.name}</td>
-      <td>${formatEUR(row.price)}</td>
-      <td class="${row.change>=0?'positive':'negative'}">${row.change.toFixed(2)}%</td>
-      <td><canvas id="chart-${row.stream}"></canvas></td>
-    </tr>`;
-    if(!charts[row.stream]){
-      const ctx=document.getElementById("chart-"+row.stream).getContext("2d");
-      charts[row.stream]=new Chart(ctx,{
-        type:'line',
-        data:{labels:[],datasets:[{data:[],borderColor:'#3b82f6',borderWidth:1.5,pointRadius:0,tension:0.3}]},
-        options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{display:false},y:{display:false}}}
+    async function fetchCryptoData() {
+      try {
+        const res = await fetch(apiURL);
+        cryptoList = await res.json();
+        displayCryptos(cryptoList);
+      } catch (err) {
+        console.error("Error fetching crypto data:", err);
+      }
+    }
+
+    function displayCryptos(data) {
+      const tbody = document.getElementById("crypto-data");
+      tbody.innerHTML = "";
+      data.forEach(coin => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${coin.market_cap_rank}</td>
+          <td>${coin.name} (${coin.symbol.toUpperCase()})</td>
+          <td>$${coin.current_price.toLocaleString()}</td>
+          <td style="color:${coin.price_change_percentage_24h >= 0 ? '#2ecc71' : '#e74c3c'}">
+            ${coin.price_change_percentage_24h.toFixed(2)}%
+          </td>
+          <td>$${coin.market_cap.toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
       });
     }
-  });
-}
 
-function startSockets(){
-  assets.forEach(a=>{
-    const ws=new WebSocket(`wss://stream.binance.com:9443/ws/${a.stream}@trade`);
-    ws.onmessage=(msg)=>{
-      const data=JSON.parse(msg.data);
-      const price=parseFloat(data.p)*0.92; 
-      updatePrice(a.stream, price);
-    };
-  });
-}
+    // SEARCH FUNCTIONALITY
+    const searchInput = document.getElementById("search");
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      const filtered = cryptoList.filter(coin => 
+        coin.name.toLowerCase().includes(query) || coin.symbol.toLowerCase().includes(query)
+      );
+      displayCryptos(filtered);
+    });
 
-function updatePrice(stream,price){
-  const asset=state.find(a=>a.stream===stream);
-  asset.price=price;
-
-  histories[stream].push(price);
-  if(histories[stream].length>30) histories[stream].shift();
-
-  updateChart(stream);
-  renderTablePrices();
-}
-
-function updateChart(stream){
-  const chart=charts[stream];
-  chart.data.labels=histories[stream].map((_,i)=>i);
-  chart.data.datasets[0].data=histories[stream];
-  chart.update('none'); // only update data, no animation
-}
-
-function renderTablePrices(){
-  state.forEach(row=>{
-    document.querySelector(`#table td:nth-child(2)`).innerText=formatEUR(row.price);
-  });
-}
-
-async function refresh24h(){
-  const res=await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&ids=bitcoin,ethereum,litecoin,ripple");
-  const data=await res.json();
-  const map={bitcoin:"btcusdt",ethereum:"ethusdt",litecoin:"ltcusdt",ripple:"xrpusdt"};
-  data.forEach(c=>{
-    const stream=map[c.id];
-    const asset=state.find(a=>a.stream===stream);
-    asset.change=c.price_change_percentage_24h;
-  });
-  render();
-}
-
-function sortTable(key){
-  sortDirection*=-1;
-  state.sort((a,b)=>{
-    if(key==="name") return a.name.localeCompare(b.name)*sortDirection;
-    return (a[key]-b[key])*sortDirection;
-  });
-  render();
-}
-
-init();
-</script>
+    fetchCryptoData();
+    setInterval(fetchCryptoData, 60000); // refresh every minute
+  </script>
 
 </body>
 </html>
