@@ -3,175 +3,248 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Advanced Portfolio | Contact List</title>
+<title>Next-Level Crypto & Portfolio</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-  body {
-    margin:0;
-    font-family:'Roboto',sans-serif;
-    background:#0E1117;
-    color:#EEF2F5;
-  }
-  header {
-    padding:40px 0;
-    text-align:center;
-    background:#141A23;
-  }
+  /* --- Base --- */
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Roboto',sans-serif; }
+  body { background:#0E1117; color:#EEF2F5; overflow-x:hidden; transition:0.3s; }
+
+  /* --- Header & Nav --- */
+  header { padding:50px 0; text-align:center; position:relative; overflow:hidden; }
   header h1 {
-    font-size:38px;
-    color:#66A3FF;
+    font-size:48px;
+    background: linear-gradient(270deg,#66A3FF,#FF66A3,#66FFAA,#FFCC66);
+    background-size:800% 800%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:gradientMove 8s ease infinite;
   }
-  nav {
-    margin-top:15px;
-    display:flex;
-    justify-content:center;
-    gap:15px;
-    flex-wrap:wrap;
+  nav { margin-top:20px; display:flex; justify-content:center; gap:15px; flex-wrap:wrap; }
+  nav button { background:#273746; color:#66A3FF; border:none; padding:12px 22px; border-radius:8px; font-weight:500; cursor:pointer; transition:0.3s; }
+  nav button:hover { background:#34495e; transform:scale(1.05); }
+
+  @keyframes gradientMove {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
   }
-  nav a {
-    color:#66A3FF;
-    text-decoration:none;
-    font-weight:500;
-    padding:5px 10px;
-  }
-  nav a:hover { text-decoration:underline; }
-  section {
-    padding:60px 20px;
-    max-width:1000px;
-    margin:auto;
-  }
+
+  /* --- Sections --- */
+  main { max-width:1400px; margin:40px auto; padding:0 20px; }
+  section { margin-bottom:60px; }
   section h2 {
     color:#66A3FF;
-    font-size:28px;
+    font-size:32px;
     margin-bottom:30px;
-  }
-
-  /* Contact List */
-  .contact-list {
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:20px;
-  }
-  .contact-card {
-    background:#1B2530;
-    padding:20px;
-    border-radius:12px;
-    transition:0.3s;
-    cursor:pointer;
     position:relative;
   }
-  .contact-card:hover {
-    background:#273746;
+
+  /* --- Crypto Table --- */
+  .crypto-table { width:100%; border-collapse:collapse; margin-bottom:30px; }
+  .crypto-table th, .crypto-table td { padding:14px 18px; text-align:left; cursor:pointer; transition:0.2s; }
+  .crypto-table th { background:#2C3E50; color:#66A3FF; }
+  .crypto-table tr:nth-child(even){ background:#1F2B38; }
+  .crypto-table tr:hover{ background:#273746; transform:scale(1.01); }
+
+  /* --- Search --- */
+  .search-box { margin-bottom:20px; text-align:center; }
+  .search-box input { padding:12px 18px; width:300px; border-radius:10px; border:none; outline:none; font-size:16px; transition:0.2s; }
+  .search-box input:focus { box-shadow:0 0 10px #66A3FF; }
+
+  /* --- Contact List --- */
+  .contact-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
+  .contact-card {
+    background:#1B2530;
+    padding:25px 20px;
+    border-radius:14px;
+    position:relative;
+    overflow:hidden;
+    transition:0.3s;
   }
-  .contact-card h3 {
-    margin-bottom:10px;
-    color:#66A3FF;
-    font-size:20px;
-  }
-  .contact-card p {
-    color:#ccc;
-    font-size:16px;
-    word-break:break-word;
-  }
-  .copy-btn {
+  .contact-card:hover { background:#273746; transform:translateY(-5px); }
+  .contact-card::before {
+    content:'';
     position:absolute;
-    top:15px;
-    right:15px;
-    background:#66A3FF;
-    color:#fff;
-    border:none;
-    padding:5px 10px;
-    border-radius:6px;
-    cursor:pointer;
-    font-size:12px;
-    transition:0.2s;
+    top:0; left:-75%; width:50%; height:100%;
+    background:rgba(255,255,255,0.05);
+    transform:skewX(-20deg);
+    transition:0.5s;
   }
+  .contact-card:hover::before { left:125%; }
+  .contact-card h3 { margin-bottom:12px; color:#66A3FF; font-size:20px; }
+  .contact-card p { color:#ccc; word-break:break-word; font-size:16px; }
+  .copy-btn { position:absolute; top:15px; right:15px; background:#66A3FF; color:#fff; border:none; padding:6px 12px; border-radius:8px; cursor:pointer; font-size:13px; transition:0.2s; }
   .copy-btn:hover { background:#5591E6; }
 
-  footer {
-    text-align:center;
-    margin:40px 0;
-    color:#777;
-  }
+  /* --- Chart Container --- */
+  #chartContainer { max-width:900px; margin:30px auto; }
 
-  @media(max-width:768px){
-    section { padding:40px 15px; }
-  }
+  footer { text-align:center; margin:50px 0; color:#777; font-size:14px; }
+
+  @media(max-width:768px){ .search-box input{ width:90%; } }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Your Name</h1>
+  <h1>🚀 My Next-Level Crypto Dashboard</h1>
   <nav>
-    <a href="#projects">Projects</a>
-    <a href="#skills">Skills</a>
-    <a href="#contact">Contact</a>
+    <button data-target="cryptos">Cryptos</button>
+    <button data-target="portfolio">Portfolio</button>
+    <button data-target="charts">Charts</button>
+    <button data-target="contact">Contact</button>
   </nav>
 </header>
 
-<section id="projects">
-  <h2>Projects</h2>
-  <p>✔ Crypto Tracker UI Design</p>
-  <p>✔ Dashboard Apps & APIs</p>
-  <p>✔ Discord Bots & Automation</p>
-  <p>✔ Backend & Databases</p>
-</section>
+<main>
 
-<section id="skills">
-  <h2>Skills</h2>
-  <p>Frontend Development (HTML, CSS, JS)</p>
-  <p>Backend Development (Node.js, Python)</p>
-  <p>APIs, Crypto Integrations</p>
-  <p>Discord Bots & Automation</p>
-</section>
+  <!-- CRYPTOS -->
+  <section id="cryptos">
+    <h2>Cryptocurrencies</h2>
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Search coins (BTC, ETH...)">
+    </div>
+    <table class="crypto-table" id="crypto-table">
+      <thead>
+        <tr>
+          <th data-key="market_cap_rank">Rank</th>
+          <th data-key="name">Name</th>
+          <th data-key="current_price">Price</th>
+          <th data-key="price_change_percentage_24h">24h Change</th>
+          <th data-key="market_cap">Market Cap</th>
+        </tr>
+      </thead>
+      <tbody id="crypto-data"></tbody>
+    </table>
+  </section>
 
-<section id="contact">
-  <h2>Contact Me</h2>
-  <div class="contact-list">
-    <div class="contact-card">
-      <h3>Email</h3>
-      <p id="email">youremail@example.com</p>
-      <button class="copy-btn" data-copy="youremail@example.com">Copy</button>
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <h2>Portfolio</h2>
+    <p style="text-align:center;color:#ccc;">Portfolio management coming soon...</p>
+  </section>
+
+  <!-- CHARTS -->
+  <section id="charts">
+    <h2>Price Charts</h2>
+    <div id="chartContainer">
+      <canvas id="cryptoChart"></canvas>
     </div>
-    <div class="contact-card">
-      <h3>Discord</h3>
-      <p id="discord">YourDiscord#1234</p>
-      <button class="copy-btn" data-copy="YourDiscord#1234">Copy</button>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <div class="contact-list">
+      <div class="contact-card">
+        <h3>Email</h3>
+        <p id="email">youremail@example.com</p>
+        <button class="copy-btn" data-copy="youremail@example.com">Copy</button>
+      </div>
+      <div class="contact-card">
+        <h3>Discord</h3>
+        <p id="discord">YourDiscord#1234</p>
+        <button class="copy-btn" data-copy="YourDiscord#1234">Copy</button>
+      </div>
+      <div class="contact-card">
+        <h3>GitHub</h3>
+        <p id="github">github.com/yourgithub</p>
+        <button class="copy-btn" data-copy="https://github.com/yourgithub">Copy</button>
+      </div>
+      <div class="contact-card">
+        <h3>LinkedIn</h3>
+        <p id="linkedin">linkedin.com/in/yourprofile</p>
+        <button class="copy-btn" data-copy="https://linkedin.com/in/yourprofile">Copy</button>
+      </div>
+      <div class="contact-card">
+        <h3>Twitter</h3>
+        <p id="twitter">@yourtwitter</p>
+        <button class="copy-btn" data-copy="@yourtwitter">Copy</button>
+      </div>
     </div>
-    <div class="contact-card">
-      <h3>GitHub</h3>
-      <p id="github">github.com/yourgithub</p>
-      <button class="copy-btn" data-copy="https://github.com/yourgithub">Copy</button>
-    </div>
-    <div class="contact-card">
-      <h3>LinkedIn</h3>
-      <p id="linkedin">linkedin.com/in/yourprofile</p>
-      <button class="copy-btn" data-copy="https://linkedin.com/in/yourprofile">Copy</button>
-    </div>
-    <div class="contact-card">
-      <h3>Twitter</h3>
-      <p id="twitter">@yourtwitter</p>
-      <button class="copy-btn" data-copy="@yourtwitter">Copy</button>
-    </div>
-  </div>
-</section>
+  </section>
+
+</main>
 
 <footer>
-  © 2026 Your Name — Advanced Portfolio
+  © 2026 Your Name — Next-Level Portfolio & Crypto Dashboard
 </footer>
 
 <script>
-  // Copy-to-clipboard
-  document.querySelectorAll(".copy-btn").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      const text = btn.getAttribute("data-copy");
-      navigator.clipboard.writeText(text).then(()=>{
-        btn.textContent="Copied!";
-        setTimeout(()=>btn.textContent="Copy",1000);
-      });
+const apiURL = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+let cryptoList=[];
+
+// FETCH CRYPTO
+async function fetchCryptoData(){
+  const res = await fetch(apiURL);
+  cryptoList = await res.json();
+  displayCryptos(cryptoList);
+  updateChart(cryptoList[0].id);
+}
+
+// DISPLAY CRYPTOS
+function displayCryptos(data){
+  const tbody = document.getElementById("crypto-data");
+  tbody.innerHTML="";
+  data.forEach(coin=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td>${coin.market_cap_rank}</td>
+      <td>${coin.name} (${coin.symbol.toUpperCase()})</td>
+      <td>$${coin.current_price.toLocaleString()}</td>
+      <td style="color:${coin.price_change_percentage_24h>=0?'#2ecc71':'#e74c3c'}">${coin.price_change_percentage_24h?.toFixed(2)}%</td>
+      <td>$${coin.market_cap.toLocaleString()}</td>
+    `;
+    tr.addEventListener("click",()=>updateChart(coin.id));
+    tbody.appendChild(tr);
+  });
+}
+
+// SEARCH
+document.getElementById("search").addEventListener("input",e=>{
+  const q=e.target.value.toLowerCase();
+  displayCryptos(cryptoList.filter(c=>c.name.toLowerCase().includes(q)||c.symbol.toLowerCase().includes(q)));
+});
+
+// COPY CONTACT
+document.querySelectorAll(".copy-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const text=btn.getAttribute("data-copy");
+    navigator.clipboard.writeText(text).then(()=>{
+      btn.textContent="Copied!";
+      setTimeout(()=>btn.textContent="Copy",1000);
     });
   });
+});
+
+// CHART
+let chart;
+async function updateChart(coinId){
+  const res = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=7`);
+  const data = await res.json();
+  const labels = data.prices.map(p=>new Date(p[0]).toLocaleDateString());
+  const prices = data.prices.map(p=>p[1]);
+
+  if(chart) chart.destroy();
+  const ctx=document.getElementById("cryptoChart").getContext("2d");
+  chart = new Chart(ctx,{
+    type:"line",
+    data:{ labels, datasets:[{ label:`${coinId.toUpperCase()} Price`, data:prices, borderColor:"#66A3FF", backgroundColor:"rgba(102,163,255,0.2)"}] },
+    options:{ responsive:true, scales:{ x:{display:true}, y:{display:true} } }
+  });
+}
+
+// NAVIGATION BUTTONS
+document.querySelectorAll("nav button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.getElementById(btn.dataset.target).scrollIntoView({behavior:"smooth"});
+  });
+});
+
+fetchCryptoData();
+setInterval(fetchCryptoData,60000);
 </script>
 
 </body>
