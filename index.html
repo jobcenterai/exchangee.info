@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CryptoTracking | Live WebSocket Market</title>
+<title>CryptoTracking | Advanced Live Market</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
@@ -15,73 +15,74 @@ font-family:'Orbitron',sans-serif;
 }
 
 body{
-background:linear-gradient(135deg,#061a14,#0a1f33);
+background:radial-gradient(circle at top left,#071a14,#0b1f3a 60%);
 color:#00ffcc;
-padding:20px;
+min-height:100vh;
+padding:40px 20px;
 }
 
 h1{
 text-align:center;
-font-size:42px;
-margin-bottom:30px;
-color:#00ffcc;
-text-shadow:0 0 20px #00ffcc;
+font-size:48px;
+margin-bottom:40px;
+letter-spacing:2px;
+text-shadow:0 0 20px #00ffaa;
+}
+
+.market-container{
+max-width:1100px;
+margin:auto;
+background:rgba(8,25,25,0.6);
+backdrop-filter:blur(15px);
+border:1px solid rgba(0,255,170,0.2);
+border-radius:20px;
+padding:30px;
+box-shadow:0 0 40px rgba(0,255,170,0.1);
 }
 
 table{
 width:100%;
 border-collapse:collapse;
-background:#081c1a;
-border-radius:15px;
-overflow:hidden;
-box-shadow:0 0 30px rgba(0,255,170,0.2);
-}
-
-th,td{
-padding:18px;
-text-align:left;
 }
 
 th{
-background:#0f2d2a;
+text-align:left;
+padding:15px;
 color:#00ffaa;
+border-bottom:1px solid rgba(0,255,170,0.2);
+}
+
+td{
+padding:18px 15px;
+font-size:18px;
 }
 
 tr{
-border-bottom:1px solid #0f2d2a;
 transition:0.3s;
 }
 
 tr:hover{
-background:#0c2623;
+background:rgba(0,255,170,0.05);
 }
 
-.green{
+.price{
+font-weight:600;
+transition:0.2s;
+}
+
+.flash-green{
 color:#00ff88;
+text-shadow:0 0 10px #00ff88;
 }
 
-.red{
+.flash-red{
 color:#ff4d6d;
+text-shadow:0 0 10px #ff4d6d;
 }
 
-.footer{
-margin-top:40px;
-padding:20px;
-text-align:center;
-background:#081c1a;
-border-radius:12px;
-}
-
-.footer a{
-color:#00ffcc;
-text-decoration:none;
-margin:0 15px;
-transition:0.3s;
-}
-
-.footer a:hover{
-color:#00ffaa;
-text-shadow:0 0 10px #00ffaa;
+.status{
+font-size:14px;
+color:#00ff88;
 }
 
 .live-dot{
@@ -90,8 +91,8 @@ width:10px;
 background:#00ff88;
 border-radius:50%;
 display:inline-block;
-margin-right:8px;
-animation:pulse 1s infinite;
+margin-right:6px;
+animation:pulse 1.2s infinite;
 }
 
 @keyframes pulse{
@@ -99,43 +100,80 @@ animation:pulse 1s infinite;
 50%{opacity:0.3;}
 100%{opacity:1;}
 }
+
+canvas{
+width:140px;
+height:40px;
+}
+
+.footer{
+margin-top:50px;
+text-align:center;
+padding:25px;
+background:rgba(8,25,25,0.6);
+border-radius:15px;
+border:1px solid rgba(0,255,170,0.2);
+}
+
+.footer a{
+color:#00ffcc;
+text-decoration:none;
+margin:0 15px;
+font-weight:600;
+transition:0.3s;
+}
+
+.footer a:hover{
+color:#00ffaa;
+text-shadow:0 0 10px #00ffaa;
+}
 </style>
 </head>
 
 <body>
 
-<h1><span class="live-dot"></span>CryptoTracking Live Market</h1>
+<h1><span class="live-dot"></span>CryptoTracking</h1>
 
+<div class="market-container">
 <table>
 <thead>
 <tr>
 <th>Coin</th>
 <th>Symbol</th>
 <th>Price (USDT)</th>
+<th>Trend</th>
 <th>Status</th>
 </tr>
 </thead>
 <tbody>
+
 <tr>
 <td>Bitcoin</td>
 <td>BTC</td>
-<td id="btc">Loading...</td>
-<td class="green">Live</td>
+<td class="price" id="btc">Loading...</td>
+<td><canvas id="btcChart"></canvas></td>
+<td class="status">Live</td>
 </tr>
+
 <tr>
 <td>Litecoin</td>
 <td>LTC</td>
-<td id="ltc">Loading...</td>
-<td class="green">Live</td>
+<td class="price" id="ltc">Loading...</td>
+<td><canvas id="ltcChart"></canvas></td>
+<td class="status">Live</td>
 </tr>
+
 <tr>
 <td>XRP</td>
 <td>XRP</td>
-<td id="xrp">Loading...</td>
-<td class="green">Live</td>
+<td class="price" id="xrp">Loading...</td>
+<td><canvas id="xrpChart"></canvas></td>
+<td class="status">Live</td>
 </tr>
+
 </tbody>
 </table>
+</div>
 
 <div class="footer">
 <p>Connect With Me</p>
@@ -145,31 +183,72 @@ animation:pulse 1s infinite;
 </div>
 
 <script>
-/* BINANCE WEBSOCKET FOR BTC */
-const btcSocket = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@trade");
+function createSparkline(canvasId){
+const canvas=document.getElementById(canvasId);
+const ctx=canvas.getContext("2d");
+let data=[];
 
-btcSocket.onmessage = function(event){
-const data = JSON.parse(event.data);
-document.getElementById("btc").innerText = parseFloat(data.p).toFixed(2);
-};
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.beginPath();
+ctx.strokeStyle="#00ffaa";
+ctx.lineWidth=2;
 
-/* BINANCE WEBSOCKET FOR LTC */
-const ltcSocket = new WebSocket("wss://stream.binance.com:9443/ws/ltcusdt@trade");
+data.forEach((value,i)=>{
+let x=i*(canvas.width/data.length);
+let y=canvas.height-(value*Math.min(canvas.height/Math.max(...data),1));
+if(i===0) ctx.moveTo(x,y);
+else ctx.lineTo(x,y);
+});
 
-ltcSocket.onmessage = function(event){
-const data = JSON.parse(event.data);
-document.getElementById("ltc").innerText = parseFloat(data.p).toFixed(2);
-};
-
-/* XRP (REST auto refresh every 5 sec) */
-async function updateXRP(){
-const res = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=XRPUSDT");
-const data = await res.json();
-document.getElementById("xrp").innerText = parseFloat(data.price).toFixed(4);
+ctx.stroke();
 }
 
-updateXRP();
-setInterval(updateXRP,5000);
+return {
+add(value){
+data.push(value);
+if(data.length>25) data.shift();
+draw();
+}
+};
+}
+
+function setupSocket(symbol, elementId, chart){
+let lastPrice=null;
+const socket=new WebSocket(`wss://stream.binance.com:9443/ws/${symbol}@trade`);
+
+socket.onmessage=function(event){
+const trade=JSON.parse(event.data);
+let price=parseFloat(trade.p);
+document.getElementById(elementId).innerText=price.toFixed(4);
+
+if(lastPrice){
+if(price>lastPrice){
+flash(elementId,"flash-green");
+}else if(price<lastPrice){
+flash(elementId,"flash-red");
+}
+}
+
+lastPrice=price;
+chart.add(price);
+};
+}
+
+function flash(id,className){
+let el=document.getElementById(id);
+el.classList.add(className);
+setTimeout(()=>el.classList.remove(className),300);
+}
+
+const btcChart=createSparkline("btcChart");
+const ltcChart=createSparkline("ltcChart");
+const xrpChart=createSparkline("xrpChart");
+
+setupSocket("btcusdt","btc",btcChart);
+setupSocket("ltcusdt","ltc",ltcChart);
+setupSocket("xrpusdt","xrp",xrpChart);
+
 </script>
 
 </body>
