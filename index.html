@@ -1,289 +1,407 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-<style>
-  /* Reset & Body */
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family: 'Inter', sans-serif; background: linear-gradient(145deg, #1E2A38, #162133); color:#E0E6ED; transition: background 0.5s; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio - JobG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* Reset & Body */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(145deg, #1e2a38, #162133);
+      color: #e0e6ed;
+      transition: background 0.5s;
+      scroll-behavior: smooth;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-  a { text-decoration:none; color:inherit; }
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background: rgba(30, 42, 56, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid #0f1b2a;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+    .header-left h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #5dade2, #2980b9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .header-nav a {
+      margin-left: 25px;
+      font-weight: 600;
+      color: #e0e6ed;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .header-nav a:hover {
+      color: #5dade2;
+      transform: translateY(-2px);
+    }
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 15px 20px;
+      }
+      .header-nav {
+        margin-top: 10px;
+      }
+      .header-nav a {
+        margin-left: 15px;
+      }
+    }
 
-  /* Header */
-  header {
-    padding:20px 50px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background: rgba(30,42,56,0.85);
-    font-weight:600;
-    font-size:1.2rem;
-    box-shadow:0 4px 12px rgba(0,0,0,0.3);
-    position: sticky;
-    top:0;
-    z-index:100;
-    backdrop-filter: blur(6px);
-    border-bottom: 2px solid #0F1B2A;
-    border-radius:0 0 12px 12px;
-  }
-  header h1 { font-size:1.6rem; color:#E0E6ED; }
+    /* Intro Section */
+    .intro-section {
+      max-width: 700px; /* narrower container for single column */
+      margin: 40px auto 60px;
+      padding: 30px 25px;
+      background: #162133;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      color: #e0e6ed;
+      text-align: center;
+    }
 
-  /* About Me Section with advanced moving text */
-  .about-me {
-    max-width: 900px;
-    margin: 60px auto;
-    padding: 40px 20px;
-    text-align: center;
-    background: #162133; 
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-    overflow: hidden;
-    position: relative;
-  }
-  .about-me h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    background: linear-gradient(90deg, #5DADE2, #2980B9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+    .intro-section h1 {
+      font-size: 3.2rem; /* bigger */
+      font-weight: 900;
+      background: linear-gradient(90deg, #5dade2, #2980b9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.15;
+      margin-bottom: 25px;
+    }
+    .intro-section p {
+      font-size: 1.2rem; /* bigger text */
+      line-height: 1.5;
+      color: #b0b9c7;
+      margin-bottom: 35px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .intro-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+    }
+    .btn {
+      padding: 16px 40px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+      border: none;
+      color: #e0e6ed;
+      font-size: 1.1rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, #27ae60, #1e8449);
+      box-shadow: 0 6px 15px rgba(39, 174, 96, 0.6);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #1e8449, #166633);
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid #5dade2;
+      color: #5dade2;
+    }
+    .btn-secondary:hover {
+      background: #5dade2;
+      color: #162133;
+      transform: translateY(-2px);
+    }
 
-  .moving-text-wrapper {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-  }
+    /* Projects Section */
+    .projects-section {
+      padding: 80px 50px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .projects-section h2 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 50px;
+      background: linear-gradient(90deg, #5dade2, #2980b9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    .project-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+      transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease, opacity 0.6s ease;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .project-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .project-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    }
+    .project-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.75);
+    }
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(24, 38, 60, 0.4);
+      pointer-events: none;
+      transition: background 0.4s ease;
+    }
+    .project-card:hover::after {
+      background: rgba(24, 38, 60, 0.25);
+    }
+    .card-content {
+      background: #1e2a38;
+      padding: 20px;
+    }
+    .project-card h3 {
+      margin-bottom: 12px;
+      font-size: 1.35rem;
+      background: linear-gradient(90deg, #5dade2, #2980b9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .project-card p {
+      font-size: 0.95rem;
+      color: #c0c8d0;
+    }
 
-  .moving-text {
-    display: inline-block;
-    white-space: nowrap;
-    font-size: 1.1rem;
-    background: linear-gradient(90deg, #5DADE2, #2980B9, #5DADE2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: scrollAdvanced 12s linear infinite alternate, gradientShift 8s ease-in-out infinite alternate;
-    will-change: transform;
-  }
+    /* Contact Section */
+    .contact {
+      background: linear-gradient(145deg, #1b2a3c, #162133);
+      padding: 80px 50px;
+      text-align: center;
+      border-radius: 16px;
+      margin: 50px;
+      color: #e0e6ed;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .contact.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .contact h2 {
+      font-size: 2.2rem;
+      margin-bottom: 40px;
+      background: linear-gradient(90deg, #5dade2, #2980b9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .contact a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 12px 20px;
+      background: linear-gradient(90deg, #2c3e50, #34495e);
+      color: #e0e6ed;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: background 0.3s, transform 0.3s, opacity 0.6s ease;
+    }
+    .contact a.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .contact a:hover {
+      background: linear-gradient(90deg, #1f2a38, #223046);
+      transform: translateY(-3px);
+    }
 
-  @keyframes scrollAdvanced {
-    0% { transform: translateX(100%); }
-    50% { transform: translateX(-50%); }
-    100% { transform: translateX(100%); }
-  }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: #c0c8d0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    footer.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  .moving-text-wrapper:hover .moving-text {
-    animation-play-state: paused;
-    cursor: grab;
-  }
-
-  /* Projects Section */
-  .projects-section {
-    padding:80px 50px;
-    max-width:1200px;
-    margin:0 auto;
-  }
-  .projects-section h2 {
-    text-align:center;
-    font-size:2.2rem;
-    margin-bottom:50px;
-    background: linear-gradient(90deg, #5DADE2, #2980B9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .projects {
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
-    gap:30px;
-  }
-  .project-card {
-    position: relative;
-    border-radius:16px;
-    overflow:hidden;
-    box-shadow:0 6px 20px rgba(0,0,0,0.5);
-    transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease, opacity 0.6s ease;
-    cursor:pointer;
-    opacity:0; 
-    transform: translateY(30px);
-  }
-  .project-card.visible { opacity:1; transform: translateY(0); }
-  .project-card:hover { transform: translateY(-8px) scale(1.02); box-shadow:0 12px 30px rgba(0,0,0,0.6); }
-  .project-card img { width:100%; height:180px; object-fit:cover; display:block; filter: brightness(0.75); }
-  .project-card::after { content: ""; position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(24,38,60,0.4); pointer-events: none; transition: background 0.4s ease; }
-  .project-card:hover::after { background: rgba(24,38,60,0.25); }
-  .card-content { background:#1E2A38; padding:20px; }
-  .project-card h3 { margin-bottom:12px; font-size:1.35rem; background: linear-gradient(90deg, #5DADE2, #2980B9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .project-card p { font-size:0.95rem; color:#C0C8D0; }
-
-  /* Contact Section */
-  .contact {
-    background: linear-gradient(145deg, #1B2A3C, #162133);
-    padding:80px 50px;
-    text-align:center;
-    border-radius:16px;
-    margin:50px;
-    color:#E0E6ED;
-    box-shadow:0 8px 25px rgba(0,0,0,0.4);
-    opacity:0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-  .contact.visible { opacity:1; transform: translateY(0); }
-  .contact h2 {
-    font-size:2.2rem;
-    margin-bottom:40px;
-    background: linear-gradient(90deg, #5DADE2, #2980B9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .contact a {
-    display:inline-block;
-    margin:12px 20px;
-    background: linear-gradient(90deg, #2C3E50, #34495E);
-    color:#E0E6ED;
-    padding:14px 28px;
-    border-radius:12px;
-    font-weight:600;
-    opacity:0;
-    transform: translateY(20px);
-    transition: background 0.3s, transform 0.3s, opacity 0.6s ease;
-  }
-  .contact a.visible { opacity:1; transform: translateY(0); }
-  .contact a:hover { background: linear-gradient(90deg, #1F2A38, #223046); transform: translateY(-3px); }
-
-  /* Footer */
-  footer { text-align:center; padding:20px; font-size:0.9rem; color:#C0C8D0; opacity:0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
-  footer.visible { opacity:1; transform: translateY(0); }
-
-  @media(max-width:768px){
-    header { padding:15px 20px; }
-    .projects-section { padding:60px 20px; }
-    .contact { padding:60px 20px; margin:30px 20px; }
-    .about-me { padding:30px 15px; }
-    .moving-text { font-size:1rem; }
-  }
-</style>
+    @media (max-width: 768px) {
+      .projects-section {
+        padding: 60px 20px;
+      }
+      .contact {
+        padding: 60px 20px;
+        margin: 30px 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-
-<header>
-  <h1>My Portfolio JobG</h1>
-</header>
-
-<!-- About Me Section -->
-<section class="about-me">
-  <h2>About Me</h2>
-  <div class="moving-text-wrapper">
-    <div class="moving-text">
-      Hello! I'm JobG, a new developer who specializes in secure online platforms and digital marketplaces. I create sleek, user-friendly experiences that combine reliability with modern design.
+  <header>
+    <div class="header-left">
+      <h1>JobG</h1>
     </div>
-  </div>
-</section>
+    <nav class="header-nav">
+      <a href="#about">About Me</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-<!-- Projects Section -->
-<section class="projects-section">
-  <h2>Projects</h2>
-  <div class="projects">
-    <div class="project-card">
-      <img src=https://cdn.discordapp.com/attachments/1471582280278474976/1476269904318697585/20.png?ex=69a082fc&is=699f317c&hm=77f2e287cb833462ef956ff98254e87ff836a960782b975f7a0e7712001cc9c3&" alt="LethalExchange">
-      <div class="card-content">
-        <h3>LethalExchange</h3>
-        <p>Secure online exchange platform – fast, convenient, and reliable transactions.</p>
+  <!-- Intro Section -->
+  <section class="intro-section" id="about">
+      <h1>
+       About me <br />
+        
+      </h1>
+      <p>
+        I am a new developer dedicated to crafting intuitive, reliable software.<br />
+        My focus is on building practical solutions users can trust.
+      </p>
+      <div class="intro-buttons">
+        <a href="#projects" class="btn btn-primary"
+          ><i class="fas fa-code"></i> View Projects</a
+        >
+        <a href="#contact" class="btn btn-secondary"
+          ><i class="fas fa-envelope"></i> Get in Touch</a
+        >
+      </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="projects-section" id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="project-card">
+        <img
+          src="https://cdn.discordapp.com/attachments/1471582280278474976/1476269904318697585/20.png?ex=69a082fc&is=699f317c&hm=77f2e287cb833462ef956ff98254e87ff836a960782b975f7a0e7712001cc9c3&"
+          alt="LethalExchange"
+        />
+        <div class="card-content">
+          <h3><i class="fas fa-exchange-alt"></i> LethalExchange</h3>
+          <p>Secure online exchange platform – fast, convenient, and reliable transactions.</p>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476272959084564722/19.png?ex=69a085d5&is=699f3455&hm=4e1d8484cac6d6ec754955a300a10ff3b360f37a25f9fd667943bd3cf7abead2&" alt="Marketplace" />
+        <div class="card-content">
+          <h3><i class="fas fa-store"></i> Marketplace</h3>
+          <p>
+            A streamlined Discord-based marketplace for browsing and trading digital accounts with a smooth,
+            user-focused experience.
+          </p>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476272974809272351/21.png?ex=69a085d9&is=699f3459&hm=bdeb563b6a05d92bcfbfd5de7b7fe2a00960c407127772e3010dcf81c3024fe7&" alt="Soon" />
+        <div class="card-content">
+          <h3><i class="fas fa-hourglass-half"></i> Soon</h3>
+          <p>Coming soon</p>
+        </div>
       </div>
     </div>
-    <div class="project-card">
-      <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476272959084564722/19.png?ex=69a085d5&is=699f3455&hm=4e1d8484cac6d6ec754955a300a10ff3b360f37a25f9fd667943bd3cf7abead2&" alt="Marketplace">
-      <div class="card-content">
-        <h3>Marketplace</h3>
-        <p>A streamlined Discord-based marketplace for browsing and trading digital accounts with a smooth, user-focused experience.</p>
-      </div>
-    </div>
-    <div class="project-card">
-      <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476272974809272351/21.png?ex=69a085d9&is=699f3459&hm=bdeb563b6a05d92bcfbfd5de7b7fe2a00960c407127772e3010dcf81c3024fe7&" alt="Soon">
-      <div class="card-content">
-        <h3>Soon</h3>
-        <p>Coming soon</p>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- Contact Section -->
-<section class="contact">
-  <h2>Contact Me</h2>
-  <a href="mailto:JobGS@proton.me">Email</a>
-  <a href="https://discord.com/users/706661207767253142" target="_blank">Discord</a>
-  <a href="https://github.com/jobcenterai" target="_blank">GitHub</a>
-</section>
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <h2>Contact Me</h2>
+    <a href="mailto:JobGS@proton.me"><i class="fas fa-envelope"></i> Email</a>
+    <a href="https://discord.com/users/706661207767253142" target="_blank"
+      ><i class="fab fa-discord"></i> Discord</a
+    >
+    <a href="https://github.com/jobcenterai" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+  </section>
 
-<footer>
-  &copy; 2026 JobG. All rights reserved.
-</footer>
+  <footer>&copy; 2026 JobG. All rights reserved.</footer>
 
-<script>
-  // Scroll animation for project cards, contact, buttons, footer
-  const cards = document.querySelectorAll('.project-card');
-  const contactSection = document.querySelector('.contact');
-  const contactLinks = document.querySelectorAll('.contact a');
-  const footer = document.querySelector('footer');
+  <script>
+    // Scroll animations
+    const cards = document.querySelectorAll('.project-card');
+    const contactSection = document.querySelector('.contact');
+    const contactLinks = document.querySelectorAll('.contact a');
+    const footer = document.querySelector('footer');
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        if(entry.target.classList.contains('project-card')){ entry.target.classList.add('visible'); }
-        if(entry.target.classList.contains('contact')){
-          entry.target.classList.add('visible');
-          contactLinks.forEach((link,i)=>{ setTimeout(()=>{ link.classList.add('visible'); }, i*150); });
-        }
-        if(entry.target.tagName==='FOOTER'){ entry.target.classList.add('visible'); }
-      }
-    });
-  }, { threshold: 0.1 });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.target.classList.contains('project-card')) {
+              entry.target.classList.add('visible');
+            }
+            if (entry.target.classList.contains('contact')) {
+              entry.target.classList.add('visible');
+              contactLinks.forEach((link, i) => {
+                setTimeout(() => {
+                  link.classList.add('visible');
+                }, i * 150);
+              });
+            }
+            if (entry.target.tagName === 'FOOTER') {
+              entry.target.classList.add('visible');
+            }
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
 
-  cards.forEach(card => observer.observe(card));
-  observer.observe(contactSection);
-  observer.observe(footer);
-
-  // Advanced moving text with mouse control
-  const movingText = document.querySelector('.moving-text');
-  const wrapper = document.querySelector('.moving-text-wrapper');
-
-  let isHovering = false;
-  let mouseX = 0;
-  let speedFactor = 1;
-
-  wrapper.addEventListener('mousemove', e => {
-    if(!isHovering) return;
-    const rect = wrapper.getBoundingClientRect();
-    const centerX = rect.left + rect.width/2;
-    mouseX = e.clientX;
-    speedFactor = 1 + (mouseX - centerX) / rect.width; 
-  });
-
-  wrapper.addEventListener('mouseenter', () => isHovering = true);
-  wrapper.addEventListener('mouseleave', () => {
-    isHovering = false;
-    speedFactor = 1;
-  });
-
-  let pos = 0;
-  const animateText = () => {
-    if(isHovering){
-      pos += 0.5 * speedFactor; 
-      movingText.style.transform = `translateX(${100 - pos % 200}%)`;
-    }
-    requestAnimationFrame(animateText);
-  };
-  animateText();
-</script>
-
+    cards.forEach((card) => observer.observe(card));
+    observer.observe(contactSection);
+    observer.observe(footer);
+  </script>
 </body>
 </html>
