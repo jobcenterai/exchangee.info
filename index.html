@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CryptoTracking AI PRO | EURO</title>
+<title>CryptoTracking AI PRO | Real-Time EURO</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -17,13 +17,18 @@ padding:40px 20px;
 min-height:100vh;
 }
 
-h1{text-align:center;font-size:40px;margin-bottom:20px;text-shadow:0 0 15px #00ffaa;}
+h1{
+text-align:center;
+font-size:38px;
+margin-bottom:25px;
+text-shadow:0 0 12px #00ffaa;
+}
 
 .section{
 max-width:1200px;
-margin:25px auto;
+margin:auto;
 background:rgba(8,25,25,0.6);
-backdrop-filter:blur(15px);
+backdrop-filter:blur(14px);
 border:1px solid rgba(0,255,170,0.2);
 border-radius:20px;
 padding:25px;
@@ -32,20 +37,19 @@ padding:25px;
 table{width:100%;border-collapse:collapse;}
 th,td{padding:14px;text-align:left;}
 th{border-bottom:1px solid rgba(0,255,170,0.2);color:#00ffaa;}
+
 tr:hover{background:rgba(0,255,170,0.05);cursor:pointer;}
 
 .green{color:#00ff88;}
 .red{color:#ff4d6d;}
 .neutral{color:#ffaa00;}
 
-canvas{height:50px !important;}
-
 .confidence-bar{
 height:8px;
 border-radius:5px;
 background:#0d2a27;
-overflow:hidden;
 margin-top:5px;
+overflow:hidden;
 }
 .confidence-fill{
 height:100%;
@@ -87,15 +91,18 @@ background:#081c1a;
 border-radius:12px;
 }
 
-.footer a{color:#00ffcc;margin:0 10px;text-decoration:none;}
+.footer a{
+color:#00ffcc;
+margin:0 10px;
+text-decoration:none;
+}
 </style>
 </head>
 <body>
 
-<h1>🤖 CryptoTracking AI PRO</h1>
+<h1>CryptoTracking AI PRO — Real-Time</h1>
 
 <div class="section">
-<h2>📊 AI Market Table (Click Coin for Advanced Chart)</h2>
 <table id="cryptoTable">
 <thead>
 <tr>
@@ -104,7 +111,7 @@ border-radius:12px;
 <th>24h %</th>
 <th>AI Signal</th>
 <th>Confidence</th>
-<th>7D</th>
+<th>Trend</th>
 </tr>
 </thead>
 <tbody></tbody>
@@ -113,7 +120,7 @@ border-radius:12px;
 
 <div class="modal" id="chartModal">
 <div class="modal-content">
-<span class="close" onclick="closeModal()">✖</span>
+<span class="close" onclick="closeModal()">X</span>
 <h2 id="modalTitle"></h2>
 <canvas id="modalChart"></canvas>
 </div>
@@ -126,61 +133,72 @@ border-radius:12px;
 </div>
 
 <script>
-const coins="bitcoin,ethereum,litecoin,ripple,binancecoin,cardano,solana";
+const coins = [
+{ id:"bitcoin", symbol:"btcusdt", name:"Bitcoin" },
+{ id:"ethereum", symbol:"ethusdt", name:"Ethereum" },
+{ id:"litecoin", symbol:"ltcusdt", name:"Litecoin" },
+{ id:"xrpusdt", symbol:"xrpusdt", name:"XRP" }
+];
+
+let prices = {};
+let histories = {};
 let modalChart;
 
-function formatEuro(n){return "€"+n.toFixed(2);}
+function formatEuro(n){ return "€"+n.toFixed(2); }
 
 function aiLogic(change){
-let confidence=Math.min(Math.abs(change)*15,100).toFixed(0);
+let confidence = Math.min(Math.abs(change)*12,100).toFixed(0);
 let signal="Neutral";
 let className="neutral";
 
-if(change>2){signal="Bullish ↑";className="green";}
-if(change<-2){signal="Bearish ↓";className="red";}
+if(change>1.5){ signal="Bullish"; className="green"; }
+if(change<-1.5){ signal="Bearish"; className="red"; }
 
 return {signal,className,confidence};
 }
 
-async function fetchData(){
-const res=await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&ids=${coins}&sparkline=true`);
-const data=await res.json();
+function initTable(){
 const tbody=document.querySelector("#cryptoTable tbody");
 tbody.innerHTML="";
-
-data.forEach(coin=>{
-let ai=aiLogic(coin.price_change_percentage_24h);
-
-let row=document.createElement("tr");
-row.innerHTML=`
-<td>${coin.name}</td>
-<td>${formatEuro(coin.current_price)}</td>
-<td class="${coin.price_change_percentage_24h>=0?'green':'red'}">
-${coin.price_change_percentage_24h.toFixed(2)}%
-</td>
-<td class="${ai.className}">${ai.signal}</td>
-<td>
-${ai.confidence}%
-<div class="confidence-bar">
-<div class="confidence-fill" style="width:${ai.confidence}%"></div>
-</div>
-</td>
-<td><canvas id="chart-${coin.symbol}"></canvas></td>
-`;
-
-row.onclick=()=>openModal(coin.name,coin.sparkline_in_7d.price);
-
-tbody.appendChild(row);
-createMiniChart(`chart-${coin.symbol}`,coin.sparkline_in_7d.price,coin.price_change_percentage_24h>=0);
+coins.forEach(c=>{
+histories[c.symbol]=[];
+tbody.innerHTML+=`
+<tr id="row-${c.symbol}">
+<td>${c.name}</td>
+<td id="price-${c.symbol}">Loading...</td>
+<td id="change-${c.symbol}">--</td>
+<td id="signal-${c.symbol}">--</td>
+<td id="confidence-${c.symbol}">--</td>
+<td><canvas id="chart-${c.symbol}"></canvas></td>
+</tr>`;
 });
 }
 
-function createMiniChart(id,data,isGreen){
-new Chart(document.getElementById(id),{
+function startSockets(){
+coins.forEach(c=>{
+const socket=new WebSocket(`wss://stream.binance.com:9443/ws/${c.symbol}@trade`);
+socket.onmessage=(event)=>{
+const data=JSON.parse(event.data);
+let price=parseFloat(data.p);
+prices[c.symbol]=price;
+updatePrice(c.symbol,price);
+};
+});
+}
+
+function updatePrice(symbol,price){
+document.getElementById("price-"+symbol).innerText=formatEuro(price*0.92); // approx EUR conversion
+histories[symbol].push(price);
+if(histories[symbol].length>30) histories[symbol].shift();
+drawMiniChart(symbol);
+}
+
+function drawMiniChart(symbol){
+new Chart(document.getElementById("chart-"+symbol),{
 type:"line",
-data:{labels:data,datasets:[{
-data:data,
-borderColor:isGreen?"#00ff88":"#ff4d6d",
+data:{labels:histories[symbol],datasets:[{
+data:histories[symbol],
+borderColor:"#00ffaa",
 borderWidth:2,
 pointRadius:0,
 tension:0.3
@@ -189,25 +207,29 @@ options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{display:f
 });
 }
 
-function openModal(name,data){
-document.getElementById("modalTitle").innerText=name+" — 7 Day Chart";
-document.getElementById("chartModal").style.display="flex";
+async function calculateAI(){
+const res=await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&ids=bitcoin,ethereum,litecoin,ripple");
+const data=await res.json();
 
-if(modalChart) modalChart.destroy();
+data.forEach(coin=>{
+let change=coin.price_change_percentage_24h;
+let ai=aiLogic(change);
 
-modalChart=new Chart(document.getElementById("modalChart"),{
-type:"line",
-data:{labels:data,datasets:[{
-data:data,
-borderColor:"#00ffaa",
-borderWidth:3,
-pointRadius:0,
-tension:0.3
-}]},
-options:{
-plugins:{legend:{display:false}},
-scales:{x:{display:false},y:{ticks:{color:"#00ffcc"}}}
-}
+let symbolMap={
+bitcoin:"btcusdt",
+ethereum:"ethusdt",
+litecoin:"ltcusdt",
+ripple:"xrpusdt"
+};
+
+let s=symbolMap[coin.id];
+
+document.getElementById("change-"+s).innerText=change.toFixed(2)+"%";
+document.getElementById("change-"+s).className=change>=0?"green":"red";
+document.getElementById("signal-"+s).innerText=ai.signal;
+document.getElementById("signal-"+s).className=ai.className;
+document.getElementById("confidence-"+s).innerHTML=
+ai.confidence+"%<div class='confidence-bar'><div class='confidence-fill' style='width:"+ai.confidence+"%'></div></div>";
 });
 }
 
@@ -215,8 +237,10 @@ function closeModal(){
 document.getElementById("chartModal").style.display="none";
 }
 
-fetchData();
-setInterval(fetchData,60000);
+initTable();
+startSockets();
+calculateAI();
+setInterval(calculateAI,60000);
 </script>
 
 </body>
