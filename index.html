@@ -6,73 +6,19 @@
 <title>CryptoTracking Terminal</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
-
-body{
-background:#0b1220;
-color:#e5e7eb;
-padding:40px 20px;
-}
-
-h1{
-text-align:center;
-font-size:24px;
-font-weight:500;
-margin-bottom:30px;
-color:#f9fafb;
-}
-
-.container{
-max-width:1100px;
-margin:auto;
-background:#111827;
-border:1px solid #1f2937;
-border-radius:10px;
-overflow:hidden;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-th{
-font-size:12px;
-text-transform:uppercase;
-letter-spacing:0.05em;
-font-weight:500;
-color:#9ca3af;
-padding:14px;
-border-bottom:1px solid #1f2937;
-cursor:pointer;
-user-select:none;
-}
-
-td{
-padding:16px 14px;
-border-bottom:1px solid #1f2937;
-font-size:14px;
-}
-
-tr:hover{
-background:#0f172a;
-}
-
+body{background:#0b1220;color:#e5e7eb;padding:40px 20px;}
+h1{text-align:center;font-size:24px;font-weight:500;margin-bottom:30px;color:#f9fafb;}
+.container{max-width:1100px;margin:auto;background:#111827;border:1px solid #1f2937;border-radius:10px;overflow:hidden;}
+table{width:100%;border-collapse:collapse;}
+th{font-size:12px;text-transform:uppercase;letter-spacing:0.05em;font-weight:500;color:#9ca3af;padding:14px;border-bottom:1px solid #1f2937;cursor:pointer;}
+td{padding:16px 14px;border-bottom:1px solid #1f2937;font-size:14px;}
+tr:hover{background:#0f1720;}
 .positive{color:#22c55e;}
 .negative{color:#ef4444;}
-
-canvas{
-height:36px !important;
-}
-
-.footer{
-margin-top:30px;
-text-align:center;
-color:#6b7280;
-font-size:12px;
-}
+canvas{height:36px !important;}
+.footer{margin-top:30px;text-align:center;color:#6b7280;font-size:12px;}
 </style>
 </head>
 <body>
@@ -94,117 +40,111 @@ font-size:12px;
 </div>
 
 <div class="footer">
-Real-Time Market Data · Sorted Client-Side
+Realtime Market Data · Minimalist Terminal
 </div>
 
 <script>
 const assets = [
-{ id:"bitcoin", stream:"btcusdt", name:"Bitcoin" },
-{ id:"ethereum", stream:"ethusdt", name:"Ethereum" },
-{ id:"litecoin", stream:"ltcusdt", name:"Litecoin" },
-{ id:"ripple", stream:"xrpusdt", name:"XRP" }
+  { id:"bitcoin", stream:"btcusdt", name:"Bitcoin" },
+  { id:"ethereum", stream:"ethusdt", name:"Ethereum" },
+  { id:"litecoin", stream:"ltcusdt", name:"Litecoin" },
+  { id:"ripple", stream:"xrpusdt", name:"XRP" }
 ];
 
 let state = [];
 let histories = {};
+let charts = {};
 let sortDirection = 1;
 
 function formatEUR(n){ return "€" + n.toFixed(2); }
 
 function init(){
-assets.forEach(a=>{
-histories[a.stream]=[];
-state.push({
-name:a.name,
-stream:a.stream,
-price:0,
-change:0
-});
-});
-render();
-startSockets();
-refresh24h();
-setInterval(refresh24h,60000);
+  assets.forEach(a=>{
+    histories[a.stream]=[];
+    state.push({name:a.name, stream:a.stream, price:0, change:0});
+  });
+  render();
+  startSockets();
+  refresh24h();
+  setInterval(refresh24h,60000);
 }
 
 function render(){
-const tbody=document.querySelector("#table tbody");
-tbody.innerHTML="";
-
-state.forEach(row=>{
-tbody.innerHTML+=`
-<tr>
-<td>${row.name}</td>
-<td>${formatEUR(row.price)}</td>
-<td class="${row.change>=0?'positive':'negative'}">${row.change.toFixed(2)}%</td>
-<td><canvas id="chart-${row.stream}"></canvas></td>
-</tr>`;
-});
-
-state.forEach(row=>drawChart(row.stream));
+  const tbody=document.querySelector("#table tbody");
+  tbody.innerHTML="";
+  state.forEach(row=>{
+    tbody.innerHTML+=`
+    <tr>
+      <td>${row.name}</td>
+      <td>${formatEUR(row.price)}</td>
+      <td class="${row.change>=0?'positive':'negative'}">${row.change.toFixed(2)}%</td>
+      <td><canvas id="chart-${row.stream}"></canvas></td>
+    </tr>`;
+    if(!charts[row.stream]){
+      const ctx=document.getElementById("chart-"+row.stream).getContext("2d");
+      charts[row.stream]=new Chart(ctx,{
+        type:'line',
+        data:{labels:[],datasets:[{data:[],borderColor:'#3b82f6',borderWidth:1.5,pointRadius:0,tension:0.3}]},
+        options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{display:false},y:{display:false}}}
+      });
+    }
+  });
 }
 
 function startSockets(){
-assets.forEach(a=>{
-const ws=new WebSocket(`wss://stream.binance.com:9443/ws/${a.stream}@trade`);
-ws.onmessage=(msg)=>{
-let data=JSON.parse(msg.data);
-let price=parseFloat(data.p)*0.92;
-updatePrice(a.stream,price);
-};
-});
+  assets.forEach(a=>{
+    const ws=new WebSocket(`wss://stream.binance.com:9443/ws/${a.stream}@trade`);
+    ws.onmessage=(msg)=>{
+      const data=JSON.parse(msg.data);
+      const price=parseFloat(data.p)*0.92; 
+      updatePrice(a.stream, price);
+    };
+  });
 }
 
 function updatePrice(stream,price){
-let asset=state.find(a=>a.stream===stream);
-asset.price=price;
+  const asset=state.find(a=>a.stream===stream);
+  asset.price=price;
 
-histories[stream].push(price);
-if(histories[stream].length>30) histories[stream].shift();
+  histories[stream].push(price);
+  if(histories[stream].length>30) histories[stream].shift();
 
-render();
+  updateChart(stream);
+  renderTablePrices();
+}
+
+function updateChart(stream){
+  const chart=charts[stream];
+  chart.data.labels=histories[stream].map((_,i)=>i);
+  chart.data.datasets[0].data=histories[stream];
+  chart.update('none'); // only update data, no animation
+}
+
+function renderTablePrices(){
+  state.forEach(row=>{
+    document.querySelector(`#table td:nth-child(2)`).innerText=formatEUR(row.price);
+  });
 }
 
 async function refresh24h(){
-const res=await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&ids=bitcoin,ethereum,litecoin,ripple");
-const data=await res.json();
-
-const map={bitcoin:"btcusdt",ethereum:"ethusdt",litecoin:"ltcusdt",ripple:"xrpusdt"};
-
-data.forEach(c=>{
-let stream=map[c.id];
-let asset=state.find(a=>a.stream===stream);
-asset.change=c.price_change_percentage_24h;
-});
-
-render();
-}
-
-function drawChart(stream){
-new Chart(document.getElementById("chart-"+stream),{
-type:"line",
-data:{labels:histories[stream],datasets:[{
-data:histories[stream],
-borderColor:"#3b82f6",
-borderWidth:1.5,
-pointRadius:0,
-tension:0.3
-}]},
-options:{
-responsive:true,
-plugins:{legend:{display:false}},
-scales:{x:{display:false},y:{display:false}}
-}
-});
+  const res=await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&ids=bitcoin,ethereum,litecoin,ripple");
+  const data=await res.json();
+  const map={bitcoin:"btcusdt",ethereum:"ethusdt",litecoin:"ltcusdt",ripple:"xrpusdt"};
+  data.forEach(c=>{
+    const stream=map[c.id];
+    const asset=state.find(a=>a.stream===stream);
+    asset.change=c.price_change_percentage_24h;
+  });
+  render();
 }
 
 function sortTable(key){
-sortDirection*=-1;
-state.sort((a,b)=>{
-if(key==="name") return a.name.localeCompare(b.name)*sortDirection;
-return (a[key]-b[key])*sortDirection;
-});
-render();
+  sortDirection*=-1;
+  state.sort((a,b)=>{
+    if(key==="name") return a.name.localeCompare(b.name)*sortDirection;
+    return (a[key]-b[key])*sortDirection;
+  });
+  render();
 }
 
 init();
