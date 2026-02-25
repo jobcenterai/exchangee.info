@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* Reset & Body */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Inter', sans-serif; background: linear-gradient(145deg, #1E2A38, #162133); color:#E0E6ED; transition: background 0.5s; }
+
+  a { text-decoration:none; color:inherit; }
+
+  /* Header */
+  header {
+    padding:20px 50px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background: rgba(30,42,56,0.85);
+    font-weight:600;
+    font-size:1.2rem;
+    box-shadow:0 4px 12px rgba(0,0,0,0.3);
+    position: sticky;
+    top:0;
+    z-index:100;
+    backdrop-filter: blur(6px);
+    border-bottom: 2px solid #0F1B2A;
+    border-radius:0 0 12px 12px;
+  }
+  header h1 { font-size:1.6rem; color:#E0E6ED; }
+
+  /* Projects Section */
+  .projects-section {
+    padding:80px 50px;
+    max-width:1200px;
+    margin:0 auto;
+  }
+  .projects-section h2 {
+    text-align:center;
+    font-size:2.2rem;
+    margin-bottom:50px;
+    color:#E0E6ED;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  }
+  .projects {
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+    gap:30px;
+  }
+  .project-card {
+    position: relative;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 6px 20px rgba(0,0,0,0.5);
+    transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+    cursor:pointer;
+  }
+  .project-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:0 12px 30px rgba(0,0,0,0.6);
+  }
+  .project-card img {
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    display:block;
+    filter: brightness(0.75); /* matte effect on image */
+  }
+  /* Matte overlay for dark blue theme */
+  .project-card::after {
+    content: "";
+    position: absolute;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(24,38,60,0.4); /* dark matte overlay */
+    pointer-events: none;
+    transition: background 0.4s ease;
+  }
+  .project-card:hover::after {
+    background: rgba(24,38,60,0.25);
+  }
+  .card-content {
+    background:#1E2A38;
+    padding:20px;
+  }
+  .project-card h3 {
+    margin-bottom:12px;
+    font-size:1.35rem;
+    color:#E0E6ED;
+  }
+  .project-card p {
+    font-size:0.95rem;
+    color:#C0C8D0;
+  }
+
+  /* Contact Section */
+  .contact {
+    background: linear-gradient(145deg, #1B2A3C, #162133);
+    padding:80px 50px;
+    text-align:center;
+    border-radius:16px;
+    margin:50px;
+    color:#E0E6ED;
+    box-shadow:0 8px 25px rgba(0,0,0,0.4);
+  }
+  .contact h2 {
+    font-size:2.2rem;
+    margin-bottom:40px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  }
+  .contact a {
+    display:inline-block;
+    margin:12px 20px;
+    background: rgba(24,38,60,0.85);
+    color:#E0E6ED;
+    padding:14px 28px;
+    border-radius:12px;
+    font-weight:600;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .contact a:hover {
+    background:#0F1B2A;
+    transform: translateY(-3px);
+  }
+
+  /* Footer */
+  footer {
+    text-align:center;
+    padding:20px;
+    font-size:0.9rem;
+    color:#C0C8D0;
+  }
+
+  @media(max-width:768px){
+    header { padding:15px 20px; }
+    .projects-section { padding:60px 20px; }
+    .contact { padding:60px 20px; margin:30px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>My Portfolio</h1>
+</header>
+
+<section class="projects-section">
+  <h2>Projects</h2>
+  <div class="projects">
+    <div class="project-card">
+      <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476269904318697585/20.png" alt="LethalExchange">
+      <div class="card-content">
+        <h3>LethalExchange</h3>
+        <p>Secure online exchange platform – fast, convenient, and reliable transactions.</p>
+      </div>
+    </div>
+    <div class="project-card">
+      <img src="https://via.placeholder.com/400x180" alt="Marketplace">
+      <div class="card-content">
+        <h3>Marketplace</h3>
+        <p>A streamlined Discord-based marketplace for browsing and trading digital accounts with a smooth, user-focused experience.</p>
+      </div>
+    </div>
+    <div class="project-card">
+      <img src="https://via.placeholder.com/400x180" alt="Soon">
+      <div class="card-content">
+        <h3>Soon</h3>
+        <p>Coming soon</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact">
+  <h2>Contact Me</h2>
+  <a href="mailto:JobGS@proton.me">Email</a>
+  <a href="https://discord.com/users/706661207767253142" target="_blank">Discord</a>
+  <a href="https://github.com/jobcenterai" target="_blank">GitHub</a>
+</section>
+
+<footer>
+  &copy; 2026 JobG. All rights reserved.
+</footer>
+
+</body>
+</html>
