@@ -3,119 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>jobless.g</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<title>CryptoTracking | Live WebSocket Market</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron',sans-serif;
 }
 
 body{
-    font-family:Inter, sans-serif;
-    background:#0a0f1a;
-    color:white;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+background:linear-gradient(135deg,#061a14,#0a1f33);
+color:#00ffcc;
+padding:20px;
 }
 
-/* MAIN CARD */
-
-#main{
-    width:100%;
-    display:flex;
-    justify-content:center;
+h1{
+text-align:center;
+font-size:42px;
+margin-bottom:30px;
+color:#00ffcc;
+text-shadow:0 0 20px #00ffcc;
 }
 
-.card{
-    width:90%;
-    max-width:420px;
-    padding:50px 30px;
-    text-align:center;
-    box-shadow:0 0 40px rgba(30,144,255,.15);
-    border-radius:16px;
+table{
+width:100%;
+border-collapse:collapse;
+background:#081c1a;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 0 30px rgba(0,255,170,0.2);
 }
 
-.username{
-    font-size:2.4rem;
-    font-weight:800;
-    letter-spacing:2px;
-    color:#1e90ff;
-    margin-bottom:10px;
+th,td{
+padding:18px;
+text-align:left;
 }
 
-.subtitle{
-    opacity:.6;
-    margin-bottom:35px;
-    font-size:.95rem;
+th{
+background:#0f2d2a;
+color:#00ffaa;
 }
 
-/* SOCIAL BUTTONS */
-
-.links{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+tr{
+border-bottom:1px solid #0f2d2a;
+transition:0.3s;
 }
 
-.links a{
-    text-decoration:none;
-    color:#1e90ff;
-    padding:14px;
-    border-radius:10px;
-    border:1px solid rgba(30,144,255,.4);
-    font-weight:600;
-    transition:.25s ease;
+tr:hover{
+background:#0c2623;
 }
 
-.links a:hover{
-    background:#1e90ff;
-    color:#0a0f1a;
+.green{
+color:#00ff88;
 }
 
-/* SPOTIFY PLAYER */
+.red{
+color:#ff4d6d;
+}
 
-.spotify-player{
-    margin-top:30px;
-    border-radius:12px;
-    overflow:hidden;
+.footer{
+margin-top:40px;
+padding:20px;
+text-align:center;
+background:#081c1a;
+border-radius:12px;
+}
+
+.footer a{
+color:#00ffcc;
+text-decoration:none;
+margin:0 15px;
+transition:0.3s;
+}
+
+.footer a:hover{
+color:#00ffaa;
+text-shadow:0 0 10px #00ffaa;
+}
+
+.live-dot{
+height:10px;
+width:10px;
+background:#00ff88;
+border-radius:50%;
+display:inline-block;
+margin-right:8px;
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{opacity:1;}
+50%{opacity:0.3;}
+100%{opacity:1;}
 }
 </style>
 </head>
 
 <body>
 
-<div id="main">
-    <div class="card">
+<h1><span class="live-dot"></span>CryptoTracking Live Market</h1>
 
-        <div class="username">jobless.g</div>
-        <div class="subtitle">Portfolio</div>
+<table>
+<thead>
+<tr>
+<th>Coin</th>
+<th>Symbol</th>
+<th>Price (USDT)</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bitcoin</td>
+<td>BTC</td>
+<td id="btc">Loading...</td>
+<td class="green">Live</td>
+</tr>
+<tr>
+<td>Litecoin</td>
+<td>LTC</td>
+<td id="ltc">Loading...</td>
+<td class="green">Live</td>
+</tr>
+<tr>
+<td>XRP</td>
+<td>XRP</td>
+<td id="xrp">Loading...</td>
+<td class="green">Live</td>
+</tr>
+</tbody>
+</table>
 
-        <div class="links">
-            <a href="https://discord.gg/d9aht3JYPX" target="_blank">Discord</a>
-            <a href="https://github.com/jobcenterai" target="_blank">GitHub</a>
-            <a href="https://open.spotify.com/user/2xdcqo3snfv4b7tv5g215if11?si=a1fa1d6a692744e7" target="_blank">Spotify</a>
-            <a href="mailto:soon">Contact</a>
-        </div>
-
-        <!-- Spotify Player -->
-        <div class="spotify-player">
-            <iframe 
-                src="https://open.spotify.com/embed/track/1WIZiOuNO3woKfdlSK2gNn"
-                width="100%" 
-                height="80" 
-                frameborder="0" 
-                allowfullscreen="" 
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
-            </iframe>
-        </div>
-
-    </div>
+<div class="footer">
+<p>Connect With Me</p>
+<a href="https://discord.gg/yourserver" target="_blank">Discord</a>
+<a href="mailto:your@email.com">Email</a>
+<a href="https://github.com/yourgithub" target="_blank">GitHub</a>
 </div>
+
+<script>
+/* BINANCE WEBSOCKET FOR BTC */
+const btcSocket = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@trade");
+
+btcSocket.onmessage = function(event){
+const data = JSON.parse(event.data);
+document.getElementById("btc").innerText = parseFloat(data.p).toFixed(2);
+};
+
+/* BINANCE WEBSOCKET FOR LTC */
+const ltcSocket = new WebSocket("wss://stream.binance.com:9443/ws/ltcusdt@trade");
+
+ltcSocket.onmessage = function(event){
+const data = JSON.parse(event.data);
+document.getElementById("ltc").innerText = parseFloat(data.p).toFixed(2);
+};
+
+/* XRP (REST auto refresh every 5 sec) */
+async function updateXRP(){
+const res = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=XRPUSDT");
+const data = await res.json();
+document.getElementById("xrp").innerText = parseFloat(data.price).toFixed(4);
+}
+
+updateXRP();
+setInterval(updateXRP,5000);
+</script>
 
 </body>
 </html>
