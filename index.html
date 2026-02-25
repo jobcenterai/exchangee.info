@@ -3,91 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CryptoTracking | Advanced Live Market</title>
+<title>CryptoTracking | Advanced Market Terminal</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Orbitron',sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif;}
 
 body{
-background:radial-gradient(circle at top left,#071a14,#0b1f3a 60%);
+background:radial-gradient(circle at 20% 20%,#062017,#0b1f3a 60%);
 color:#00ffcc;
 min-height:100vh;
 padding:40px 20px;
+overflow-x:hidden;
+}
+
+/* Animated background grid */
+body::before{
+content:"";
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background-image:linear-gradient(rgba(0,255,170,0.05) 1px,transparent 1px),
+linear-gradient(90deg,rgba(0,255,170,0.05) 1px,transparent 1px);
+background-size:50px 50px;
+animation:moveGrid 20s linear infinite;
+z-index:-1;
+}
+@keyframes moveGrid{
+0%{background-position:0 0;}
+100%{background-position:50px 50px;}
 }
 
 h1{
 text-align:center;
 font-size:48px;
-margin-bottom:40px;
-letter-spacing:2px;
+margin-bottom:20px;
 text-shadow:0 0 20px #00ffaa;
 }
 
-.market-container{
-max-width:1100px;
-margin:auto;
-background:rgba(8,25,25,0.6);
-backdrop-filter:blur(15px);
-border:1px solid rgba(0,255,170,0.2);
-border-radius:20px;
-padding:30px;
-box-shadow:0 0 40px rgba(0,255,170,0.1);
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-th{
-text-align:left;
-padding:15px;
-color:#00ffaa;
-border-bottom:1px solid rgba(0,255,170,0.2);
-}
-
-td{
-padding:18px 15px;
-font-size:18px;
-}
-
-tr{
-transition:0.3s;
-}
-
-tr:hover{
-background:rgba(0,255,170,0.05);
-}
-
-.price{
-font-weight:600;
-transition:0.2s;
-}
-
-.flash-green{
-color:#00ff88;
-text-shadow:0 0 10px #00ff88;
-}
-
-.flash-red{
-color:#ff4d6d;
-text-shadow:0 0 10px #ff4d6d;
-}
-
-.status{
+.status-bar{
+text-align:center;
+margin-bottom:30px;
 font-size:14px;
-color:#00ff88;
 }
 
 .live-dot{
-height:10px;
-width:10px;
+height:10px;width:10px;
 background:#00ff88;
 border-radius:50%;
 display:inline-block;
@@ -101,16 +63,61 @@ animation:pulse 1.2s infinite;
 100%{opacity:1;}
 }
 
-canvas{
-width:140px;
-height:40px;
+.search{
+text-align:center;
+margin-bottom:20px;
 }
+
+.search input{
+padding:10px 15px;
+width:260px;
+border:none;
+border-radius:8px;
+background:#0d2a27;
+color:#00ffcc;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+background:rgba(6,25,25,0.6);
+backdrop-filter:blur(15px);
+border:1px solid rgba(0,255,170,0.2);
+border-radius:20px;
+padding:25px;
+box-shadow:0 0 40px rgba(0,255,170,0.1);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+padding:15px;
+text-align:left;
+border-bottom:1px solid rgba(0,255,170,0.2);
+color:#00ffaa;
+}
+
+td{
+padding:18px 15px;
+}
+
+tr:hover{
+background:rgba(0,255,170,0.05);
+}
+
+.green{color:#00ff88;text-shadow:0 0 10px #00ff88;}
+.red{color:#ff4d6d;text-shadow:0 0 10px #ff4d6d;}
+
+canvas{height:60px !important;}
 
 .footer{
 margin-top:50px;
 text-align:center;
 padding:25px;
-background:rgba(8,25,25,0.6);
+background:rgba(6,25,25,0.6);
 border-radius:15px;
 border:1px solid rgba(0,255,170,0.2);
 }
@@ -132,46 +139,29 @@ text-shadow:0 0 10px #00ffaa;
 
 <body>
 
-<h1><span class="live-dot"></span>CryptoTracking</h1>
+<h1><span class="live-dot"></span>CryptoTracking Terminal</h1>
 
-<div class="market-container">
-<table>
+<div class="status-bar">
+Market auto-refresh every 60 seconds
+</div>
+
+<div class="search">
+<input type="text" id="searchInput" placeholder="Search coin..." onkeyup="searchCoin()">
+</div>
+
+<div class="container">
+<table id="cryptoTable">
 <thead>
 <tr>
 <th>Coin</th>
-<th>Symbol</th>
-<th>Price (USDT)</th>
-<th>Trend</th>
-<th>Status</th>
+<th>Price (USD)</th>
+<th>24h %</th>
+<th>Market Cap</th>
+<th>Volume</th>
+<th>7D Trend</th>
 </tr>
 </thead>
-<tbody>
-
-<tr>
-<td>Bitcoin</td>
-<td>BTC</td>
-<td class="price" id="btc">Loading...</td>
-<td><canvas id="btcChart"></canvas></td>
-<td class="status">Live</td>
-</tr>
-
-<tr>
-<td>Litecoin</td>
-<td>LTC</td>
-<td class="price" id="ltc">Loading...</td>
-<td><canvas id="ltcChart"></canvas></td>
-<td class="status">Live</td>
-</tr>
-
-<tr>
-<td>XRP</td>
-<td>XRP</td>
-<td class="price" id="xrp">Loading...</td>
-<td><canvas id="xrpChart"></canvas></td>
-<td class="status">Live</td>
-</tr>
-
-</tbody>
+<tbody></tbody>
 </table>
 </div>
 
@@ -183,72 +173,68 @@ text-shadow:0 0 10px #00ffaa;
 </div>
 
 <script>
-function createSparkline(canvasId){
-const canvas=document.getElementById(canvasId);
-const ctx=canvas.getContext("2d");
-let data=[];
+const coins="bitcoin,ethereum,litecoin,ripple,binancecoin,cardano,solana";
 
-function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-ctx.beginPath();
-ctx.strokeStyle="#00ffaa";
-ctx.lineWidth=2;
+async function fetchData(){
+const res=await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coins}&sparkline=true`);
+const data=await res.json();
 
-data.forEach((value,i)=>{
-let x=i*(canvas.width/data.length);
-let y=canvas.height-(value*Math.min(canvas.height/Math.max(...data),1));
-if(i===0) ctx.moveTo(x,y);
-else ctx.lineTo(x,y);
+const tbody=document.querySelector("#cryptoTable tbody");
+tbody.innerHTML="";
+
+data.forEach(coin=>{
+let row=document.createElement("tr");
+
+row.innerHTML=`
+<td>${coin.name} (${coin.symbol.toUpperCase()})</td>
+<td>$${coin.current_price.toLocaleString()}</td>
+<td class="${coin.price_change_percentage_24h>=0?'green':'red'}">
+${coin.price_change_percentage_24h.toFixed(2)}%
+</td>
+<td>$${(coin.market_cap/1e9).toFixed(2)}B</td>
+<td>$${(coin.total_volume/1e9).toFixed(2)}B</td>
+<td><canvas id="chart-${coin.symbol}"></canvas></td>
+`;
+
+tbody.appendChild(row);
+
+createChart(`chart-${coin.symbol}`,coin.sparkline_in_7d.price,coin.price_change_percentage_24h>=0);
 });
-
-ctx.stroke();
 }
 
-return {
-add(value){
-data.push(value);
-if(data.length>25) data.shift();
-draw();
+function createChart(id,data,isGreen){
+const ctx=document.getElementById(id).getContext("2d");
+new Chart(ctx,{
+type:"line",
+data:{
+labels:data.map((_,i)=>i),
+datasets:[{
+data:data,
+borderColor:isGreen?"#00ff88":"#ff4d6d",
+backgroundColor:"transparent",
+borderWidth:2,
+pointRadius:0,
+tension:0.3
+}]
+},
+options:{
+plugins:{legend:{display:false}},
+scales:{x:{display:false},y:{display:false}},
+responsive:true
 }
-};
-}
-
-function setupSocket(symbol, elementId, chart){
-let lastPrice=null;
-const socket=new WebSocket(`wss://stream.binance.com:9443/ws/${symbol}@trade`);
-
-socket.onmessage=function(event){
-const trade=JSON.parse(event.data);
-let price=parseFloat(trade.p);
-document.getElementById(elementId).innerText=price.toFixed(4);
-
-if(lastPrice){
-if(price>lastPrice){
-flash(elementId,"flash-green");
-}else if(price<lastPrice){
-flash(elementId,"flash-red");
-}
+});
 }
 
-lastPrice=price;
-chart.add(price);
-};
+function searchCoin(){
+let input=document.getElementById("searchInput").value.toUpperCase();
+let rows=document.querySelectorAll("#cryptoTable tbody tr");
+rows.forEach(row=>{
+row.style.display=row.innerText.toUpperCase().includes(input)?"":"none";
+});
 }
 
-function flash(id,className){
-let el=document.getElementById(id);
-el.classList.add(className);
-setTimeout(()=>el.classList.remove(className),300);
-}
-
-const btcChart=createSparkline("btcChart");
-const ltcChart=createSparkline("ltcChart");
-const xrpChart=createSparkline("xrpChart");
-
-setupSocket("btcusdt","btc",btcChart);
-setupSocket("ltcusdt","ltc",ltcChart);
-setupSocket("xrpusdt","xrp",xrpChart);
-
+fetchData();
+setInterval(fetchData,60000);
 </script>
 
 </body>
