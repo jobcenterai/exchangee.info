@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CryptoTracking | Advanced Market Terminal</title>
+<title>CryptoTracking AI PRO | EURO</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -11,162 +11,115 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif;}
 
 body{
-background:radial-gradient(circle at 20% 20%,#062017,#0b1f3a 60%);
+background:radial-gradient(circle at top left,#061a14,#0b1f3a 60%);
 color:#00ffcc;
-min-height:100vh;
 padding:40px 20px;
-overflow-x:hidden;
+min-height:100vh;
 }
 
-/* Animated background grid */
-body::before{
-content:"";
-position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-background-image:linear-gradient(rgba(0,255,170,0.05) 1px,transparent 1px),
-linear-gradient(90deg,rgba(0,255,170,0.05) 1px,transparent 1px);
-background-size:50px 50px;
-animation:moveGrid 20s linear infinite;
-z-index:-1;
-}
-@keyframes moveGrid{
-0%{background-position:0 0;}
-100%{background-position:50px 50px;}
-}
+h1{text-align:center;font-size:40px;margin-bottom:20px;text-shadow:0 0 15px #00ffaa;}
 
-h1{
-text-align:center;
-font-size:48px;
-margin-bottom:20px;
-text-shadow:0 0 20px #00ffaa;
-}
-
-.status-bar{
-text-align:center;
-margin-bottom:30px;
-font-size:14px;
-}
-
-.live-dot{
-height:10px;width:10px;
-background:#00ff88;
-border-radius:50%;
-display:inline-block;
-margin-right:6px;
-animation:pulse 1.2s infinite;
-}
-
-@keyframes pulse{
-0%{opacity:1;}
-50%{opacity:0.3;}
-100%{opacity:1;}
-}
-
-.search{
-text-align:center;
-margin-bottom:20px;
-}
-
-.search input{
-padding:10px 15px;
-width:260px;
-border:none;
-border-radius:8px;
-background:#0d2a27;
-color:#00ffcc;
-}
-
-.container{
+.section{
 max-width:1200px;
-margin:auto;
-background:rgba(6,25,25,0.6);
+margin:25px auto;
+background:rgba(8,25,25,0.6);
 backdrop-filter:blur(15px);
 border:1px solid rgba(0,255,170,0.2);
 border-radius:20px;
 padding:25px;
-box-shadow:0 0 40px rgba(0,255,170,0.1);
 }
 
-table{
-width:100%;
-border-collapse:collapse;
+table{width:100%;border-collapse:collapse;}
+th,td{padding:14px;text-align:left;}
+th{border-bottom:1px solid rgba(0,255,170,0.2);color:#00ffaa;}
+tr:hover{background:rgba(0,255,170,0.05);cursor:pointer;}
+
+.green{color:#00ff88;}
+.red{color:#ff4d6d;}
+.neutral{color:#ffaa00;}
+
+canvas{height:50px !important;}
+
+.confidence-bar{
+height:8px;
+border-radius:5px;
+background:#0d2a27;
+overflow:hidden;
+margin-top:5px;
+}
+.confidence-fill{
+height:100%;
+background:linear-gradient(90deg,#ff4d6d,#ffaa00,#00ff88);
 }
 
-th{
-padding:15px;
-text-align:left;
-border-bottom:1px solid rgba(0,255,170,0.2);
-color:#00ffaa;
+.modal{
+display:none;
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.8);
+justify-content:center;
+align-items:center;
 }
 
-td{
-padding:18px 15px;
+.modal-content{
+background:#081c1a;
+padding:30px;
+border-radius:15px;
+width:80%;
+max-width:900px;
+position:relative;
 }
 
-tr:hover{
-background:rgba(0,255,170,0.05);
+.close{
+position:absolute;
+top:15px;right:20px;
+cursor:pointer;
+font-size:20px;
+color:#ff4d6d;
 }
-
-.green{color:#00ff88;text-shadow:0 0 10px #00ff88;}
-.red{color:#ff4d6d;text-shadow:0 0 10px #ff4d6d;}
-
-canvas{height:60px !important;}
 
 .footer{
-margin-top:50px;
+margin-top:40px;
 text-align:center;
-padding:25px;
-background:rgba(6,25,25,0.6);
-border-radius:15px;
-border:1px solid rgba(0,255,170,0.2);
+padding:20px;
+background:#081c1a;
+border-radius:12px;
 }
 
-.footer a{
-color:#00ffcc;
-text-decoration:none;
-margin:0 15px;
-font-weight:600;
-transition:0.3s;
-}
-
-.footer a:hover{
-color:#00ffaa;
-text-shadow:0 0 10px #00ffaa;
-}
+.footer a{color:#00ffcc;margin:0 10px;text-decoration:none;}
 </style>
 </head>
-
 <body>
 
-<h1><span class="live-dot"></span>CryptoTracking Terminal</h1>
+<h1>🤖 CryptoTracking AI PRO</h1>
 
-<div class="status-bar">
-Market auto-refresh every 60 seconds
-</div>
-
-<div class="search">
-<input type="text" id="searchInput" placeholder="Search coin..." onkeyup="searchCoin()">
-</div>
-
-<div class="container">
+<div class="section">
+<h2>📊 AI Market Table (Click Coin for Advanced Chart)</h2>
 <table id="cryptoTable">
 <thead>
 <tr>
 <th>Coin</th>
-<th>Price (USD)</th>
+<th>Price (€)</th>
 <th>24h %</th>
-<th>Market Cap</th>
-<th>Volume</th>
-<th>7D Trend</th>
+<th>AI Signal</th>
+<th>Confidence</th>
+<th>7D</th>
 </tr>
 </thead>
 <tbody></tbody>
 </table>
 </div>
 
+<div class="modal" id="chartModal">
+<div class="modal-content">
+<span class="close" onclick="closeModal()">✖</span>
+<h2 id="modalTitle"></h2>
+<canvas id="modalChart"></canvas>
+</div>
+</div>
+
 <div class="footer">
-<p>Connect With Me</p>
 <a href="https://discord.gg/yourserver" target="_blank">Discord</a>
 <a href="mailto:your@email.com">Email</a>
 <a href="https://github.com/yourgithub" target="_blank">GitHub</a>
@@ -174,63 +127,92 @@ Market auto-refresh every 60 seconds
 
 <script>
 const coins="bitcoin,ethereum,litecoin,ripple,binancecoin,cardano,solana";
+let modalChart;
+
+function formatEuro(n){return "€"+n.toFixed(2);}
+
+function aiLogic(change){
+let confidence=Math.min(Math.abs(change)*15,100).toFixed(0);
+let signal="Neutral";
+let className="neutral";
+
+if(change>2){signal="Bullish ↑";className="green";}
+if(change<-2){signal="Bearish ↓";className="red";}
+
+return {signal,className,confidence};
+}
 
 async function fetchData(){
-const res=await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coins}&sparkline=true`);
+const res=await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&ids=${coins}&sparkline=true`);
 const data=await res.json();
-
 const tbody=document.querySelector("#cryptoTable tbody");
 tbody.innerHTML="";
 
 data.forEach(coin=>{
-let row=document.createElement("tr");
+let ai=aiLogic(coin.price_change_percentage_24h);
 
+let row=document.createElement("tr");
 row.innerHTML=`
-<td>${coin.name} (${coin.symbol.toUpperCase()})</td>
-<td>$${coin.current_price.toLocaleString()}</td>
+<td>${coin.name}</td>
+<td>${formatEuro(coin.current_price)}</td>
 <td class="${coin.price_change_percentage_24h>=0?'green':'red'}">
 ${coin.price_change_percentage_24h.toFixed(2)}%
 </td>
-<td>$${(coin.market_cap/1e9).toFixed(2)}B</td>
-<td>$${(coin.total_volume/1e9).toFixed(2)}B</td>
+<td class="${ai.className}">${ai.signal}</td>
+<td>
+${ai.confidence}%
+<div class="confidence-bar">
+<div class="confidence-fill" style="width:${ai.confidence}%"></div>
+</div>
+</td>
 <td><canvas id="chart-${coin.symbol}"></canvas></td>
 `;
 
-tbody.appendChild(row);
+row.onclick=()=>openModal(coin.name,coin.sparkline_in_7d.price);
 
-createChart(`chart-${coin.symbol}`,coin.sparkline_in_7d.price,coin.price_change_percentage_24h>=0);
+tbody.appendChild(row);
+createMiniChart(`chart-${coin.symbol}`,coin.sparkline_in_7d.price,coin.price_change_percentage_24h>=0);
 });
 }
 
-function createChart(id,data,isGreen){
-const ctx=document.getElementById(id).getContext("2d");
-new Chart(ctx,{
+function createMiniChart(id,data,isGreen){
+new Chart(document.getElementById(id),{
 type:"line",
-data:{
-labels:data.map((_,i)=>i),
-datasets:[{
+data:{labels:data,datasets:[{
 data:data,
 borderColor:isGreen?"#00ff88":"#ff4d6d",
-backgroundColor:"transparent",
 borderWidth:2,
 pointRadius:0,
 tension:0.3
-}]
-},
+}]},
+options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{display:false}}}
+});
+}
+
+function openModal(name,data){
+document.getElementById("modalTitle").innerText=name+" — 7 Day Chart";
+document.getElementById("chartModal").style.display="flex";
+
+if(modalChart) modalChart.destroy();
+
+modalChart=new Chart(document.getElementById("modalChart"),{
+type:"line",
+data:{labels:data,datasets:[{
+data:data,
+borderColor:"#00ffaa",
+borderWidth:3,
+pointRadius:0,
+tension:0.3
+}]},
 options:{
 plugins:{legend:{display:false}},
-scales:{x:{display:false},y:{display:false}},
-responsive:true
+scales:{x:{display:false},y:{ticks:{color:"#00ffcc"}}}
 }
 });
 }
 
-function searchCoin(){
-let input=document.getElementById("searchInput").value.toUpperCase();
-let rows=document.querySelectorAll("#cryptoTable tbody tr");
-rows.forEach(row=>{
-row.style.display=row.innerText.toUpperCase().includes(input)?"":"none";
-});
+function closeModal(){
+document.getElementById("chartModal").style.display="none";
 }
 
 fetchData();
