@@ -11,77 +11,128 @@
 
     header { background-color: #1B2530; padding: 20px; text-align: center; }
     header h1 { color: #69A3F3; font-weight: 700; }
-    nav { margin-top: 10px; }
-    nav a { color: #69A3F3; margin: 0 10px; text-decoration: none; font-weight: 500; }
-    nav a:hover { text-decoration: underline; }
+    
+    nav { margin-top: 10px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+    nav button { background-color: #273746; color: #69A3F3; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 500; }
+    nav button:hover { background-color: #34495e; }
 
     main { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
 
-    .search-box { margin-top: 20px; text-align: center; }
-    .search-box input { padding: 10px 15px; width: 300px; border-radius: 8px; border: none; outline: none; font-size: 16px; }
+    section { margin-top: 30px; }
+    section h2 { color: #69A3F3; cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; }
 
-    .crypto-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .content { display: none; margin-top: 20px; }
+
+    .crypto-table { width: 100%; border-collapse: collapse; }
     .crypto-table th, .crypto-table td { padding: 12px 15px; text-align: left; }
     .crypto-table th { background-color: #2C3E50; color: #69A3F3; }
     .crypto-table tr:nth-child(even) { background-color: #1F2B38; }
     .crypto-table tr:hover { background-color: #273746; }
 
-    .contact { margin-top: 50px; text-align: center; }
+    .search-box { margin-bottom: 15px; text-align: center; }
+    .search-box input { padding: 10px 15px; width: 300px; border-radius: 8px; border: none; outline: none; font-size: 16px; }
+
     .contact a { display: inline-block; margin: 0 15px; color: #69A3F3; text-decoration: none; font-weight: 500; }
     .contact a:hover { text-decoration: underline; }
 
     @media(max-width:768px){
       .crypto-table th, .crypto-table td { padding: 10px; font-size: 14px; }
       .search-box input { width: 90%; }
+      nav { flex-direction: column; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header>
     <h1>Advanced Crypto Tracker</h1>
     <nav>
-      <a href="#cryptos">Cryptos</a>
-      <a href="#contact">Contact</a>
+      <button data-target="cryptos">Cryptos</button>
+      <button data-target="portfolio">Portfolio</button>
+      <button data-target="news">News</button>
+      <button data-target="contact">Contact</button>
     </nav>
   </header>
 
   <main>
+    <!-- CRYPTOS -->
     <section id="cryptos">
-      <h2 style="color:#69A3F3;">Cryptocurrency Prices</h2>
-
-      <div class="search-box">
-        <input type="text" id="search" placeholder="Search for a cryptocurrency (BTC, LTC, ETH...)">
+      <h2>Cryptocurrencies ▼</h2>
+      <div class="content">
+        <div class="search-box">
+          <input type="text" id="search" placeholder="Search for a cryptocurrency (BTC, LTC...)">
+        </div>
+        <table class="crypto-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>24h Change</th>
+              <th>Market Cap</th>
+            </tr>
+          </thead>
+          <tbody id="crypto-data"></tbody>
+        </table>
       </div>
+    </section>
 
-      <table class="crypto-table">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>24h Change</th>
-            <th>Market Cap</th>
-          </tr>
-        </thead>
-        <tbody id="crypto-data"></tbody>
-      </table>
+    <!-- PORTFOLIO -->
+    <section id="portfolio">
+      <h2>Portfolio ▼</h2>
+      <div class="content">
+        <p style="text-align:center; color:#ccc;">Portfolio tracking coming soon...</p>
+      </div>
+    </section>
+
+    <!-- NEWS -->
+    <section id="news">
+      <h2>Crypto News ▼</h2>
+      <div class="content">
+        <p style="text-align:center; color:#ccc;">News integration coming soon...</p>
+      </div>
     </section>
 
     <!-- CONTACT -->
-    <section id="contact" class="contact">
-      <h2 style="color:#69A3F3;">Contact Me</h2>
-      <a href="mailto:youremail@example.com">Email</a>
-      <a href="https://discord.com/users/yourdiscordid" target="_blank">Discord</a>
-      <a href="https://github.com/yourgithub" target="_blank">GitHub</a>
+    <section id="contact">
+      <h2>Contact ▼</h2>
+      <div class="content contact">
+        <a href="mailto:youremail@example.com">Email</a>
+        <a href="https://discord.com/users/yourdiscordid" target="_blank">Discord</a>
+        <a href="https://github.com/yourgithub" target="_blank">GitHub</a>
+      </div>
     </section>
   </main>
 
-  <!-- SCRIPT: Fetch many cryptos and search -->
   <script>
-    const apiURL = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false";
+    // COLLAPSIBLE MENU
+    const sections = document.querySelectorAll("section h2");
+    sections.forEach(header => {
+      header.addEventListener("click", () => {
+        const content = header.nextElementSibling;
+        const isOpen = content.style.display === "block";
 
+        // close all
+        document.querySelectorAll(".content").forEach(c => c.style.display = "none");
+
+        if(!isOpen) content.style.display = "block";
+      });
+    });
+
+    // NAVIGATION BUTTONS
+    const buttons = document.querySelectorAll("nav button");
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-target");
+        document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+        // Open section
+        document.querySelectorAll(".content").forEach(c => c.style.display = "none");
+        document.querySelector(`#${targetId} .content`).style.display = "block";
+      });
+    });
+
+    // --- CRYPTO DATA FETCH ---
+    const apiURL = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false";
     let cryptoList = [];
 
     async function fetchCryptoData() {
@@ -89,9 +140,7 @@
         const res = await fetch(apiURL);
         cryptoList = await res.json();
         displayCryptos(cryptoList);
-      } catch (err) {
-        console.error("Error fetching crypto data:", err);
-      }
+      } catch (err) { console.error(err); }
     }
 
     function displayCryptos(data) {
@@ -103,7 +152,7 @@
           <td>${coin.market_cap_rank}</td>
           <td>${coin.name} (${coin.symbol.toUpperCase()})</td>
           <td>$${coin.current_price.toLocaleString()}</td>
-          <td style="color:${coin.price_change_percentage_24h >= 0 ? '#2ecc71' : '#e74c3c'}">
+          <td style="color:${coin.price_change_percentage_24h>=0?'#2ecc71':'#e74c3c'}">
             ${coin.price_change_percentage_24h.toFixed(2)}%
           </td>
           <td>$${coin.market_cap.toLocaleString()}</td>
@@ -112,18 +161,17 @@
       });
     }
 
-    // SEARCH FUNCTIONALITY
-    const searchInput = document.getElementById("search");
-    searchInput.addEventListener("input", () => {
-      const query = searchInput.value.toLowerCase();
-      const filtered = cryptoList.filter(coin => 
+    // SEARCH
+    document.getElementById("search").addEventListener("input", (e) => {
+      const query = e.target.value.toLowerCase();
+      const filtered = cryptoList.filter(coin =>
         coin.name.toLowerCase().includes(query) || coin.symbol.toLowerCase().includes(query)
       );
       displayCryptos(filtered);
     });
 
     fetchCryptoData();
-    setInterval(fetchCryptoData, 60000); // refresh every minute
+    setInterval(fetchCryptoData, 60000);
   </script>
 
 </body>
