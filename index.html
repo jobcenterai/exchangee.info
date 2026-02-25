@@ -11,27 +11,26 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 
 body{
-background:#0f172a;
-color:#e2e8f0;
+background:#0b1220;
+color:#e5e7eb;
 padding:40px 20px;
-min-height:100vh;
 }
 
 h1{
 text-align:center;
-font-size:28px;
-font-weight:600;
+font-size:24px;
+font-weight:500;
 margin-bottom:30px;
-color:#f1f5f9;
+color:#f9fafb;
 }
 
 .container{
 max-width:1100px;
 margin:auto;
 background:#111827;
-border-radius:12px;
-padding:25px;
 border:1px solid #1f2937;
+border-radius:10px;
+overflow:hidden;
 }
 
 table{
@@ -40,13 +39,15 @@ border-collapse:collapse;
 }
 
 th{
-text-align:left;
-font-size:13px;
+font-size:12px;
 text-transform:uppercase;
-letter-spacing:0.5px;
-color:#94a3b8;
+letter-spacing:0.05em;
+font-weight:500;
+color:#9ca3af;
 padding:14px;
 border-bottom:1px solid #1f2937;
+cursor:pointer;
+user-select:none;
 }
 
 td{
@@ -56,78 +57,35 @@ font-size:14px;
 }
 
 tr:hover{
-background:#0b1220;
-cursor:pointer;
+background:#0f172a;
 }
 
 .positive{color:#22c55e;}
 .negative{color:#ef4444;}
-.neutral{color:#f59e0b;}
-
-.confidence-wrapper{
-margin-top:6px;
-background:#1e293b;
-height:6px;
-border-radius:4px;
-overflow:hidden;
-}
-
-.confidence-fill{
-height:100%;
-background:#3b82f6;
-}
 
 canvas{
-height:40px !important;
-}
-
-.modal{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.7);
-justify-content:center;
-align-items:center;
-}
-
-.modal-content{
-background:#111827;
-padding:30px;
-border-radius:12px;
-width:80%;
-max-width:900px;
-border:1px solid #1f2937;
-}
-
-.close{
-text-align:right;
-cursor:pointer;
-color:#ef4444;
-margin-bottom:10px;
+height:36px !important;
 }
 
 .footer{
 margin-top:30px;
 text-align:center;
-color:#64748b;
-font-size:13px;
+color:#6b7280;
+font-size:12px;
 }
 </style>
 </head>
-
 <body>
 
 <h1>CryptoTracking Terminal</h1>
 
 <div class="container">
-<table id="cryptoTable">
+<table id="table">
 <thead>
 <tr>
-<th>Asset</th>
-<th>Price (€)</th>
-<th>24h</th>
-<th>AI Signal</th>
-<th>Confidence</th>
+<th onclick="sortTable('name')">Asset</th>
+<th onclick="sortTable('price')">Price (€)</th>
+<th onclick="sortTable('change')">24h %</th>
 <th>Trend</th>
 </tr>
 </thead>
@@ -135,16 +93,8 @@ font-size:13px;
 </table>
 </div>
 
-<div class="modal" id="chartModal">
-<div class="modal-content">
-<div class="close" onclick="closeModal()">Close</div>
-<h2 id="modalTitle" style="margin-bottom:20px;"></h2>
-<canvas id="modalChart"></canvas>
-</div>
-</div>
-
 <div class="footer">
-Discord | Email | GitHub
+Real-Time Market Data · Sorted Client-Side
 </div>
 
 <script>
@@ -155,104 +105,109 @@ const assets = [
 { id:"ripple", stream:"xrpusdt", name:"XRP" }
 ];
 
-let priceData = {};
-let historyData = {};
-let modalChart;
+let state = [];
+let histories = {};
+let sortDirection = 1;
 
 function formatEUR(n){ return "€" + n.toFixed(2); }
 
-function aiEngine(change){
-let confidence = Math.min(Math.abs(change)*10,100).toFixed(0);
-let signal="Neutral";
-let className="neutral";
-
-if(change>1.5){ signal="Bullish"; className="positive"; }
-if(change<-1.5){ signal="Bearish"; className="negative"; }
-
-return {signal,className,confidence};
+function init(){
+assets.forEach(a=>{
+histories[a.stream]=[];
+state.push({
+name:a.name,
+stream:a.stream,
+price:0,
+change:0
+});
+});
+render();
+startSockets();
+refresh24h();
+setInterval(refresh24h,60000);
 }
 
-function initTable(){
-const tbody=document.querySelector("#cryptoTable tbody");
-assets.forEach(a=>{
-historyData[a.stream]=[];
+function render(){
+const tbody=document.querySelector("#table tbody");
+tbody.innerHTML="";
+
+state.forEach(row=>{
 tbody.innerHTML+=`
-<tr id="row-${a.stream}">
-<td>${a.name}</td>
-<td id="price-${a.stream}">--</td>
-<td id="change-${a.stream}">--</td>
-<td id="signal-${a.stream}">--</td>
-<td id="confidence-${a.stream}">--</td>
-<td><canvas id="chart-${a.stream}"></canvas></td>
+<tr>
+<td>${row.name}</td>
+<td>${formatEUR(row.price)}</td>
+<td class="${row.change>=0?'positive':'negative'}">${row.change.toFixed(2)}%</td>
+<td><canvas id="chart-${row.stream}"></canvas></td>
 </tr>`;
 });
+
+state.forEach(row=>drawChart(row.stream));
 }
 
-function startWebSockets(){
+function startSockets(){
 assets.forEach(a=>{
 const ws=new WebSocket(`wss://stream.binance.com:9443/ws/${a.stream}@trade`);
 ws.onmessage=(msg)=>{
 let data=JSON.parse(msg.data);
-let price=parseFloat(data.p);
-priceData[a.stream]=price;
+let price=parseFloat(data.p)*0.92;
 updatePrice(a.stream,price);
 };
 });
 }
 
 function updatePrice(stream,price){
-let eur=price*0.92;
-document.getElementById("price-"+stream).innerText=formatEUR(eur);
+let asset=state.find(a=>a.stream===stream);
+asset.price=price;
 
-historyData[stream].push(eur);
-if(historyData[stream].length>30) historyData[stream].shift();
-drawMiniChart(stream);
+histories[stream].push(price);
+if(histories[stream].length>30) histories[stream].shift();
+
+render();
 }
 
-function drawMiniChart(stream){
-new Chart(document.getElementById("chart-"+stream),{
-type:"line",
-data:{labels:historyData[stream],datasets:[{
-data:historyData[stream],
-borderColor:"#3b82f6",
-borderWidth:2,
-pointRadius:0,
-tension:0.3
-}]},
-options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{display:false}}}
-});
-}
-
-async function recalcAI(){
+async function refresh24h(){
 const res=await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&ids=bitcoin,ethereum,litecoin,ripple");
 const data=await res.json();
 
 const map={bitcoin:"btcusdt",ethereum:"ethusdt",litecoin:"ltcusdt",ripple:"xrpusdt"};
 
 data.forEach(c=>{
-let change=c.price_change_percentage_24h;
-let ai=aiEngine(change);
 let stream=map[c.id];
+let asset=state.find(a=>a.stream===stream);
+asset.change=c.price_change_percentage_24h;
+});
 
-document.getElementById("change-"+stream).innerText=change.toFixed(2)+"%";
-document.getElementById("change-"+stream).className=change>=0?"positive":"negative";
-document.getElementById("signal-"+stream).innerText=ai.signal;
-document.getElementById("signal-"+stream).className=ai.className;
+render();
+}
 
-document.getElementById("confidence-"+stream).innerHTML=
-ai.confidence+"%"+
-"<div class='confidence-wrapper'><div class='confidence-fill' style='width:"+ai.confidence+"%'></div></div>";
+function drawChart(stream){
+new Chart(document.getElementById("chart-"+stream),{
+type:"line",
+data:{labels:histories[stream],datasets:[{
+data:histories[stream],
+borderColor:"#3b82f6",
+borderWidth:1.5,
+pointRadius:0,
+tension:0.3
+}]},
+options:{
+responsive:true,
+plugins:{legend:{display:false}},
+scales:{x:{display:false},y:{display:false}}
+}
 });
 }
 
-function closeModal(){
-document.getElementById("chartModal").style.display="none";
+function sortTable(key){
+sortDirection*=-1;
+state.sort((a,b)=>{
+if(key==="name") return a.name.localeCompare(b.name)*sortDirection;
+return (a[key]-b[key])*sortDirection;
+});
+render();
 }
 
-initTable();
-startWebSockets();
-recalcAI();
-setInterval(recalcAI,60000);
+init();
 </script>
 
 </body>
