@@ -12,7 +12,7 @@
   :root {
     --bg:        linear-gradient(145deg, #1e2a38, #162133);
     --card:       #162133;
-    --input:      #1e2a38;
+    --input-bg:   #1e2a38;
     --border:     #334155;
     --accent:     #5dade2;
     --accent-dark:#2980b9;
@@ -52,8 +52,11 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+  .header-nav {
+    display: flex;
+    gap: 30px;
+  }
   .header-nav a {
-    margin-left: 28px;
     font-weight: 600;
     transition: all 0.3s;
   }
@@ -65,7 +68,7 @@
   .view { display:none; }
   .view.active { display:block; }
 
-  /* Intro / About (your original) */
+  /* Portfolio – your original style kept */
   .intro-section {
     max-width: 700px;
     margin: 40px auto 60px;
@@ -86,7 +89,7 @@
   .intro-section p {
     font-size: 1.2rem;
     line-height: 1.5;
-    color: var(--text-dim);
+    color: #b0b9c7;
     margin-bottom: 35px;
   }
   .intro-buttons {
@@ -101,6 +104,7 @@
     cursor: pointer;
     transition: all 0.3s;
     border: none;
+    color: #e0e6ed;
     font-size: 1.1rem;
     display: inline-flex;
     align-items: center;
@@ -108,7 +112,7 @@
   }
   .btn-primary {
     background: linear-gradient(90deg, #27ae60, #1e8449);
-    box-shadow: 0 6px 15px rgba(39,174,96,0.5);
+    box-shadow: 0 6px 15px rgba(39,174,96,0.6);
   }
   .btn-primary:hover {
     transform: translateY(-2px);
@@ -124,7 +128,6 @@
     transform: translateY(-2px);
   }
 
-  /* Projects (your original) */
   .projects-section {
     padding: 80px 50px;
     max-width: 1200px;
@@ -171,17 +174,16 @@
   }
   .project-card h3 {
     font-size: 1.35rem;
+    margin-bottom: 12px;
     background: linear-gradient(90deg, var(--accent), var(--accent-dark));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 12px;
   }
   .project-card p {
     font-size: 0.95rem;
     color: #c0c8d0;
   }
 
-  /* Contact – improved */
   .contact {
     background: linear-gradient(145deg, #1b2a3c, #162133);
     padding: 80px 50px;
@@ -237,12 +239,9 @@
     color: var(--accent);
     font-weight: 600;
   }
-  .contact-item a:hover {
-    text-decoration: underline;
-  }
 
-  /* Encrypt Tool – Clean & Modern */
-  .encrypt-page {
+  /* Crypto Tools – Clean & Modern */
+  .crypto-page {
     max-width: 720px;
     margin: 60px auto;
     padding: 50px 40px;
@@ -250,7 +249,7 @@
     border-radius: 20px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.5);
   }
-  .encrypt-page h1 {
+  .crypto-page h1 {
     font-size: 2.8rem;
     text-align: center;
     background: linear-gradient(90deg, var(--accent), var(--accent-dark));
@@ -258,76 +257,75 @@
     -webkit-text-fill-color: transparent;
     margin-bottom: 40px;
   }
-  .encrypt-page label {
+  .tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  @media (max-width: 900px) {
+    .tool-grid { grid-template-columns: 1fr; }
+  }
+
+  .tool-card {
+    background: rgba(30,42,56,0.7);
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid rgba(93,173,226,0.2);
+    transition: all 0.3s;
+  }
+  .tool-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(93,173,226,0.15);
+  }
+  .tool-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: var(--accent);
+  }
+  .tool-card label {
     display: block;
     margin-bottom: 10px;
     font-weight: 600;
   }
-  .encrypt-page textarea,
-  .encrypt-page input[type="password"] {
+  .tool-card textarea,
+  .tool-card input[type="password"] {
     width: 100%;
-    padding: 16px 18px;
-    border: 1px solid #334155;
-    border-radius: 12px;
-    background: #1e2a38;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--input-bg);
     color: var(--text);
-    margin-bottom: 25px;
-    font-size: 1.05rem;
+    font-size: 1rem;
+    margin-bottom: 20px;
     transition: border-color 0.3s, box-shadow 0.3s;
   }
-  .encrypt-page textarea:focus,
-  .encrypt-page input[type="password"]:focus {
+  .tool-card textarea:focus,
+  .tool-card input[type="password"]:focus {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(93,173,226,0.2);
   }
-  .encrypt-page textarea {
-    min-height: 160px;
+  .tool-card textarea {
+    min-height: 140px;
     resize: vertical;
   }
-  .encrypt-buttons {
+  .tool-card .buttons {
     display: flex;
+    gap: 20px;
     justify-content: center;
-    gap: 25px;
-    margin: 35px 0;
+    margin: 25px 0;
   }
-  .btn {
-    padding: 14px 36px;
-    font-weight: 600;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-size: 1.05rem;
-  }
-  .btn-primary {
-    background: linear-gradient(90deg, var(--green), #1e8449);
-    color: white;
-  }
-  .btn-primary:hover {
-    filter: brightness(1.1);
-    transform: translateY(-2px);
-  }
-  .btn-secondary {
-    background: transparent;
-    border: 2px solid var(--accent);
-    color: var(--accent);
-  }
-  .btn-secondary:hover {
-    background: var(--accent);
-    color: #162133;
-  }
-  .status {
+  .tool-card .status {
     text-align: center;
     font-weight: 600;
-    min-height: 28px;
-    margin-top: 15px;
-    font-size: 1.05rem;
+    min-height: 24px;
+    margin-top: 12px;
   }
   .success { color: var(--green); }
   .error   { color: var(--red); }
 
   .copy-btn {
-    margin-left: 10px;
+    margin-left: 12px;
     padding: 8px 16px;
     background: rgba(93,173,226,0.15);
     border: 1px solid var(--accent);
@@ -355,7 +353,8 @@
     .intro-buttons { flex-direction: column; gap: 15px; }
     .projects-section { padding: 60px 20px; }
     .contact { padding: 60px 20px; margin: 40px 20px; }
-    .encrypt-page { padding: 40px 20px; }
+    .crypto-page { padding: 40px 20px; }
+    .tool-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -367,11 +366,11 @@
   </div>
   <nav class="header-nav">
     <a href="#" class="active" data-view="portfolioView">Portfolio</a>
-    <a href="#" data-view="encryptView">Encrypt Tool</a>
+    <a href="#" data-view="cryptoView">Crypto Tools</a>
   </nav>
 </header>
 
-<!-- PORTFOLIO VIEW – dein Originalcode erhalten -->
+<!-- PORTFOLIO VIEW – your original preserved -->
 <section id="portfolioView" class="view active">
   <section class="intro-section" id="about">
     <h1>About me</h1>
@@ -434,35 +433,68 @@
   </section>
 </section>
 
-<!-- ENCRYPT TOOL -->
-<section id="encryptView" class="view">
-  <div class="encrypt-page">
-    <h1>Encrypt Tool</h1>
+<!-- ENCRYPT + DECRYPT TOOLS -->
+<section id="cryptoView" class="view">
+  <div class="crypto-page">
+    <h1>Crypto Tools</h1>
 
-    <label for="eIn">Message</label>
-    <textarea id="eIn" placeholder="Type or paste your message..."></textarea>
+    <div class="tool-grid">
+      <!-- Encrypt -->
+      <div class="tool-card">
+        <h2>Encrypt</h2>
+        <label for="eIn">Message</label>
+        <textarea id="eIn" placeholder="Type or paste your message..."></textarea>
 
-    <label for="ePw">
-      Password <small>(optional – leave blank for no password)</small>
-    </label>
-    <input type="password" id="ePw" placeholder="Password or leave blank" autocomplete="new-password"/>
+        <label for="ePw">
+          Password <small>(optional – leave blank for no password)</small>
+        </label>
+        <input type="password" id="ePw" placeholder="Password or leave blank" autocomplete="new-password"/>
 
-    <div class="encrypt-buttons">
-      <button id="eBtn" class="btn btn-primary" disabled>Encrypt</button>
-      <button id="eClr" class="btn btn-secondary">Clear</button>
+        <div class="encrypt-buttons">
+          <button id="eBtn" class="btn btn-primary" disabled>Encrypt</button>
+          <button id="eClr" class="btn btn-secondary">Clear</button>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;margin:25px 0 10px;">
+          <label for="eOut" style="flex:1;">Encrypted (Base64)</label>
+          <button id="copyEncrypt" class="copy-btn" style="display:none;">Copy</button>
+        </div>
+        <textarea id="eOut" readonly placeholder="Result will appear here..."></textarea>
+
+        <div id="eSt" class="status"></div>
+      </div>
+
+      <!-- Decrypt -->
+      <div class="tool-card">
+        <h2>Decrypt</h2>
+        <label for="dIn">Encrypted Message (Base64)</label>
+        <textarea id="dIn" placeholder="Paste Base64 encrypted text here..."></textarea>
+
+        <label for="dPw">
+          Password <small>(optional – leave blank if no password used)</small>
+        </label>
+        <input type="password" id="dPw" placeholder="Password or leave blank" autocomplete="new-password"/>
+
+        <div class="encrypt-buttons">
+          <button id="dBtn" class="btn btn-primary" disabled>Decrypt</button>
+          <button id="dClr" class="btn btn-secondary">Clear</button>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;margin:25px 0 10px;">
+          <label for="dOut" style="flex:1;">Decrypted Result</label>
+          <button id="copyDecrypt" class="copy-btn" style="display:none;">Copy</button>
+        </div>
+        <textarea id="dOut" readonly placeholder="Result will appear here..."></textarea>
+
+        <div id="dSt" class="status"></div>
+      </div>
     </div>
-
-    <div style="display:flex;align-items:center;gap:12px;margin-top:30px;">
-      <label for="eOut" style="flex:1;">Encrypted (Base64)</label>
-      <button id="copyEncrypt" class="copy-btn" style="display:none;">Copy</button>
-    </div>
-    <textarea id="eOut" readonly placeholder="Result will appear here..."></textarea>
-
-    <div id="eSt" class="status"></div>
   </div>
 </section>
 
-<footer>&copy; 2026 JobG. All rights reserved.</footer>
+<footer>
+  © 2026 JobG • All client-side • Works on GitHub Pages
+</footer>
 
 <script>
 // Navigation
@@ -482,7 +514,7 @@ navLinks.forEach(link => {
   });
 });
 
-// Encrypt logic
+// Crypto Helpers
 const enc = new TextEncoder();
 const dec = new TextDecoder();
 
@@ -509,23 +541,34 @@ async function encrypt(text, password = '') {
   return btoa(String.fromCharCode(...combined));
 }
 
-function toggleEncryptBtn() {
+async function decrypt(base64, password = '') {
+  const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+  if (bytes.length < 28) throw new Error('Invalid data');
+  const salt = bytes.slice(0, 16);
+  const iv = bytes.slice(16, 28);
+  const data = bytes.slice(28);
+  const { key } = await deriveKey(password, salt);
+  const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
+  return dec.decode(decrypted);
+}
+
+// Encrypt logic
+function toggleEncrypt() {
   document.getElementById('eBtn').disabled = !document.getElementById('eIn').value.trim();
   document.getElementById('copyEncrypt').style.display = document.getElementById('eOut').value ? 'inline-block' : 'none';
 }
 
-document.getElementById('eIn').oninput = document.getElementById('ePw').oninput = toggleEncryptBtn;
+document.getElementById('eIn').oninput = document.getElementById('ePw').oninput = toggleEncrypt;
 
 document.getElementById('eBtn').onclick = async () => {
   const status = document.getElementById('eSt');
   status.className = 'status';
   status.textContent = '';
-  const pw = document.getElementById('ePw').value;
   try {
-    document.getElementById('eOut').value = await encrypt(document.getElementById('eIn').value.trim(), pw);
-    status.textContent = pw ? 'Encrypted successfully!' : 'Encrypted (no password – very weak security!)';
+    document.getElementById('eOut').value = await encrypt(document.getElementById('eIn').value.trim(), document.getElementById('ePw').value);
+    status.textContent = document.getElementById('ePw').value ? 'Encrypted successfully!' : 'Encrypted (no password – very weak security!)';
     status.classList.add('success');
-    toggleEncryptBtn();
+    toggleEncrypt();
   } catch (err) {
     status.textContent = 'Error: ' + err.message;
     status.classList.add('error');
@@ -537,35 +580,74 @@ document.getElementById('eClr').onclick = () => {
   document.getElementById('ePw').value = '';
   document.getElementById('eOut').value = '';
   document.getElementById('eSt').textContent = '';
-  toggleEncryptBtn();
+  toggleEncrypt();
 };
 
-// Copy encrypted result
+// Decrypt logic
+function toggleDecrypt() {
+  document.getElementById('dBtn').disabled = !document.getElementById('dIn').value.trim();
+  document.getElementById('copyDecrypt').style.display = document.getElementById('dOut').value ? 'inline-block' : 'none';
+}
+
+document.getElementById('dIn').oninput = document.getElementById('dPw').oninput = toggleDecrypt;
+
+document.getElementById('dBtn').onclick = async () => {
+  const status = document.getElementById('dSt');
+  status.className = 'status';
+  status.textContent = '';
+  try {
+    document.getElementById('dOut').value = await decrypt(document.getElementById('dIn').value.trim(), document.getElementById('dPw').value);
+    status.textContent = document.getElementById('dPw').value ? 'Decrypted successfully!' : 'Decrypted (no password used)';
+    status.classList.add('success');
+    toggleDecrypt();
+  } catch (err) {
+    status.textContent = err.message.includes('OperationError') ? 'Wrong password or invalid data' : 'Error: ' + err.message;
+    status.classList.add('error');
+  }
+};
+
+document.getElementById('dClr').onclick = () => {
+  document.getElementById('dIn').value = '';
+  document.getElementById('dPw').value = '';
+  document.getElementById('dOut').value = '';
+  document.getElementById('dSt').textContent = '';
+  toggleDecrypt();
+};
+
+// Copy buttons
 document.getElementById('copyEncrypt').onclick = () => {
-  const out = document.getElementById('eOut');
-  out.select();
+  const el = document.getElementById('eOut');
+  el.select();
   document.execCommand('copy');
-  const status = document.getElementById('eSt');
-  status.textContent = 'Copied to clipboard!';
-  status.classList.add('success');
-  setTimeout(() => { status.textContent = ''; }, 2000);
+  const st = document.getElementById('eSt');
+  st.textContent = 'Copied!';
+  st.classList.add('success');
+  setTimeout(() => { st.textContent = ''; }, 2000);
 };
 
-// Scroll animations (your original)
+document.getElementById('copyDecrypt').onclick = () => {
+  const el = document.getElementById('dOut');
+  el.select();
+  document.execCommand('copy');
+  const st = document.getElementById('dSt');
+  st.textContent = 'Copied!';
+  st.classList.add('success');
+  setTimeout(() => { st.textContent = ''; }, 2000);
+};
+
+// Scroll reveal (your original)
 const cards = document.querySelectorAll('.project-card');
-const contactSection = document.querySelector('.contact');
+const contact = document.querySelector('.contact');
 const footer = document.querySelector('footer');
 
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
+    if (entry.isIntersecting) entry.target.classList.add('visible');
   });
 }, { threshold: 0.1 });
 
-cards.forEach(card => observer.observe(card));
-observer.observe(contactSection);
+cards.forEach(c => observer.observe(c));
+observer.observe(contact);
 observer.observe(footer);
 
 // Init
