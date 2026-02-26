@@ -2,340 +2,361 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Portfolio + Crypto Tools - JobG</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JobG • Portfolio & Crypto Tools</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(145deg, #1e2a38, #162133);
-  color: #e0e6ed;
-  scroll-behavior: smooth;
-  min-height: 100vh;
-}
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* Header */
-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 50px;
-  background: rgba(30, 42, 56, 0.92);
-  backdrop-filter: blur(10px);
-  border-bottom: 2px solid #0f1b2a;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
-.header-left h1 {
-  font-size: 1.9rem;
-  font-weight: 800;
-  background: linear-gradient(90deg, #5dade2, #2980b9);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.header-nav a {
-  margin-left: 28px;
-  font-weight: 600;
-  color: #e0e6ed;
-  transition: color 0.3s, transform 0.3s;
-}
-.header-nav a:hover,
-.header-nav a.active {
-  color: #5dade2;
-  transform: translateY(-2px);
-}
-@media (max-width: 768px) {
-  header {
-    flex-direction: column;
-    padding: 15px 20px;
+  :root {
+    --bg:        linear-gradient(145deg, #1e2a38, #162133);
+    --card:       #162133;
+    --input:      #1e2a38;
+    --border:     #334155;
+    --accent:     #5dade2;
+    --accent-dark:#2980b9;
+    --green:      #22c55e;
+    --red:        #ef4444;
+    --text:       #e0e6ed;
+    --text-dim:   #b0b9c7;
   }
-  .header-nav {
-    margin-top: 12px;
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    scroll-behavior: smooth;
+  }
+  a { text-decoration:none; color:inherit; }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background: rgba(30,42,56,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid #0f1b2a;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  }
+  .header-left h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   .header-nav a {
-    margin-left: 15px;
+    margin-left: 28px;
+    font-weight: 600;
+    transition: all 0.3s;
   }
-}
+  .header-nav a:hover, .header-nav a.active {
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
 
-/* View switching */
-.view {
-  display: none;
-}
-.view.active {
-  display: block;
-}
+  .view { display:none; }
+  .view.active { display:block; }
 
-/* Intro - About Me (your original) */
-.intro-section {
-  max-width: 700px;
-  margin: 40px auto 60px;
-  padding: 30px 25px;
-  background: #162133;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-  text-align: center;
-}
-.intro-section h1 {
-  font-size: 3.2rem;
-  font-weight: 900;
-  background: linear-gradient(90deg, #5dade2, #2980b9);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  line-height: 1.15;
-  margin-bottom: 25px;
-}
-.intro-section p {
-  font-size: 1.2rem;
-  line-height: 1.5;
-  color: #b0b9c7;
-  margin-bottom: 35px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.intro-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-}
-.btn {
-  padding: 16px 40px;
-  font-weight: 600;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-  color: #e0e6ed;
-  font-size: 1.1rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-.btn-primary {
-  background: linear-gradient(90deg, #27ae60, #1e8449);
-  box-shadow: 0 6px 15px rgba(39,174,96,0.6);
-}
-.btn-primary:hover {
-  background: linear-gradient(90deg, #1e8449, #166633);
-  transform: translateY(-2px);
-}
-.btn-secondary {
-  background: transparent;
-  border: 2px solid #5dade2;
-  color: #5dade2;
-}
-.btn-secondary:hover {
-  background: #5dade2;
-  color: #162133;
-  transform: translateY(-2px);
-}
+  /* Intro / About (your original) */
+  .intro-section {
+    max-width: 700px;
+    margin: 40px auto 60px;
+    padding: 30px 25px;
+    background: #162133;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    text-align: center;
+  }
+  .intro-section h1 {
+    font-size: 3.2rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 25px;
+  }
+  .intro-section p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--text-dim);
+    margin-bottom: 35px;
+  }
+  .intro-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+  }
+  .btn {
+    padding: 16px 40px;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn-primary {
+    background: linear-gradient(90deg, #27ae60, #1e8449);
+    box-shadow: 0 6px 15px rgba(39,174,96,0.5);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+  }
+  .btn-secondary {
+    background: transparent;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+  }
+  .btn-secondary:hover {
+    background: var(--accent);
+    color: #162133;
+    transform: translateY(-2px);
+  }
 
-/* Projects (your original with minor polish) */
-.projects-section {
-  padding: 80px 50px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.projects-section h2 {
-  text-align: center;
-  font-size: 2.4rem;
-  margin-bottom: 50px;
-  background: linear-gradient(90deg, #5dade2, #2980b9);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.projects {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-}
-.project-card {
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(30px);
-}
-.project-card.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.project-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
-}
-.project-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  filter: brightness(0.75);
-}
-.card-content {
-  background: #1e2a38;
-  padding: 20px;
-}
-.project-card h3 {
-  font-size: 1.35rem;
-  margin-bottom: 12px;
-  background: linear-gradient(90deg, #5dade2, #2980b9);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.project-card p {
-  font-size: 0.95rem;
-  color: #c0c8d0;
-}
+  /* Projects (your original) */
+  .projects-section {
+    padding: 80px 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .projects-section h2 {
+    text-align: center;
+    font-size: 2.4rem;
+    margin-bottom: 50px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+  }
+  .project-card {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    transition: all 0.4s;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  .project-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .project-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  }
+  .project-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    filter: brightness(0.75);
+  }
+  .card-content {
+    background: #1e2a38;
+    padding: 20px;
+  }
+  .project-card h3 {
+    font-size: 1.35rem;
+    background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+  .project-card p {
+    font-size: 0.95rem;
+    color: #c0c8d0;
+  }
 
-/* Improved Contact Section */
-.contact {
-  background: linear-gradient(145deg, #1b2a3c, #162133);
-  padding: 80px 40px;
-  text-align: center;
-  border-radius: 20px;
-  margin: 60px auto;
-  max-width: 900px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s ease;
-}
-.contact.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.contact h2 {
-  font-size: 2.6rem;
-  margin-bottom: 50px;
-  background: linear-gradient(90deg, #5dade2, #2980b9);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.contact-grid {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-}
-.contact-item {
-  background: rgba(30, 42, 56, 0.8);
-  padding: 30px 40px;
-  border-radius: 16px;
-  min-width: 260px;
-  transition: all 0.4s ease;
-  border: 1px solid rgba(93, 173, 226, 0.2);
-}
-.contact-item:hover {
-  transform: translateY(-8px);
-  background: rgba(93, 173, 226, 0.08);
-  border-color: #5dade2;
-}
-.contact-item i {
-  font-size: 2.2rem;
-  margin-bottom: 15px;
-  color: #5dade2;
-}
-.contact-item h3 {
-  font-size: 1.3rem;
-  margin-bottom: 12px;
-}
-.contact-item a {
-  color: #5dade2;
-  font-weight: 600;
-}
-.contact-item a:hover {
-  text-decoration: underline;
-}
+  /* Contact – improved */
+  .contact {
+    background: linear-gradient(145deg, #1b2a3c, #162133);
+    padding: 80px 50px;
+    text-align: center;
+    border-radius: 20px;
+    margin: 60px auto;
+    max-width: 900px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+  }
+  .contact.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .contact h2 {
+    font-size: 2.6rem;
+    margin-bottom: 50px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .contact-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .contact-item {
+    background: rgba(30,42,56,0.8);
+    padding: 30px 40px;
+    border-radius: 16px;
+    min-width: 260px;
+    transition: all 0.4s;
+    border: 1px solid rgba(93,173,226,0.2);
+  }
+  .contact-item:hover {
+    transform: translateY(-8px);
+    background: rgba(93,173,226,0.12);
+    border-color: var(--accent);
+  }
+  .contact-item i {
+    font-size: 2.4rem;
+    margin-bottom: 15px;
+    color: var(--accent);
+  }
+  .contact-item h3 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  .contact-item a {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .contact-item a:hover {
+    text-decoration: underline;
+  }
 
-/* Tool Pages - Clean & Modern */
-.tool-page {
-  max-width: 720px;
-  margin: 60px auto;
-  padding: 50px 40px;
-  background: #162133;
-  border-radius: 20px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-}
-.tool-page h1 {
-  font-size: 2.8rem;
-  text-align: center;
-  background: linear-gradient(90deg, #5dade2, #2980b9);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 40px;
-}
-.tool-page label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-.tool-page textarea,
-.tool-page input[type="password"] {
-  width: 100%;
-  padding: 16px;
-  border: 1px solid #334155;
-  border-radius: 12px;
-  background: #1e2a38;
-  color: #e0e6ed;
-  margin-bottom: 25px;
-  font-size: 1.05rem;
-}
-.tool-page textarea {
-  min-height: 160px;
-  resize: vertical;
-}
-.tool-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  margin: 35px 0;
-}
-.status {
-  text-align: center;
-  font-weight: 600;
-  min-height: 28px;
-  margin-top: 15px;
-  font-size: 1.05rem;
-}
-.success { color: #22c55e; }
-.error   { color: #ef4444; }
+  /* Encrypt Tool – Clean & Modern */
+  .encrypt-page {
+    max-width: 720px;
+    margin: 60px auto;
+    padding: 50px 40px;
+    background: #162133;
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+  .encrypt-page h1 {
+    font-size: 2.8rem;
+    text-align: center;
+    background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 40px;
+  }
+  .encrypt-page label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .encrypt-page textarea,
+  .encrypt-page input[type="password"] {
+    width: 100%;
+    padding: 16px 18px;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    background: #1e2a38;
+    color: var(--text);
+    margin-bottom: 25px;
+    font-size: 1.05rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .encrypt-page textarea:focus,
+  .encrypt-page input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(93,173,226,0.2);
+  }
+  .encrypt-page textarea {
+    min-height: 160px;
+    resize: vertical;
+  }
+  .encrypt-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin: 35px 0;
+  }
+  .btn {
+    padding: 14px 36px;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1.05rem;
+  }
+  .btn-primary {
+    background: linear-gradient(90deg, var(--green), #1e8449);
+    color: white;
+  }
+  .btn-primary:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+  }
+  .btn-secondary {
+    background: transparent;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+  }
+  .btn-secondary:hover {
+    background: var(--accent);
+    color: #162133;
+  }
+  .status {
+    text-align: center;
+    font-weight: 600;
+    min-height: 28px;
+    margin-top: 15px;
+    font-size: 1.05rem;
+  }
+  .success { color: var(--green); }
+  .error   { color: var(--red); }
 
-/* Footer */
-footer {
-  text-align: center;
-  padding: 30px;
-  color: #8899aa;
-  font-size: 0.95rem;
-}
+  .copy-btn {
+    margin-left: 10px;
+    padding: 8px 16px;
+    background: rgba(93,173,226,0.15);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover {
+    background: var(--accent);
+    color: #162133;
+  }
 
-/* Mobile adjustments */
-@media (max-width: 768px) {
-  header { flex-direction: column; padding: 15px 20px; }
-  .header-nav { margin-top: 10px; }
-  .intro-buttons { flex-direction: column; gap: 15px; }
-  .projects-section { padding: 60px 20px; }
-  .contact { padding: 60px 20px; margin: 40px 20px; }
-  .tool-page { padding: 40px 20px; }
-}
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: #8899aa;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 768px) {
+    header { flex-direction: column; padding: 15px 20px; }
+    .header-nav { margin-top: 10px; gap: 20px; }
+    .intro-buttons { flex-direction: column; gap: 15px; }
+    .projects-section { padding: 60px 20px; }
+    .contact { padding: 60px 20px; margin: 40px 20px; }
+    .encrypt-page { padding: 40px 20px; }
+  }
 </style>
 </head>
 <body>
@@ -346,14 +367,12 @@ footer {
   </div>
   <nav class="header-nav">
     <a href="#" class="active" data-view="portfolioView">Portfolio</a>
-    <a href="#" data-view="encryptView">Encrypt</a>
-    <a href="#" data-view="decryptView">Decrypt</a>
+    <a href="#" data-view="encryptView">Encrypt Tool</a>
   </nav>
 </header>
 
-<!-- PORTFOLIO VIEW (your original code preserved) -->
+<!-- PORTFOLIO VIEW – dein Originalcode erhalten -->
 <section id="portfolioView" class="view active">
-  <!-- Intro Section -->
   <section class="intro-section" id="about">
     <h1>About me</h1>
     <p>
@@ -366,7 +385,6 @@ footer {
     </div>
   </section>
 
-  <!-- Projects Section -->
   <section class="projects-section" id="projects">
     <h2>Projects</h2>
     <div class="projects">
@@ -394,74 +412,53 @@ footer {
     </div>
   </section>
 
-  <!-- Improved Contact Section -->
   <section class="contact" id="contact">
     <h2>Contact Me</h2>
-    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; margin-top: 30px;">
-      <a href="mailto:JobGS@proton.me" style="min-width: 260px;">
-        <i class="fas fa-envelope" style="font-size: 2.2rem; color: #5dade2; margin-bottom: 15px;"></i>
-        <div style="font-weight: 600; font-size: 1.2rem;">Email</div>
-        <div style="margin-top: 8px; color: #b0b9c7;">JobGS@proton.me</div>
-      </a>
-      <a href="https://discord.com/users/706661207767253142" target="_blank" style="min-width: 260px;">
-        <i class="fab fa-discord" style="font-size: 2.2rem; color: #5dade2; margin-bottom: 15px;"></i>
-        <div style="font-weight: 600; font-size: 1.2rem;">Discord</div>
-        <div style="margin-top: 8px; color: #b0b9c7;">JobG#0001</div>
-      </a>
-      <a href="https://github.com/jobcenterai" target="_blank" style="min-width: 260px;">
-        <i class="fab fa-github" style="font-size: 2.2rem; color: #5dade2; margin-bottom: 15px;"></i>
-        <div style="font-weight: 600; font-size: 1.2rem;">GitHub</div>
-        <div style="margin-top: 8px; color: #b0b9c7;">@jobcenterai</div>
-      </a>
+    <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:40px;margin-top:40px;">
+      <div class="contact-item" style="background:rgba(30,42,56,0.8);padding:30px 40px;border-radius:16px;min-width:260px;transition:all 0.4s;border:1px solid rgba(93,173,226,0.2);">
+        <i class="fas fa-envelope" style="font-size:2.4rem;color:#5dade2;margin-bottom:15px;"></i>
+        <h3>Email</h3>
+        <a href="mailto:JobGS@proton.me">JobGS@proton.me</a>
+      </div>
+      <div class="contact-item" style="background:rgba(30,42,56,0.8);padding:30px 40px;border-radius:16px;min-width:260px;transition:all 0.4s;border:1px solid rgba(93,173,226,0.2);">
+        <i class="fab fa-discord" style="font-size:2.4rem;color:#5dade2;margin-bottom:15px;"></i>
+        <h3>Discord</h3>
+        <a href="https://discord.com/users/706661207767253142" target="_blank">JobG#0001</a>
+      </div>
+      <div class="contact-item" style="background:rgba(30,42,56,0.8);padding:30px 40px;border-radius:16px;min-width:260px;transition:all 0.4s;border:1px solid rgba(93,173,226,0.2);">
+        <i class="fab fa-github" style="font-size:2.4rem;color:#5dade2;margin-bottom:15px;"></i>
+        <h3>GitHub</h3>
+        <a href="https://github.com/jobcenterai" target="_blank">@jobcenterai</a>
+      </div>
     </div>
   </section>
 </section>
 
 <!-- ENCRYPT TOOL -->
 <section id="encryptView" class="view">
-  <div class="tool-page">
+  <div class="encrypt-page">
     <h1>Encrypt Tool</h1>
-    <label for="eIn">Message to Encrypt</label>
-    <textarea id="eIn" placeholder="Type or paste your message here..."></textarea>
+
+    <label for="eIn">Message</label>
+    <textarea id="eIn" placeholder="Type or paste your message..."></textarea>
 
     <label for="ePw">
-      Password <small>(optional – leave empty for no password)</small>
+      Password <small>(optional – leave blank for no password)</small>
     </label>
-    <input type="password" id="ePw" placeholder="Password or leave blank" autocomplete="new-password" />
+    <input type="password" id="ePw" placeholder="Password or leave blank" autocomplete="new-password"/>
 
-    <div class="tool-buttons">
+    <div class="encrypt-buttons">
       <button id="eBtn" class="btn btn-primary" disabled>Encrypt</button>
       <button id="eClr" class="btn btn-secondary">Clear</button>
     </div>
 
-    <label for="eOut">Encrypted Output (Base64)</label>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:30px;">
+      <label for="eOut" style="flex:1;">Encrypted (Base64)</label>
+      <button id="copyEncrypt" class="copy-btn" style="display:none;">Copy</button>
+    </div>
     <textarea id="eOut" readonly placeholder="Result will appear here..."></textarea>
 
     <div id="eSt" class="status"></div>
-  </div>
-</section>
-
-<!-- DECRYPT TOOL -->
-<section id="decryptView" class="view">
-  <div class="tool-page">
-    <h1>Decrypt Tool</h1>
-    <label for="dIn">Encrypted Message (Base64)</label>
-    <textarea id="dIn" placeholder="Paste the encrypted Base64 message here..."></textarea>
-
-    <label for="dPw">
-      Password <small>(optional – leave empty if no password was used)</small>
-    </label>
-    <input type="password" id="dPw" placeholder="Password or leave blank" autocomplete="new-password" />
-
-    <div class="tool-buttons">
-      <button id="dBtn" class="btn btn-primary" disabled>Decrypt</button>
-      <button id="dClr" class="btn btn-secondary">Clear</button>
-    </div>
-
-    <label for="dOut">Decrypted Output</label>
-    <textarea id="dOut" readonly placeholder="Result will appear here..."></textarea>
-
-    <div id="dSt" class="status"></div>
   </div>
 </section>
 
@@ -481,12 +478,11 @@ function showView(viewId) {
 navLinks.forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
-    const viewId = link.getAttribute('data-view');
-    showView(viewId);
+    showView(link.getAttribute('data-view'));
   });
 });
 
-// Crypto Functions
+// Encrypt logic
 const enc = new TextEncoder();
 const dec = new TextDecoder();
 
@@ -513,21 +509,11 @@ async function encrypt(text, password = '') {
   return btoa(String.fromCharCode(...combined));
 }
 
-async function decrypt(base64, password = '') {
-  const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
-  if (bytes.length < 28) throw new Error('Invalid data');
-  const salt = bytes.slice(0, 16);
-  const iv = bytes.slice(16, 28);
-  const data = bytes.slice(28);
-  const { key } = await deriveKey(password, salt);
-  const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
-  return dec.decode(decrypted);
-}
-
-// Encrypt Tool
 function toggleEncryptBtn() {
   document.getElementById('eBtn').disabled = !document.getElementById('eIn').value.trim();
+  document.getElementById('copyEncrypt').style.display = document.getElementById('eOut').value ? 'inline-block' : 'none';
 }
+
 document.getElementById('eIn').oninput = document.getElementById('ePw').oninput = toggleEncryptBtn;
 
 document.getElementById('eBtn').onclick = async () => {
@@ -537,8 +523,9 @@ document.getElementById('eBtn').onclick = async () => {
   const pw = document.getElementById('ePw').value;
   try {
     document.getElementById('eOut').value = await encrypt(document.getElementById('eIn').value.trim(), pw);
-    status.textContent = pw ? 'Encrypted successfully!' : 'Encrypted (no password – very weak!)';
+    status.textContent = pw ? 'Encrypted successfully!' : 'Encrypted (no password – very weak security!)';
     status.classList.add('success');
+    toggleEncryptBtn();
   } catch (err) {
     status.textContent = 'Error: ' + err.message;
     status.classList.add('error');
@@ -553,36 +540,18 @@ document.getElementById('eClr').onclick = () => {
   toggleEncryptBtn();
 };
 
-// Decrypt Tool
-function toggleDecryptBtn() {
-  document.getElementById('dBtn').disabled = !document.getElementById('dIn').value.trim();
-}
-document.getElementById('dIn').oninput = document.getElementById('dPw').oninput = toggleDecryptBtn;
-
-document.getElementById('dBtn').onclick = async () => {
-  const status = document.getElementById('dSt');
-  status.className = 'status';
-  status.textContent = '';
-  const pw = document.getElementById('dPw').value;
-  try {
-    document.getElementById('dOut').value = await decrypt(document.getElementById('dIn').value.trim(), pw);
-    status.textContent = pw ? 'Decrypted successfully!' : 'Decrypted (no password used)';
-    status.classList.add('success');
-  } catch (err) {
-    status.textContent = err.message.includes('OperationError') ? 'Wrong password or invalid data' : 'Error: ' + err.message;
-    status.classList.add('error');
-  }
+// Copy encrypted result
+document.getElementById('copyEncrypt').onclick = () => {
+  const out = document.getElementById('eOut');
+  out.select();
+  document.execCommand('copy');
+  const status = document.getElementById('eSt');
+  status.textContent = 'Copied to clipboard!';
+  status.classList.add('success');
+  setTimeout(() => { status.textContent = ''; }, 2000);
 };
 
-document.getElementById('dClr').onclick = () => {
-  document.getElementById('dIn').value = '';
-  document.getElementById('dPw').value = '';
-  document.getElementById('dOut').value = '';
-  document.getElementById('dSt').textContent = '';
-  toggleDecryptBtn();
-};
-
-// Your original scroll animations
+// Scroll animations (your original)
 const cards = document.querySelectorAll('.project-card');
 const contactSection = document.querySelector('.contact');
 const footer = document.querySelector('footer');
@@ -599,7 +568,7 @@ cards.forEach(card => observer.observe(card));
 observer.observe(contactSection);
 observer.observe(footer);
 
-// Initialize
+// Init
 showView('portfolioView');
 </script>
 </body>
