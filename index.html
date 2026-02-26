@@ -1,496 +1,606 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>JobG • Portfolio • Crypto Tools • Public Chat</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-  <style>
-    :root {
-      --bg: linear-gradient(135deg, #0d1117 0%, #0a0e17 100%);
-      --card: rgba(13, 17, 23, 0.94);
-      --glass: rgba(13, 17, 23, 0.78);
-      --accent: #58a6ff;
-      --accent-dark: #388bfd;
-      --accent-glow: rgba(88, 166, 255, 0.16);
-      --green: #3fb950;
-      --red: #f85149;
-      --text: #c9d1d9;
-      --text-dim: #8b949e;
-      --border: rgba(88, 166, 255, 0.14);
-      --shadow-sm: 0 8px 25px rgba(0,0,0,0.35);
-      --shadow-lg: 0 25px 70px rgba(0,0,0,0.55);
-    }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      line-height: 1.65;
-    }
-    a { text-decoration:none; color:inherit; }
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.3rem 6vw;
-      background: rgba(13,17,23,0.94);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 6px 35px rgba(0,0,0,0.5);
-    }
-    .logo {
-      font-size: 2.05rem;
-      font-weight: 900;
-      background: linear-gradient(90deg, var(--accent), #79c0ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    nav a {
-      margin-left: 2.4rem;
-      font-weight: 600;
-      color: var(--text-dim);
-      transition: all 0.3s;
-    }
-    nav a:hover, nav a.active { color: white; transform: translateY(-1.5px); }
-    main { flex: 1; padding: 2.5rem 6vw; max-width: 1100px; margin: 0 auto; width: 100%; }
-    .view { display: none; animation: fadeUp 0.7s ease; }
-    .view.active { display: block; }
-    @keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:none; } }
-    .hero {
-      background: var(--card);
-      backdrop-filter: blur(24px);
-      border: 1px solid var(--border);
-      border-radius: 28px;
-      padding: 6rem 4rem;
-      text-align: center;
-      margin: 3.5rem auto;
-      max-width: 960px;
-      box-shadow: var(--shadow-lg);
-    }
-    .hero h1 {
-      font-size: 4.8rem;
-      font-weight: 900;
-      background: linear-gradient(90deg, #58a6ff, #79c0ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 1.8rem;
-    }
-    .hero .role {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.45rem;
-      color: var(--accent);
-      margin-bottom: 2.4rem;
-    }
-    .hero p { font-size: 1.32rem; color: var(--text-dim); max-width: 780px; margin: 0 auto 3.5rem; }
-    .actions { display: flex; justify-content: center; gap: 1.8rem; flex-wrap: wrap; }
-    .btn {
-      padding: 1.05rem 2.8rem;
-      border-radius: 14px;
-      font-weight: 600;
-      font-size: 1.12rem;
-      transition: all 0.35s;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
-    .btn-primary { background: linear-gradient(90deg, #238636, #2ea043); color: white; }
-    .btn-primary:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(46,160,67,0.5); }
-    .btn-outline { border: 2px solid var(--accent); color: var(--accent); }
-    .btn-outline:hover { background: var(--accent); color: #0d1117; transform: translateY(-5px); }
-    .projects-section { margin: 6rem 0; }
-    .projects-section h2 {
-      text-align: center;
-      font-size: 2.8rem;
-      background: linear-gradient(90deg, var(--accent), #79c0ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 4rem;
-    }
-    .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.2rem; }
-    .project-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-      transition: all 0.4s;
-      cursor: pointer;
-    }
-    .project-card:hover { transform: translateY(-14px); box-shadow: 0 25px 70px rgba(0,0,0,0.55); }
-    .project-card img { width: 100%; height: 220px; object-fit: cover; }
-    .project-card .content { padding: 1.8rem 2rem; }
-    .project-card h3 { font-size: 1.55rem; color: var(--accent); margin-bottom: 1rem; }
-    .project-card p { color: var(--text-dim); font-size: 1.05rem; }
-    .tool-card {
-      background: var(--glass);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 3.2rem;
-      margin: 4rem auto;
-      max-width: 820px;
-      box-shadow: var(--shadow-lg);
-    }
-    .tool-card h2 {
-      text-align: center;
-      font-size: 2.8rem;
-      background: linear-gradient(90deg, var(--accent), #79c0ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 2.4rem;
-    }
-    label { display: block; margin-bottom: 0.7rem; font-weight: 600; color: var(--text-dim); }
-    textarea, input {
-      width: 100%;
-      padding: 1rem 1.3rem;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: rgba(30,41,59,0.75);
-      color: var(--text);
-      font-size: 1.05rem;
-    }
-    textarea:focus, input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); outline: none; }
-    textarea { min-height: 150px; resize: vertical; }
-    .action-row { display: flex; gap: 1.4rem; justify-content: center; margin: 2.2rem 0; flex-wrap: wrap; }
-    button {
-      padding: 1rem 2.4rem;
-      border: none;
-      border-radius: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .tool-btn { background: linear-gradient(90deg, var(--accent), var(--accent-dark)); color: #0d1117; }
-    .chat-btn { background: linear-gradient(90deg, var(--green), #2ea043); color: white; }
-    button:hover:not(:disabled) { transform: translateY(-4px); }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
-    .status { text-align: center; font-weight: 600; min-height: 24px; margin-top: 1rem; }
-    .ok { color: var(--green); }
-    .err { color: var(--red); }
-    .chat-card {
-      background: var(--glass);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 3.2rem;
-      margin: 4rem auto;
-      max-width: 820px;
-      box-shadow: var(--shadow-lg);
-      display: flex;
-      flex-direction: column;
-      height: 720px;
-    }
-    .chat-card h2 {
-      text-align: center;
-      font-size: 2.8rem;
-      background: linear-gradient(90deg, var(--accent), #79c0ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 2rem;
-    }
-    .room-create {
-      display: flex;
-      gap: 1.2rem;
-      margin-bottom: 1.8rem;
-      flex-wrap: wrap;
-    }
-    .room-create > * { flex: 1; min-width: 200px; }
-    .chat-messages {
-      background: rgba(30,41,59,0.8);
-      flex: 1;
-      border-radius: 16px;
-      padding: 1.6rem;
-      overflow-y: auto;
-      margin-bottom: 1.6rem;
-      line-height: 1.7;
-    }
-    .chat-inputs { display: flex; flex-direction: column; gap: 1.2rem; }
-    #delete-all {
-      background: linear-gradient(90deg, var(--red), #d32f2f);
-      color: white;
-      margin-top: 1.4rem;
-      width: 100%;
-      padding: 1.1rem;
-    }
-    footer {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: var(--text-dim);
-      font-size: 0.98rem;
-      border-top: 1px solid var(--border);
-    }
-    @media (max-width: 768px) {
-      header { flex-direction: column; padding: 1.2rem 1.8rem; }
-      nav { margin-top: 1.2rem; flex-wrap: wrap; gap: 1.4rem; }
-      nav a { margin-left: 0; }
-      main { padding: 1.8rem 1.2rem; }
-      .hero { padding: 4rem 2.2rem; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Portfolio + Crypto Tools - JobG</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(145deg, #1e2a38, #162133);
+  color: #e0e6ed;
+  scroll-behavior: smooth;
+  min-height: 100vh;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Header */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background: rgba(30, 42, 56, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid #0f1b2a;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+.header-left h1 {
+  font-size: 1.9rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #5dade2, #2980b9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.header-nav a {
+  margin-left: 28px;
+  font-weight: 600;
+  color: #e0e6ed;
+  transition: color 0.3s, transform 0.3s;
+}
+.header-nav a:hover,
+.header-nav a.active {
+  color: #5dade2;
+  transform: translateY(-2px);
+}
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    padding: 15px 20px;
+  }
+  .header-nav {
+    margin-top: 12px;
+  }
+  .header-nav a {
+    margin-left: 15px;
+  }
+}
+
+/* View switching */
+.view {
+  display: none;
+}
+.view.active {
+  display: block;
+}
+
+/* Intro - About Me (your original) */
+.intro-section {
+  max-width: 700px;
+  margin: 40px auto 60px;
+  padding: 30px 25px;
+  background: #162133;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+.intro-section h1 {
+  font-size: 3.2rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #5dade2, #2980b9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.15;
+  margin-bottom: 25px;
+}
+.intro-section p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: #b0b9c7;
+  margin-bottom: 35px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.intro-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+}
+.btn {
+  padding: 16px 40px;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  color: #e0e6ed;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.btn-primary {
+  background: linear-gradient(90deg, #27ae60, #1e8449);
+  box-shadow: 0 6px 15px rgba(39,174,96,0.6);
+}
+.btn-primary:hover {
+  background: linear-gradient(90deg, #1e8449, #166633);
+  transform: translateY(-2px);
+}
+.btn-secondary {
+  background: transparent;
+  border: 2px solid #5dade2;
+  color: #5dade2;
+}
+.btn-secondary:hover {
+  background: #5dade2;
+  color: #162133;
+  transform: translateY(-2px);
+}
+
+/* Projects (your original with minor polish) */
+.projects-section {
+  padding: 80px 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.projects-section h2 {
+  text-align: center;
+  font-size: 2.4rem;
+  margin-bottom: 50px;
+  background: linear-gradient(90deg, #5dade2, #2980b9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+.project-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(30px);
+}
+.project-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.project-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+.project-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  filter: brightness(0.75);
+}
+.card-content {
+  background: #1e2a38;
+  padding: 20px;
+}
+.project-card h3 {
+  font-size: 1.35rem;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #5dade2, #2980b9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.project-card p {
+  font-size: 0.95rem;
+  color: #c0c8d0;
+}
+
+/* Improved Contact Section */
+.contact {
+  background: linear-gradient(145deg, #1b2a3c, #162133);
+  padding: 80px 40px;
+  text-align: center;
+  border-radius: 20px;
+  margin: 60px auto;
+  max-width: 900px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+.contact.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.contact h2 {
+  font-size: 2.6rem;
+  margin-bottom: 50px;
+  background: linear-gradient(90deg, #5dade2, #2980b9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.contact-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.contact-item {
+  background: rgba(30, 42, 56, 0.8);
+  padding: 30px 40px;
+  border-radius: 16px;
+  min-width: 260px;
+  transition: all 0.4s ease;
+  border: 1px solid rgba(93, 173, 226, 0.2);
+}
+.contact-item:hover {
+  transform: translateY(-8px);
+  background: rgba(93, 173, 226, 0.08);
+  border-color: #5dade2;
+}
+.contact-item i {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  color: #5dade2;
+}
+.contact-item h3 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+.contact-item a {
+  color: #5dade2;
+  font-weight: 600;
+}
+.contact-item a:hover {
+  text-decoration: underline;
+}
+
+/* Tool Pages - Clean & Modern */
+.tool-page {
+  max-width: 720px;
+  margin: 60px auto;
+  padding: 50px 40px;
+  background: #162133;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+.tool-page h1 {
+  font-size: 2.8rem;
+  text-align: center;
+  background: linear-gradient(90deg, #5dade2, #2980b9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 40px;
+}
+.tool-page label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.tool-page textarea,
+.tool-page input[type="password"] {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  background: #1e2a38;
+  color: #e0e6ed;
+  margin-bottom: 25px;
+  font-size: 1.05rem;
+}
+.tool-page textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+.tool-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin: 35px 0;
+}
+.status {
+  text-align: center;
+  font-weight: 600;
+  min-height: 28px;
+  margin-top: 15px;
+  font-size: 1.05rem;
+}
+.success { color: #22c55e; }
+.error   { color: #ef4444; }
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 30px;
+  color: #8899aa;
+  font-size: 0.95rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  header { flex-direction: column; padding: 15px 20px; }
+  .header-nav { margin-top: 10px; }
+  .intro-buttons { flex-direction: column; gap: 15px; }
+  .projects-section { padding: 60px 20px; }
+  .contact { padding: 60px 20px; margin: 40px 20px; }
+  .tool-page { padding: 40px 20px; }
+}
+</style>
 </head>
 <body>
 
 <header>
-  <div class="logo">JobG</div>
-  <nav>
+  <div class="header-left">
+    <h1>JobG</h1>
+  </div>
+  <nav class="header-nav">
     <a href="#" class="active" data-view="portfolioView">Portfolio</a>
     <a href="#" data-view="encryptView">Encrypt</a>
     <a href="#" data-view="decryptView">Decrypt</a>
-    <a href="#" data-view="chatView">Public Chat</a>
   </nav>
 </header>
 
-<main>
-
-  <section id="portfolioView" class="view active">
-    <div class="hero">
-      <h1>Hey, I'm JobG</h1>
-      <div class="role">Developer • Cryptography Enthusiast • Privacy Advocate</div>
-      <p>
-        I build clean, fast, secure web tools with a focus on privacy and trust.<br><br>
-        This site runs 100% in your browser — no server, no tracking. All public rooms & messages are shared across tabs and browsers on the same device/profile.
-      </p>
-      <div class="actions">
-        <a href="#projects" class="btn btn-primary"><i class="fas fa-rocket"></i> Explore</a>
-        <a href="#contact" class="btn btn-outline"><i class="fas fa-handshake"></i> Connect</a>
-      </div>
+<!-- PORTFOLIO VIEW (your original code preserved) -->
+<section id="portfolioView" class="view active">
+  <!-- Intro Section -->
+  <section class="intro-section" id="about">
+    <h1>About me</h1>
+    <p>
+      I am a new developer dedicated to crafting intuitive, reliable software.<br>
+      My focus is on building practical solutions users can trust.
+    </p>
+    <div class="intro-buttons">
+      <a href="#projects" class="btn btn-primary"><i class="fas fa-code"></i> View Projects</a>
+      <a href="#contact" class="btn btn-secondary"><i class="fas fa-envelope"></i> Get in Touch</a>
     </div>
+  </section>
 
-    <section class="projects-section">
-      <h2>My Projects</h2>
-      <div class="project-grid">
-        <div class="project-card" onclick="show('chatView')">
-          <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476269904318697585/20.png" alt="LethalExchange">
-          <div class="content">
-            <h3><i class="fas fa-exchange-alt"></i> LethalExchange</h3>
-            <p>Secure peer-to-peer exchange platform.</p>
-          </div>
-        </div>
-        <div class="project-card" onclick="show('chatView')">
-          <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476272959084564722/19.png" alt="Marketplace">
-          <div class="content">
-            <h3><i class="fas fa-store"></i> Discord Marketplace</h3>
-            <p>Digital goods marketplace on Discord.</p>
-          </div>
-        </div>
-        <div class="project-card" onclick="show('chatView')">
-          <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800" alt="Crypto Suite">
-          <div class="content">
-            <h3><i class="fas fa-shield-alt"></i> Crypto Suite</h3>
-            <p>Encrypt/Decrypt + public shared chat — all local.</p>
-          </div>
+  <!-- Projects Section -->
+  <section class="projects-section" id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="project-card">
+        <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476269904318697585/20.png?ex=69a082fc&is=699f317c&hm=77f2e287cb833462ef956ff98254e87ff836a960782b975f7a0e7712001cc9c3&" alt="LethalExchange" />
+        <div class="card-content">
+          <h3><i class="fas fa-exchange-alt"></i> LethalExchange</h3>
+          <p>Secure online exchange platform – fast, convenient, and reliable transactions.</p>
         </div>
       </div>
-    </section>
-  </section>
-
-  <section id="encryptView" class="view">
-    <div class="tool-card">
-      <h2>Encrypt Message</h2>
-      <label for="eIn">Message</label>
-      <textarea id="eIn" placeholder="Type or paste here..." rows="7"></textarea>
-      <label for="ePw">Password <small>(optional – leave blank for no password)</small></label>
-      <input type="password" id="ePw" placeholder="Password or leave empty" autocomplete="new-password">
-      <div class="action-row">
-        <button id="eBtn" class="btn btn-primary" disabled>Encrypt</button>
-        <button id="eClr" class="btn btn-outline">Clear</button>
+      <div class="project-card">
+        <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476272959084564722/19.png?ex=69a085d5&is=699f3455&hm=4e1d8484cac6d6ec754955a300a10ff3b360f37a25f9fd667943bd3cf7abead2&" alt="Marketplace" />
+        <div class="card-content">
+          <h3><i class="fas fa-store"></i> Marketplace</h3>
+          <p>A streamlined Discord-based marketplace for browsing and trading digital accounts with a smooth, user-focused experience.</p>
+        </div>
       </div>
-      <label for="eOut">Encrypted (Base64)</label>
-      <textarea id="eOut" readonly rows="6"></textarea>
-      <div id="eSt" class="status"></div>
-    </div>
-  </section>
-
-  <section id="decryptView" class="view">
-    <div class="tool-card">
-      <h2>Decrypt Message</h2>
-      <label for="dIn">Encrypted text (Base64)</label>
-      <textarea id="dIn" placeholder="Paste encrypted Base64 here..." rows="7"></textarea>
-      <label for="dPw">Password <small>(optional – leave empty if none used)</small></label>
-      <input type="password" id="dPw" placeholder="Password or leave empty" autocomplete="new-password">
-      <div class="action-row">
-        <button id="dBtn" class="btn btn-primary" disabled>Decrypt</button>
-        <button id="dClr" class="btn btn-outline">Clear</button>
-      </div>
-      <label for="dOut">Decrypted result</label>
-      <textarea id="dOut" readonly rows="6"></textarea>
-      <div id="dSt" class="status"></div>
-    </div>
-  </section>
-
-  <section id="chatView" class="view">
-    <div class="chat-card">
-      <h2>Public Group Chat</h2>
-      <p style="text-align:center;color:var(--text-dim);margin-bottom:2rem;">All rooms & messages are public and shared across tabs/browsers on this device</p>
-
-      <div class="room-create">
-        <select id="rSel"></select>
-        <input id="rNew" placeholder="Create new public room">
-        <button id="rCreate" class="btn btn-primary">Create Public Room</button>
-      </div>
-
-      <div class="chat-messages" id="cMsg"></div>
-
-      <div class="chat-inputs">
-        <input id="cIn" placeholder="Type your message here...">
-        <button id="cSend" class="chat-btn" disabled>Send to Public Room</button>
-        <div id="cSt" class="status"></div>
-        <button id="delete-all">Delete All Public Chats</button>
+      <div class="project-card">
+        <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476272974809272351/21.png?ex=69a085d9&is=699f3459&hm=bdeb563b6a05d92bcfbfd5de7b7fe2a00960c407127772e3010dcf81c3024fe7&" alt="Soon" />
+        <div class="card-content">
+          <h3><i class="fas fa-hourglass-half"></i> Soon</h3>
+          <p>Coming soon</p>
+        </div>
       </div>
     </div>
   </section>
 
-</main>
+  <!-- Improved Contact Section -->
+  <section class="contact" id="contact">
+    <h2>Contact Me</h2>
+    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; margin-top: 30px;">
+      <a href="mailto:JobGS@proton.me" style="min-width: 260px;">
+        <i class="fas fa-envelope" style="font-size: 2.2rem; color: #5dade2; margin-bottom: 15px;"></i>
+        <div style="font-weight: 600; font-size: 1.2rem;">Email</div>
+        <div style="margin-top: 8px; color: #b0b9c7;">JobGS@proton.me</div>
+      </a>
+      <a href="https://discord.com/users/706661207767253142" target="_blank" style="min-width: 260px;">
+        <i class="fab fa-discord" style="font-size: 2.2rem; color: #5dade2; margin-bottom: 15px;"></i>
+        <div style="font-weight: 600; font-size: 1.2rem;">Discord</div>
+        <div style="margin-top: 8px; color: #b0b9c7;">JobG#0001</div>
+      </a>
+      <a href="https://github.com/jobcenterai" target="_blank" style="min-width: 260px;">
+        <i class="fab fa-github" style="font-size: 2.2rem; color: #5dade2; margin-bottom: 15px;"></i>
+        <div style="font-weight: 600; font-size: 1.2rem;">GitHub</div>
+        <div style="margin-top: 8px; color: #b0b9c7;">@jobcenterai</div>
+      </a>
+    </div>
+  </section>
+</section>
 
-<footer>
-  © 2026 JobG • 100% client-side • All rooms are now public & shared across tabs/browsers on the same device • No server needed
-</footer>
+<!-- ENCRYPT TOOL -->
+<section id="encryptView" class="view">
+  <div class="tool-page">
+    <h1>Encrypt Tool</h1>
+    <label for="eIn">Message to Encrypt</label>
+    <textarea id="eIn" placeholder="Type or paste your message here..."></textarea>
+
+    <label for="ePw">
+      Password <small>(optional – leave empty for no password)</small>
+    </label>
+    <input type="password" id="ePw" placeholder="Password or leave blank" autocomplete="new-password" />
+
+    <div class="tool-buttons">
+      <button id="eBtn" class="btn btn-primary" disabled>Encrypt</button>
+      <button id="eClr" class="btn btn-secondary">Clear</button>
+    </div>
+
+    <label for="eOut">Encrypted Output (Base64)</label>
+    <textarea id="eOut" readonly placeholder="Result will appear here..."></textarea>
+
+    <div id="eSt" class="status"></div>
+  </div>
+</section>
+
+<!-- DECRYPT TOOL -->
+<section id="decryptView" class="view">
+  <div class="tool-page">
+    <h1>Decrypt Tool</h1>
+    <label for="dIn">Encrypted Message (Base64)</label>
+    <textarea id="dIn" placeholder="Paste the encrypted Base64 message here..."></textarea>
+
+    <label for="dPw">
+      Password <small>(optional – leave empty if no password was used)</small>
+    </label>
+    <input type="password" id="dPw" placeholder="Password or leave blank" autocomplete="new-password" />
+
+    <div class="tool-buttons">
+      <button id="dBtn" class="btn btn-primary" disabled>Decrypt</button>
+      <button id="dClr" class="btn btn-secondary">Clear</button>
+    </div>
+
+    <label for="dOut">Decrypted Output</label>
+    <textarea id="dOut" readonly placeholder="Result will appear here..."></textarea>
+
+    <div id="dSt" class="status"></div>
+  </div>
+</section>
+
+<footer>&copy; 2026 JobG. All rights reserved.</footer>
 
 <script>
-  const $=id=>document.getElementById(id);
-  const views=document.querySelectorAll(".view");
-  const nav=document.querySelectorAll("[data-view]");
-  function show(id){
-    views.forEach(v=>v.classList.toggle("active",v.id===id));
-    nav.forEach(a=>a.classList.toggle("active",a.dataset.view===id));
-    scrollTo({top:0,behavior:"smooth"});
-    if(id==="chatView") loadRooms(),renderChat();
-  }
-  nav.forEach(l=>l.onclick=e=>{e.preventDefault();show(l.dataset.view)});
+// Navigation
+const views = document.querySelectorAll('.view');
+const navLinks = document.querySelectorAll('.header-nav a');
 
-  const enc=new TextEncoder(),dec=new TextDecoder();
-  async function derive(p,s=null){
-    if(!s)s=crypto.getRandomValues(new Uint8Array(16));
-    const m=await crypto.subtle.importKey("raw",enc.encode(p),"PBKDF2",!1,["deriveKey"]);
-    const k=await crypto.subtle.deriveKey({name:"PBKDF2",salt:s,iterations:250000,hash:"SHA-256"},m,{name:"AES-GCM",length:256},!1,["encrypt","decrypt"]);
-    return {key:k,salt:s};
-  }
-  async function encrypt(t,p=""){
-    const {key,salt}=await derive(p);
-    const iv=crypto.getRandomValues(new Uint8Array(12));
-    const c=await crypto.subtle.encrypt({name:"AES-GCM",iv},key,enc.encode(t));
-    const a=new Uint8Array(salt.length+iv.length+c.byteLength);
-    a.set(salt);a.set(iv,salt.length);a.set(new Uint8Array(c),salt.length+iv.length);
-    return btoa(String.fromCharCode(...a));
-  }
-  async function decrypt(b,p=""){
-    const y=Uint8Array.from(atob(b),c=>c.charCodeAt(0));
-    if(y.length<28)throw new Error("Invalid");
-    const s=y.slice(0,16),i=y.slice(16,28),d=y.slice(28);
-    const {key}=await derive(p,s);
-    const t=await crypto.subtle.decrypt({name:"AES-GCM",iv:i},key,d);
-    return dec.decode(t);
-  }
+function showView(viewId) {
+  views.forEach(v => v.classList.toggle('active', v.id === viewId));
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('data-view') === viewId));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-  function toggleE(){$("eBtn").disabled=!$("eIn").value.trim()}
-  $("eIn").oninput=$("ePw").oninput=toggleE;
-  $("eBtn").onclick=async()=>{
-    const s=$("eSt");s.className="status";s.textContent="";
-    try{
-      $("eOut").value=await encrypt($("eIn").value.trim(),$("ePw").value);
-      s.textContent=$("ePw").value?"Encrypted!":"Encrypted (public – no password)";
-      s.classList.add("ok");
-    }catch(e){s.textContent="Error: "+e.message;s.classList.add("err")}
+navLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const viewId = link.getAttribute('data-view');
+    showView(viewId);
+  });
+});
+
+// Crypto Functions
+const enc = new TextEncoder();
+const dec = new TextDecoder();
+
+async function deriveKey(password, salt = null) {
+  if (!salt) salt = crypto.getRandomValues(new Uint8Array(16));
+  const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+  return {
+    key: await crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt, iterations: 250000, hash: 'SHA-256' },
+      keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+    ),
+    salt
   };
-  $("eClr").onclick=()=>{ $("eIn").value=$("ePw").value=$("eOut").value="";$("eSt").textContent="";toggleE()};
+}
 
-  function toggleD(){$("dBtn").disabled=!$("dIn").value.trim()}
-  $("dIn").oninput=$("dPw").oninput=toggleD;
-  $("dBtn").onclick=async()=>{
-    const s=$("dSt");s.className="status";s.textContent="";
-    try{
-      $("dOut").value=await decrypt($("dIn").value.trim(),$("dPw").value);
-      s.textContent=$("dPw").value?"Decrypted!":"Decrypted (public – no password)";
-      s.classList.add("ok");
-    }catch(e){
-      s.textContent=e.message.includes("OperationError")?"Wrong password or invalid data":"Error: "+e.message;
-      s.classList.add("err");
+async function encrypt(text, password = '') {
+  const { key, salt } = await deriveKey(password);
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(text));
+  const combined = new Uint8Array(salt.byteLength + iv.byteLength + encrypted.byteLength);
+  combined.set(salt, 0);
+  combined.set(iv, salt.byteLength);
+  combined.set(new Uint8Array(encrypted), salt.byteLength + iv.byteLength);
+  return btoa(String.fromCharCode(...combined));
+}
+
+async function decrypt(base64, password = '') {
+  const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+  if (bytes.length < 28) throw new Error('Invalid data');
+  const salt = bytes.slice(0, 16);
+  const iv = bytes.slice(16, 28);
+  const data = bytes.slice(28);
+  const { key } = await deriveKey(password, salt);
+  const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
+  return dec.decode(decrypted);
+}
+
+// Encrypt Tool
+function toggleEncryptBtn() {
+  document.getElementById('eBtn').disabled = !document.getElementById('eIn').value.trim();
+}
+document.getElementById('eIn').oninput = document.getElementById('ePw').oninput = toggleEncryptBtn;
+
+document.getElementById('eBtn').onclick = async () => {
+  const status = document.getElementById('eSt');
+  status.className = 'status';
+  status.textContent = '';
+  const pw = document.getElementById('ePw').value;
+  try {
+    document.getElementById('eOut').value = await encrypt(document.getElementById('eIn').value.trim(), pw);
+    status.textContent = pw ? 'Encrypted successfully!' : 'Encrypted (no password – very weak!)';
+    status.classList.add('success');
+  } catch (err) {
+    status.textContent = 'Error: ' + err.message;
+    status.classList.add('error');
+  }
+};
+
+document.getElementById('eClr').onclick = () => {
+  document.getElementById('eIn').value = '';
+  document.getElementById('ePw').value = '';
+  document.getElementById('eOut').value = '';
+  document.getElementById('eSt').textContent = '';
+  toggleEncryptBtn();
+};
+
+// Decrypt Tool
+function toggleDecryptBtn() {
+  document.getElementById('dBtn').disabled = !document.getElementById('dIn').value.trim();
+}
+document.getElementById('dIn').oninput = document.getElementById('dPw').oninput = toggleDecryptBtn;
+
+document.getElementById('dBtn').onclick = async () => {
+  const status = document.getElementById('dSt');
+  status.className = 'status';
+  status.textContent = '';
+  const pw = document.getElementById('dPw').value;
+  try {
+    document.getElementById('dOut').value = await decrypt(document.getElementById('dIn').value.trim(), pw);
+    status.textContent = pw ? 'Decrypted successfully!' : 'Decrypted (no password used)';
+    status.classList.add('success');
+  } catch (err) {
+    status.textContent = err.message.includes('OperationError') ? 'Wrong password or invalid data' : 'Error: ' + err.message;
+    status.classList.add('error');
+  }
+};
+
+document.getElementById('dClr').onclick = () => {
+  document.getElementById('dIn').value = '';
+  document.getElementById('dPw').value = '';
+  document.getElementById('dOut').value = '';
+  document.getElementById('dSt').textContent = '';
+  toggleDecryptBtn();
+};
+
+// Your original scroll animations
+const cards = document.querySelectorAll('.project-card');
+const contactSection = document.querySelector('.contact');
+const footer = document.querySelector('footer');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
     }
-  };
-  $("dClr").onclick=()=>{ $("dIn").value=$("dPw").value=$("dOut").value="";$("dSt").textContent="";toggleD()};
+  });
+}, { threshold: 0.1 });
 
-  const P="jgchat_";
-  function gr(){try{return JSON.parse(localStorage.getItem(P+"r")||"[]")}catch{return[]}}
-  function sr(r){localStorage.setItem(P+"r",JSON.stringify(r))}
-  function gmsg(r){try{return JSON.parse(localStorage.getItem(P+r)||"[]")}catch{return[]}}
-  function smsg(r,m){localStorage.setItem(P+r,JSON.stringify(m))}
+cards.forEach(card => observer.observe(card));
+observer.observe(contactSection);
+observer.observe(footer);
 
-  function loadRooms(){
-    const r=gr(),s=$("rSel");
-    s.innerHTML=r.length?"":'<option value="">No public rooms yet – create one</option>';
-    r.forEach(n=>{const o=document.createElement("option");o.value=o.textContent=n;s.appendChild(o)})
-  }
-
-  async function renderChat(){
-    const r=$("rSel").value,a=$("cMsg");
-    if(!r){a.innerHTML='<div style="padding:80px 0;text-align:center;color:#888">Select or create a public room</div>';return}
-    a.innerHTML='<div style="padding:80px 0;text-align:center;color:#888">Loading public messages...</div>';
-    let h="";
-    for(const x of gmsg(r)){
-      const t=new Date(x.ts).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-      if(x.plain){h+=`<div><small style="color:#888">${t}</small><br>${x.text}</div>`}
-      else{try{const txt=await decrypt(x.c,"");h+=`<div><small style="color:#888">${t}</small><br>${txt}</div>`}
-      catch{h+=`<div><small style="color:#888">${t}</small><br><em style="color:#f85149">[encrypted – cannot view]</em></div>`}}
-    }
-    a.innerHTML=h||'<div style="padding:80px 0;text-align:center;color:#888">No messages yet – start chatting!</div>';
-    a.scrollTop=a.scrollHeight;
-  }
-
-  function ts(){
-    const r=$("rSel").value,m=$("cIn").value.trim();
-    $("cSend").disabled=!(r&&m)
-  }
-
-  $("rSel").onchange=()=>{ $("cIn").value="";ts();renderChat()};
-  $("cIn").oninput=ts;
-
-  $("cSend").onclick=async()=>{
-    const b=$("cSend");b.disabled=!0;
-    const s=$("cSt");s.className="status";s.textContent="Sending to public room...";
-    try{
-      const r=$("rSel").value,t=$("cIn").value.trim();
-      const x={plain:!0,text:t,ts:Date.now()};
-      const l=gmsg(r);l.push(x);smsg(r,l);
-      $("cIn").value="";
-      s.textContent="Sent – visible to everyone in this browser";
-      s.classList.add("ok");
-      renderChat();
-      localStorage.setItem(P+"u",Date.now());
-    }catch(e){s.textContent="Error: "+e.message;s.classList.add("err")}
-    finally{ts()}
-  };
-
-  $("rCreate").onclick=()=>{
-    const n=$("rNew").value.trim();if(!n)return alert("Enter room name");
-    const rs=gr();if(rs.includes(n))return alert("Room already exists");
-    rs.push(n);sr(rs);
-    loadRooms();$("rSel").value=n;$("rNew").value="";renderChat();
-    $("cSt").textContent=`Public room "${n}" created – everyone can join`;
-    $("cSt").className="status ok";
-    localStorage.setItem(P+"u",Date.now());
-  };
-
-  $("delete-all").onclick=()=>{
-    if(!confirm("Delete ALL public chats in this browser?"))return;
-    Object.keys(localStorage).filter(k=>k.startsWith(P)).forEach(k=>localStorage.removeItem(k));
-    loadRooms();
-    $("cMsg").innerHTML='<div style="padding:80px 0;text-align:center;color:#888">All public chats cleared</div>';
-    $("cSt").textContent="Cleared – everyone sees this";
-    $("cSt").className="status ok";
-  };
-
-  window.addEventListener("storage",e=>{if(e.key===P+"u"&&$("rSel").value)renderChat()});
-
-  // Init
-  show("portfolioView");
-  loadRooms();
-  </script>
+// Initialize
+showView('portfolioView');
+</script>
 </body>
 </html>
