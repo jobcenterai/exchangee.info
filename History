@@ -1,1 +1,401 @@
-<!DOCTYPE html> <html lang="en" > <head> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1" /> <title>Portfolio - JobG</title> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" /> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" /> <style> /* Reset & Body */ * { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: 'Inter', sans-serif; background: linear-gradient(145deg, #1e2a38, #162133); color: #e0e6ed; transition: background 0.5s; scroll-behavior: smooth; } a { text-decoration: none; color: inherit; } /* Header */ header { position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background: rgba(30, 42, 56, 0.85); backdrop-filter: blur(8px); border-bottom: 2px solid #0f1b2a; border-radius: 0 0 12px 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); } .header-left h1 { font-size: 1.8rem; font-weight: 700; background: linear-gradient(90deg, #5dade2, #2980b9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } .header-nav a { margin-left: 25px; font-weight: 600; color: #e0e6ed; transition: color 0.3s, transform 0.3s; } .header-nav a:hover { color: #5dade2; transform: translateY(-2px); } @media (max-width: 768px) { header { flex-direction: column; padding: 15px 20px; } .header-nav { margin-top: 10px; } .header-nav a { margin-left: 15px; } } /* Intro Section */ .intro-section { max-width: 700px; /* narrower container for single column */ margin: 40px auto 60px; padding: 30px 25px; background: #162133; border-radius: 16px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); color: #e0e6ed; text-align: center; } .intro-section h1 { font-size: 3.2rem; /* bigger */ font-weight: 900; background: linear-gradient(90deg, #5dade2, #2980b9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.15; margin-bottom: 25px; } .intro-section p { font-size: 1.2rem; /* bigger text */ line-height: 1.5; color: #b0b9c7; margin-bottom: 35px; max-width: 600px; margin-left: auto; margin-right: auto; } .intro-buttons { display: flex; justify-content: center; gap: 25px; } .btn { padding: 16px 40px; font-weight: 600; border-radius: 12px; cursor: pointer; user-select: none; transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; border: none; color: #e0e6ed; font-size: 1.1rem; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 10px; } .btn-primary { background: linear-gradient(90deg, #27ae60, #1e8449); box-shadow: 0 6px 15px rgba(39, 174, 96, 0.6); } .btn-primary:hover { background: linear-gradient(90deg, #1e8449, #166633); transform: translateY(-2px); } .btn-secondary { background: transparent; border: 2px solid #5dade2; color: #5dade2; } .btn-secondary:hover { background: #5dade2; color: #162133; transform: translateY(-2px); } /* Projects Section */ .projects-section { padding: 80px 50px; max-width: 1200px; margin: 0 auto; } .projects-section h2 { text-align: center; font-size: 2.2rem; margin-bottom: 50px; background: linear-gradient(90deg, #5dade2, #2980b9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; } .project-card { position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease, opacity 0.6s ease; cursor: pointer; opacity: 0; transform: translateY(30px); } .project-card.visible { opacity: 1; transform: translateY(0); } .project-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6); } .project-card img { width: 100%; height: 180px; object-fit: cover; display: block; filter: brightness(0.75); } .project-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(24, 38, 60, 0.4); pointer-events: none; transition: background 0.4s ease; } .project-card:hover::after { background: rgba(24, 38, 60, 0.25); } .card-content { background: #1e2a38; padding: 20px; } .project-card h3 { margin-bottom: 12px; font-size: 1.35rem; background: linear-gradient(90deg, #5dade2, #2980b9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 8px; } .project-card p { font-size: 0.95rem; color: #c0c8d0; } /* Contact Section */ .contact { background: linear-gradient(145deg, #1b2a3c, #162133); padding: 80px 50px; text-align: center; border-radius: 16px; margin: 50px; color: #e0e6ed; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; } .contact.visible { opacity: 1; transform: translateY(0); } .contact h2 { font-size: 2.2rem; margin-bottom: 40px; background: linear-gradient(90deg, #5dade2, #2980b9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } .contact a { display: inline-flex; align-items: center; gap: 8px; margin: 12px 20px; background: linear-gradient(90deg, #2c3e50, #34495e); color: #e0e6ed; padding: 14px 28px; border-radius: 12px; font-weight: 600; opacity: 0; transform: translateY(20px); transition: background 0.3s, transform 0.3s, opacity 0.6s ease; } .contact a.visible { opacity: 1; transform: translateY(0); } .contact a:hover { background: linear-gradient(90deg, #1f2a38, #223046); transform: translateY(-3px); } /* Footer */ footer { text-align: center; padding: 20px; font-size: 0.9rem; color: #c0c8d0; opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; } footer.visible { opacity: 1; transform: translateY(0); } @media (max-width: 768px) { .projects-section { padding: 60px 20px; } .contact { padding: 60px 20px; margin: 30px 20px; } } </style> </head> <body> <header> <div class="header-left"> <h1>JobG</h1> </div> <nav class="header-nav"> <a href="#about">About Me</a> <a href="#projects">Projects</a> <a href="#contact">Contact</a> </nav> </header> <!-- Intro Section --> <section class="intro-section" id="about"> <h1> About me <br /> </h1> <p> I am a new developer dedicated to crafting intuitive, reliable software.<br /> My focus is on building practical solutions users can trust. </p> <div class="intro-buttons"> <a href="#projects" class="btn btn-primary" ><i class="fas fa-code"></i> View Projects</a > <a href="#contact" class="btn btn-secondary" ><i class="fas fa-envelope"></i> Get in Touch</a > </div> </section> <!-- Projects Section --> <section class="projects-section" id="projects"> <h2>Projects</h2> <div class="projects"> <div class="project-card"> <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476269904318697585/20.png?ex=69a082fc&is=699f317c&hm=77f2e287cb833462ef956ff98254e87ff836a960782b975f7a0e7712001cc9c3&" alt="LethalExchange" /> <div class="card-content"> <h3><i class="fas fa-exchange-alt"></i> LethalExchange</h3> <p>Secure online exchange platform – fast, convenient, and reliable transactions.</p> </div> </div> <div class="project-card"> <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476272959084564722/19.png?ex=69a085d5&is=699f3455&hm=4e1d8484cac6d6ec754955a300a10ff3b360f37a25f9fd667943bd3cf7abead2&" alt="Marketplace" /> <div class="card-content"> <h3><i class="fas fa-store"></i> Marketplace</h3> <p> A streamlined Discord-based marketplace for browsing and trading digital accounts with a smooth, user-focused experience. </p> </div> </div> <div class="project-card"> <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476272974809272351/21.png?ex=69a085d9&is=699f3459&hm=bdeb563b6a05d92bcfbfd5de7b7fe2a00960c407127772e3010dcf81c3024fe7&" alt="Soon" /> <div class="card-content"> <h3><i class="fas fa-hourglass-half"></i> Soon</h3> <p>Coming soon</p> </div> </div> </div> </section> <!-- Contact Section --> <section class="contact" id="contact"> <h2>Contact Me</h2> <a href="mailto:JobGS@proton.me"><i class="fas fa-envelope"></i> Email</a> <a href="https://discord.com/users/706661207767253142" target="_blank" ><i class="fab fa-discord"></i> Discord</a > <a href="https://github.com/jobcenterai" target="_blank"><i class="fab fa-github"></i> GitHub</a> </section> <footer>&copy; 2026 JobG. All rights reserved.</footer> <script> // Scroll animations const cards = document.querySelectorAll('.project-card'); const contactSection = document.querySelector('.contact'); const contactLinks = document.querySelectorAll('.contact a'); const footer = document.querySelector('footer'); const observer = new IntersectionObserver( (entries) => { entries.forEach((entry) => { if (entry.isIntersecting) { if (entry.target.classList.contains('project-card')) { entry.target.classList.add('visible'); } if (entry.target.classList.contains('contact')) { entry.target.classList.add('visible'); contactLinks.forEach((link, i) => { setTimeout(() => { link.classList.add('visible'); }, i * 150); }); } if (entry.target.tagName === 'FOOTER') { entry.target.classList.add('visible'); } } }); }, { threshold: 0.1 } ); cards.forEach((card) => observer.observe(card)); observer.observe(contactSection); observer.observe(footer); </script> </body> </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Portfolio - JobG</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Inter',sans-serif;
+background:linear-gradient(145deg,#1e2a38,#162133);
+color:#e0e6ed;
+scroll-behavior:smooth;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+/* Header */
+
+header{
+position:sticky;
+top:0;
+z-index:100;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 50px;
+background:rgba(30,42,56,0.85);
+backdrop-filter:blur(8px);
+border-bottom:2px solid #0f1b2a;
+border-radius:0 0 12px 12px;
+box-shadow:0 6px 20px rgba(0,0,0,0.3);
+}
+
+.header-left h1{
+font-size:1.8rem;
+font-weight:700;
+background:linear-gradient(90deg,#5dade2,#2980b9);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.header-nav a{
+margin-left:25px;
+font-weight:600;
+color:#e0e6ed;
+transition:color 0.3s,transform 0.3s;
+}
+
+.header-nav a:hover{
+color:#5dade2;
+transform:translateY(-2px);
+}
+
+/* Intro */
+
+.intro-section{
+max-width:700px;
+margin:40px auto 60px;
+padding:30px 25px;
+background:#162133;
+border-radius:16px;
+box-shadow:0 8px 30px rgba(0,0,0,0.5);
+text-align:center;
+}
+
+.intro-section h1{
+font-size:3.2rem;
+font-weight:900;
+background:linear-gradient(90deg,#5dade2,#2980b9);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+margin-bottom:25px;
+}
+
+.intro-section p{
+font-size:1.2rem;
+line-height:1.5;
+color:#b0b9c7;
+margin-bottom:35px;
+max-width:600px;
+margin-left:auto;
+margin-right:auto;
+}
+
+.intro-buttons{
+display:flex;
+justify-content:center;
+gap:25px;
+}
+
+.btn{
+padding:16px 40px;
+font-weight:600;
+border-radius:12px;
+cursor:pointer;
+transition:0.3s;
+border:none;
+color:#e0e6ed;
+font-size:1.1rem;
+display:inline-flex;
+align-items:center;
+gap:10px;
+}
+
+.btn-primary{
+background:linear-gradient(90deg,#27ae60,#1e8449);
+box-shadow:0 6px 15px rgba(39,174,96,0.6);
+}
+
+.btn-primary:hover{
+background:linear-gradient(90deg,#1e8449,#166633);
+transform:translateY(-2px);
+}
+
+.btn-secondary{
+background:transparent;
+border:2px solid #5dade2;
+color:#5dade2;
+}
+
+.btn-secondary:hover{
+background:#5dade2;
+color:#162133;
+transform:translateY(-2px);
+}
+
+/* Projects */
+
+.projects-section{
+padding:80px 50px;
+max-width:1200px;
+margin:auto;
+}
+
+.projects-section h2{
+text-align:center;
+font-size:2.2rem;
+margin-bottom:50px;
+background:linear-gradient(90deg,#5dade2,#2980b9);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.projects{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:30px;
+}
+
+.project-card{
+position:relative;
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 6px 20px rgba(0,0,0,0.5);
+transition:0.4s;
+opacity:0;
+transform:translateY(30px);
+cursor:pointer;
+}
+
+.project-card.visible{
+opacity:1;
+transform:translateY(0);
+}
+
+.project-card:hover{
+transform:translateY(-8px) scale(1.02);
+box-shadow:0 12px 30px rgba(0,0,0,0.6);
+}
+
+.project-card img{
+width:100%;
+height:180px;
+object-fit:cover;
+filter:brightness(0.75);
+}
+
+.card-content{
+background:#1e2a38;
+padding:20px;
+}
+
+.project-card h3{
+font-size:1.35rem;
+background:linear-gradient(90deg,#5dade2,#2980b9);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+margin-bottom:12px;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.project-card p{
+font-size:0.95rem;
+color:#c0c8d0;
+}
+
+/* Contact */
+
+.contact{
+background:linear-gradient(145deg,#1b2a3c,#162133);
+padding:80px 50px;
+text-align:center;
+border-radius:16px;
+margin:50px;
+box-shadow:0 8px 25px rgba(0,0,0,0.4);
+opacity:0;
+transform:translateY(30px);
+transition:0.8s;
+}
+
+.contact.visible{
+opacity:1;
+transform:translateY(0);
+}
+
+.contact h2{
+font-size:2.2rem;
+margin-bottom:40px;
+background:linear-gradient(90deg,#5dade2,#2980b9);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.contact a{
+display:inline-flex;
+align-items:center;
+gap:8px;
+margin:12px 20px;
+background:linear-gradient(90deg,#2c3e50,#34495e);
+color:#e0e6ed;
+padding:14px 28px;
+border-radius:12px;
+font-weight:600;
+transition:0.3s;
+}
+
+.contact a:hover{
+background:linear-gradient(90deg,#1f2a38,#223046);
+transform:translateY(-3px);
+}
+
+footer{
+text-align:center;
+padding:20px;
+color:#c0c8d0;
+opacity:0;
+transition:0.8s;
+}
+
+footer.visible{
+opacity:1;
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+header{
+flex-direction:column;
+padding:15px 20px;
+}
+
+.header-nav{
+margin-top:10px;
+}
+
+.intro-buttons{
+flex-direction:column;
+}
+
+.projects-section{
+padding:60px 20px;
+}
+
+.contact{
+padding:60px 20px;
+margin:30px 20px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="header-left">
+<h1>JobG</h1>
+</div>
+
+<nav class="header-nav">
+<a href="#about">About Me</a>
+<a href="#projects">Projects</a>
+<a href="#contact">Contact</a>
+</nav>
+</header>
+
+<section class="intro-section" id="about">
+<h1>About me</h1>
+
+<p>
+I am a new developer dedicated to crafting intuitive, reliable software.<br>
+My focus is on building practical solutions users can trust.
+</p>
+
+<div class="intro-buttons">
+<a href="#projects" class="btn btn-primary">
+<i class="fas fa-code"></i> View Projects
+</a>
+
+<a href="#contact" class="btn btn-secondary">
+<i class="fas fa-envelope"></i> Get in Touch
+</a>
+</div>
+</section>
+
+<section class="projects-section" id="projects">
+<h2>Projects</h2>
+
+<div class="projects">
+
+<div class="project-card">
+<img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476269904318697585/20.png" />
+<div class="card-content">
+<h3><i class="fas fa-exchange-alt"></i> LethalExchange</h3>
+<p>Secure online exchange platform – fast, convenient, and reliable transactions.</p>
+</div>
+</div>
+
+<div class="project-card">
+<img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476272959084564722/19.png" />
+<div class="card-content">
+<h3><i class="fas fa-store"></i> Marketplace</h3>
+<p>Discord-based marketplace for digital trading.</p>
+</div>
+</div>
+
+<div class="project-card">
+<img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476272974809272351/21.png" />
+<div class="card-content">
+<h3><i class="fas fa-hourglass-half"></i> Soon</h3>
+<p>Coming soon</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<section class="contact" id="contact">
+<h2>Contact Me</h2>
+
+<a href="mailto:JobGS@proton.me">
+<i class="fas fa-envelope"></i> Email
+</a>
+
+<a href="https://discord.com/users/706661207767253142">
+<i class="fab fa-discord"></i> Discord
+</a>
+
+<a href="https://github.com/jobcenterai">
+<i class="fab fa-github"></i> GitHub
+</a>
+</section>
+
+<footer>
+© 2026 JobG. All rights reserved.
+</footer>
+
+<script>
+const cards=document.querySelectorAll(".project-card");
+const contact=document.querySelector(".contact");
+const footer=document.querySelector("footer");
+
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("visible");
+}
+});
+},{threshold:0.1});
+
+cards.forEach(c=>observer.observe(c));
+observer.observe(contact);
+observer.observe(footer);
+</script>
+
+</body>
+</html>
