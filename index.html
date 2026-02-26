@@ -1,360 +1,1027 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" >
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Secure Menu Chat</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio + Encrypt/Decrypt + Group Chat - JobG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* Reset & Body */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(145deg, #1e2a38, #162133);
+      color: #e0e6ed;
+      transition: background 0.5s;
+      scroll-behavior: smooth;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-<style>
-:root{
---bg:#0f172a;
---panel:#1e293b;
---accent:#3b82f6;
---soft:#334155;
---text:#e2e8f0;
---danger:#ef4444;
-}
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background: rgba(30, 42, 56, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid #0f1b2a;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      user-select: none;
+    }
+    .header-left h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #5dade2, #2980b9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      cursor: default;
+    }
+    nav.header-nav {
+      display: flex;
+      gap: 30px;
+    }
+    nav.header-nav a {
+      font-weight: 600;
+      color: #e0e6ed;
+      cursor: pointer;
+      padding: 8px 16px;
+      border-radius: 12px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+    }
+    nav.header-nav a.active,
+    nav.header-nav a:hover {
+      background: linear-gradient(90deg, #5dade2, #2980b9);
+      color: #162133;
+      text-decoration: none;
+    }
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 15px 20px;
+      }
+      nav.header-nav {
+        margin-top: 10px;
+        gap: 15px;
+      }
+    }
 
-body{
-margin:0;
-font-family:system-ui,-apple-system,Segoe UI,Roboto;
-background:var(--bg);
-color:var(--text);
-display:flex;
-flex-direction:column;
-height:100vh;
-}
+    /* Main container */
+    main {
+      flex-grow: 1;
+      padding: 30px 50px;
+      max-width: 1000px;
+      margin: 0 auto 40px;
+      width: 100%;
+    }
 
-/* TOP NAV */
-.topbar{
-display:flex;
-background:var(--panel);
-padding:10px 20px;
-gap:20px;
-border-bottom:1px solid var(--soft);
-}
+    /* Fade view transitions */
+    .view {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .view.active {
+      display: block;
+      opacity: 1;
+    }
 
-.nav-btn{
-cursor:pointer;
-font-weight:600;
-}
+    /* Portfolio styling */
+    .intro-section {
+      max-width: 700px;
+      margin: 40px auto 60px;
+      padding: 30px 25px;
+      background: #162133;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      color: #e0e6ed;
+      text-align: center;
+    }
+    .intro-section h1 {
+      font-size: 3.2rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #5dade2, #2980b9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.15;
+      margin-bottom: 25px;
+    }
+    .intro-section p {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: #b0b9c7;
+      margin-bottom: 35px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .intro-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+    }
+    .btn {
+      padding: 16px 40px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+      border: none;
+      color: #e0e6ed;
+      font-size: 1.1rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, #27ae60, #1e8449);
+      box-shadow: 0 6px 15px rgba(39, 174, 96, 0.6);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #1e8449, #166633);
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid #5dade2;
+      color: #5dade2;
+    }
+    .btn-secondary:hover {
+      background: #5dade2;
+      color: #162133;
+      transform: translateY(-2px);
+    }
 
-.nav-btn.active{
-color:var(--accent);
-}
+    /* Projects Section */
+    .projects-section {
+      padding: 0 0 80px 0;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .projects-section h2 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 50px;
+      background: linear-gradient(90deg, #5dade2, #2980b9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    .project-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+      transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease, opacity 0.6s ease;
+      cursor: pointer;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .project-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    }
+    .project-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.75);
+    }
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(24, 38, 60, 0.4);
+      pointer-events: none;
+      transition: background 0.4s ease;
+    }
+    .project-card:hover::after {
+      background: rgba(24, 38, 60, 0.25);
+    }
+    .card-content {
+      background: #1e2a38;
+      padding: 20px;
+    }
+    .project-card h3 {
+      margin-bottom: 12px;
+      font-size: 1.35rem;
+      background: linear-gradient(90deg, #5dade2, #2980b9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .project-card p {
+      font-size: 0.95rem;
+      color: #c0c8d0;
+    }
 
-/* MAIN LAYOUT */
-.main{
-flex:1;
-display:flex;
-}
+    /* Contact Section */
+    .contact {
+      background: linear-gradient(145deg, #1b2a3c, #162133);
+      padding: 80px 50px;
+      text-align: center;
+      border-radius: 16px;
+      margin: 50px auto 0;
+      color: #e0e6ed;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      max-width: 600px;
+    }
+    .contact h2 {
+      font-size: 2.2rem;
+      margin-bottom: 40px;
+      background: linear-gradient(90deg, #5dade2, #2980b9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .contact a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 12px 20px;
+      background: linear-gradient(90deg, #2c3e50, #34495e);
+      color: #e0e6ed;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+    .contact a:hover {
+      background: linear-gradient(90deg, #1f2a38, #223046);
+      text-decoration: none;
+    }
 
-/* SIDEBAR */
-.sidebar{
-width:240px;
-background:var(--panel);
-padding:20px;
-display:flex;
-flex-direction:column;
-gap:10px;
-border-right:1px solid var(--soft);
-}
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: #c0c8d0;
+      user-select: none;
+    }
 
-.group{
-padding:8px 10px;
-background:var(--soft);
-border-radius:8px;
-cursor:pointer;
-transition:.2s;
-}
+    /* Encrypt/Decrypt Tools Styling */
+    .tool-container {
+      background: #162133;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 30px 25px;
+      color: #e0e6ed;
+    }
+    .tool-container h2 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #5dade2, #2980b9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 30px;
+      text-align: center;
+      user-select: none;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      user-select: none;
+    }
+    textarea, input[type="password"], input[type="text"] {
+      width: 100%;
+      font-size: 1rem;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      background: #1e2a38;
+      color: #e0e6ed;
+      padding: 14px 16px;
+      resize: vertical;
+      min-height: 100px;
+      margin-bottom: 20px;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.7);
+      font-family: 'Inter', sans-serif;
+    }
+    input[type="password"], input[type="text"] {
+      min-height: 40px;
+    }
+    button.tool-btn {
+      background: linear-gradient(90deg, #5dade2, #2980b9);
+      border: none;
+      padding: 14px 32px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 12px;
+      color: #162133;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      margin-right: 15px;
+      min-width: 120px;
+    }
+    button.tool-btn:hover:not(:disabled) {
+      background: linear-gradient(90deg, #3b82f6, #2563eb);
+      color: white;
+    }
+    button.tool-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .tool-buttons {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .status-message {
+      text-align: center;
+      font-size: 1rem;
+      height: 24px;
+      font-weight: 600;
+      user-select: none;
+    }
+    .status-success {
+      color: #22c55e;
+    }
+    .status-error {
+      color: #ef4444;
+    }
 
-.group:hover{
-background:var(--accent);
-}
+    /* Group Chat Styles */
+    .chat-container {
+      background: #162133;
+      max-width: 700px;
+      margin: 40px auto;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      height: 600px;
+    }
+    .chat-header {
+      font-weight: 700;
+      font-size: 2rem;
+      color: #5dade2;
+      text-align: center;
+      margin-bottom: 20px;
+      user-select: none;
+    }
+    .chat-messages {
+      background: #1e2a38;
+      flex-grow: 1;
+      border-radius: 12px;
+      padding: 16px;
+      overflow-y: auto;
+      color: #e0e6ed;
+      font-size: 1rem;
+      line-height: 1.4;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.7);
+      margin-bottom: 15px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .chat-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .chat-inputs input[type="text"],
+    .chat-inputs input[type="password"],
+    .chat-inputs select {
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      background: #1e2a38;
+      color: #e0e6ed;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+    }
+    .chat-inputs button {
+      background: linear-gradient(90deg, #27ae60, #1e8449);
+      color: #e0e6ed;
+      font-weight: 700;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      font-size: 1.1rem;
+    }
+    .chat-inputs button:hover:not(:disabled) {
+      background: linear-gradient(90deg, #1e8449, #166633);
+    }
+    .chat-inputs button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .chat-status {
+      text-align: center;
+      font-weight: 600;
+      height: 22px;
+      margin-top: 5px;
+      user-select: none;
+    }
+    .chat-status.error {
+      color: #ef4444;
+    }
+    .chat-status.success {
+      color: #22c55e;
+    }
 
-/* CONTENT */
-.content{
-flex:1;
-padding:25px;
-display:flex;
-flex-direction:column;
-}
-
-.chat-box{
-flex:1;
-background:var(--panel);
-border-radius:12px;
-padding:15px;
-overflow:auto;
-display:flex;
-flex-direction:column;
-gap:8px;
-}
-
-.msg{
-background:var(--soft);
-padding:8px 10px;
-border-radius:8px;
-max-width:70%;
-}
-
-textarea{
-resize:none;
-padding:10px;
-border-radius:10px;
-border:1px solid var(--soft);
-background:var(--panel);
-color:var(--text);
-margin-top:10px;
-}
-
-button{
-background:var(--accent);
-border:none;
-padding:8px;
-border-radius:8px;
-cursor:pointer;
-color:white;
-font-weight:600;
-margin-top:10px;
-}
-
-.status{
-margin-top:10px;
-font-size:13px;
-}
-
-.hidden{
-display:none;
-}
-</style>
+    @media (max-width: 768px) {
+      main {
+        padding: 20px;
+      }
+      .tool-buttons {
+        justify-content: center;
+      }
+      button.tool-btn {
+        margin-right: 0;
+        min-width: 100%;
+      }
+      .intro-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .chat-container {
+        height: 500px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<!-- TOP MENU -->
-<div class="topbar">
-<div class="nav-btn active" onclick="showView('chatView', this)">💬 Chat</div>
-<div class="nav-btn" onclick="showView('encryptView', this)">🔐 Encrypt Tool</div>
-</div>
+  <header>
+    <div class="header-left">
+      <h1>JobG</h1>
+    </div>
+    <nav class="header-nav">
+      <a href="#" class="nav-link active" data-view="portfolioView">Portfolio</a>
+      <a href="#" class="nav-link" data-view="encryptView">Encrypt Tool</a>
+      <a href="#" class="nav-link" data-view="decryptView">Decrypt Tool</a>
+      <a href="#" class="nav-link" data-view="chatView">Group Chat</a>
+    </nav>
+  </header>
 
-<div class="main">
+  <main>
+    <!-- Portfolio View -->
+    <section id="portfolioView" class="view active" aria-label="Portfolio Section">
+      <!-- About -->
+      <section class="intro-section" id="about">
+        <h1>About me</h1>
+        <p>
+          I am a new developer dedicated to crafting intuitive, reliable software.<br />
+          My focus is on building practical solutions users can trust.
+        </p>
+        <div class="intro-buttons">
+          <a href="#projects" class="btn btn-primary"><i class="fas fa-code"></i> View Projects</a>
+          <a href="#contact" class="btn btn-secondary"><i class="fas fa-envelope"></i> Get in Touch</a>
+        </div>
+      </section>
 
-<!-- GROUP MENU -->
-<div class="sidebar">
-<h3>Groups</h3>
-<div id="groupList"></div>
-<button onclick="createGroup()">+ Create Group</button>
-<button onclick="joinGroup()">Join Group</button>
-</div>
+      <!-- Projects -->
+      <section class="projects-section" id="projects">
+        <h2>Projects</h2>
+        <div class="projects">
+          <div class="project-card">
+            <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476269904318697585/20.png?ex=69a082fc&is=699f317c&hm=77f2e287cb833462ef956ff98254e87ff836a960782b975f7a0e7712001cc9c3&" alt="LethalExchange" />
+            <div class="card-content">
+              <h3><i class="fas fa-exchange-alt"></i> LethalExchange</h3>
+              <p>Secure online exchange platform – fast, convenient, and reliable transactions.</p>
+            </div>
+          </div>
+          <div class="project-card">
+            <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476272959084564722/19.png?ex=69a085d5&is=699f3455&hm=4e1d8484cac6d6ec754955a300a10ff3b360f37a25f9fd667943bd3cf7abead2&" alt="Marketplace" />
+            <div class="card-content">
+              <h3><i class="fas fa-store"></i> Marketplace</h3>
+              <p>
+                A streamlined Discord-based marketplace for browsing and trading digital accounts with a smooth,
+                user-focused experience.
+              </p>
+            </div>
+          </div>
+          <div class="project-card">
+            <img src="https://cdn.discordapp.com/attachments/1471582280278474976/1476272974809272351/21.png?ex=69a085d9&is=699f3459&hm=bdeb563b6a05d92bcfbfd5de7b7fe2a00960c407127772e3010dcf81c3024fe7&" alt="Soon" />
+            <div class="card-content">
+              <h3><i class="fas fa-hourglass-half"></i> Soon</h3>
+              <p>Coming soon</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-<!-- CONTENT AREA -->
-<div class="content">
+      <!-- Contact -->
+      <section class="contact" id="contact">
+        <h2>Contact Me</h2>
+        <a href="mailto:JobGS@proton.me" aria-label="Email"><i class="fas fa-envelope"></i> JobGS@proton.me</a>
+        <a href="https://discord.com/users/706661207767253142" target="_blank" rel="noopener" aria-label="Discord"><i class="fab fa-discord"></i> Discord</a>
+        <a href="https://github.com/jobcenterai" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i> GitHub</a>
+      </section>
+    </section>
 
-<!-- CHAT VIEW -->
-<div id="chatView">
-<h2 id="chatTitle">No Group Selected</h2>
-<div class="chat-box" id="chatBox"></div>
+    <!-- Encrypt Tool View -->
+    <section id="encryptView" class="view" aria-label="Encryption Tool">
+      <div class="tool-container">
+        <h2>Encrypt Tool</h2>
+        <label for="encryptInput">Message to Encrypt</label>
+        <textarea id="encryptInput" placeholder="Type your message here..."></textarea>
+        <label for="encryptPassword">Password</label>
+        <input type="password" id="encryptPassword" placeholder="Enter a password" autocomplete="new-password" />
+        <div class="tool-buttons">
+          <button id="encryptBtn" class="tool-btn" disabled>Encrypt</button>
+          <button id="clearEncryptBtn" class="tool-btn" type="button">Clear</button>
+        </div>
+        <label for="encryptOutput">Encrypted Output (Base64)</label>
+        <textarea id="encryptOutput" readonly placeholder="Encrypted message will appear here..."></textarea>
+        <div id="encryptStatus" class="status-message"></div>
+      </div>
+    </section>
 
-<textarea id="messageInput" rows="3" placeholder="Type message..."></textarea>
-<button onclick="sendMessage()">Send Encrypted</button>
-<button onclick="decryptAll()">Decrypt</button>
+    <!-- Decrypt Tool View -->
+    <section id="decryptView" class="view" aria-label="Decryption Tool">
+      <div class="tool-container">
+        <h2>Decrypt Tool</h2>
+        <label for="decryptInput">Encrypted Message (Base64)</label>
+        <textarea id="decryptInput" placeholder="Paste the encrypted Base64 message here..."></textarea>
+        <label for="decryptPassword">Password</label>
+        <input type="password" id="decryptPassword" placeholder="Enter the password used to encrypt" autocomplete="new-password" />
+        <div class="tool-buttons">
+          <button id="decryptBtn" class="tool-btn" disabled>Decrypt</button>
+          <button id="clearDecryptBtn" class="tool-btn" type="button">Clear</button>
+        </div>
+        <label for="decryptOutput">Decrypted Output</label>
+        <textarea id="decryptOutput" readonly placeholder="Decrypted message will appear here..."></textarea>
+        <div id="decryptStatus" class="status-message"></div>
+      </div>
+    </section>
 
-<div class="status" id="status"></div>
-</div>
+    <!-- Group Chat View -->
+    <section id="chatView" class="view" aria-label="Group Chat">
+      <div class="chat-container" role="region" aria-live="polite" aria-atomic="false">
+        <div class="chat-header">Encrypted Group Chat</div>
 
-<!-- ENCRYPT TOOL VIEW -->
-<div id="encryptView" class="hidden">
-<h2>Quick Encrypt Tool</h2>
+        <!-- Room Selection and Creation -->
+        <div style="margin-bottom: 15px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <select id="roomSelect" aria-label="Select chat room" style="flex-grow:1; padding:10px; border-radius:12px; border:1px solid #334155; background:#1e2a38; color:#e0e6ed; font-size:1rem;">
+            <!-- Rooms populated dynamically -->
+          </select>
+          <input type="text" id="newRoomInput" placeholder="New room name" aria-label="New chat room name" style="flex-grow:2; padding:10px; border-radius:12px; border:1px solid #334155; background:#1e2a38; color:#e0e6ed; font-size:1rem;" />
+          <button id="createRoomBtn" aria-label="Create new chat room" style="flex-grow:0; min-width: 140px; background:#5dade2; border:none; border-radius:12px; color:#162133; font-weight:700; cursor:pointer;">Create Room</button>
+        </div>
 
-<textarea id="quickInput" rows="3" placeholder="Type message..."></textarea>
-<button onclick="quickEncrypt()">Encrypt</button>
-<button onclick="quickDecrypt()">Decrypt</button>
-<textarea id="quickOutput" rows="3" placeholder="Output..."></textarea>
+        <div class="chat-messages" id="chatMessages" aria-label="Chat messages"></div>
+        <div class="chat-inputs">
+          <input type="password" id="chatPasswordInput" placeholder="Enter shared chat password" aria-label="Chat password input" autocomplete="new-password" />
+          <input type="text" id="chatMessageInput" placeholder="Type your message..." aria-label="Message input" autocomplete="off" />
+          <button id="chatSendBtn" disabled>Send</button>
+          <div id="chatStatus" class="chat-status" aria-live="assertive"></div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-<div class="status" id="quickStatus"></div>
-</div>
+  <footer>&copy; 2026 JobG. All rights reserved.</footer>
 
-</div>
-</div>
+  <script>
+    // NAVIGATION LOGIC
+    const navLinks = document.querySelectorAll('nav.header-nav a');
+    const views = document.querySelectorAll('.view');
 
-<script>
-let groups = {};
-let currentGroup = null;
-let currentKey = null;
-let quickKey = null;
+    function showView(id) {
+      views.forEach(v => {
+        if (v.id === id) {
+          v.classList.add('active');
+        } else {
+          v.classList.remove('active');
+        }
+      });
+      navLinks.forEach(link => {
+        if (link.dataset.view === id) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+      // Scroll top on view change
+      window.scrollTo({top: 0, behavior: 'smooth'});
 
-/* View Switch */
-function showView(viewId, btn){
-document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
-btn.classList.add("active");
+      // If chat view, load messages for selected room
+      if (id === 'chatView') {
+        loadRooms();
+        // Trigger messages render for selected room
+        renderChatMessages();
+      }
+    }
 
-document.getElementById("chatView").classList.add("hidden");
-document.getElementById("encryptView").classList.add("hidden");
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        showView(link.dataset.view);
+      });
+    });
 
-document.getElementById(viewId).classList.remove("hidden");
-}
+    // CRYPTO UTILITIES (PBKDF2 + AES-GCM)
 
-/* Status */
-function setStatus(text){document.getElementById("status").innerText=text;}
-function setQuickStatus(text){document.getElementById("quickStatus").innerText=text;}
+    async function deriveKey(password, salt = null) {
+      const enc = new TextEncoder();
+      if (!salt) salt = crypto.getRandomValues(new Uint8Array(16));
+      const keyMaterial = await crypto.subtle.importKey(
+        'raw',
+        enc.encode(password),
+        { name: 'PBKDF2' },
+        false,
+        ['deriveKey']
+      );
+      const key = await crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt,
+          iterations: 250000,
+          hash: 'SHA-256',
+        },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+      return { key, salt };
+    }
 
-/* Key */
-async function deriveKey(password){
-const enc=new TextEncoder();
-const mat=await crypto.subtle.importKey(
-"raw",enc.encode(password),
-"PBKDF2",false,["deriveKey"]
-);
-return await crypto.subtle.deriveKey({
-name:"PBKDF2",
-salt:enc.encode("menuSalt"),
-iterations:100000,
-hash:"SHA-256"
-},
-mat,
-{name:"AES-GCM",length:256},
-false,
-["encrypt","decrypt"]
-);
-}
+    async function encrypt(text, password) {
+      const enc = new TextEncoder();
+      const encodedText = enc.encode(text);
+      const { key, salt } = await deriveKey(password);
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const encrypted = await crypto.subtle.encrypt(
+        {
+          name: 'AES-GCM',
+          iv,
+        },
+        key,
+        encodedText
+      );
 
-/* Groups */
-function refreshGroups(){
-const list=document.getElementById("groupList");
-list.innerHTML="";
-for(let name in groups){
-const div=document.createElement("div");
-div.className="group";
-div.innerText=name;
-div.onclick=()=>openGroup(name);
-list.appendChild(div);
-}
-}
+      // Concatenate salt + iv + ciphertext
+      const saltIvCipher = new Uint8Array(salt.length + iv.length + encrypted.byteLength);
+      saltIvCipher.set(salt, 0);
+      saltIvCipher.set(iv, salt.length);
+      saltIvCipher.set(new Uint8Array(encrypted), salt.length + iv.length);
 
-async function createGroup(){
-const name=prompt("Group name:");
-const pass=prompt("Password:");
-if(!name||!pass)return;
-groups[name]={messages:[]};
-currentKey=await deriveKey(pass);
-currentGroup=name;
-refreshGroups();
-openGroup(name);
-}
+      // Convert to base64
+      return btoa(String.fromCharCode(...saltIvCipher));
+    }
 
-async function joinGroup(){
-const name=prompt("Group name:");
-const pass=prompt("Password:");
-if(!groups[name]){setStatus("Group not found");return;}
-currentKey=await deriveKey(pass);
-currentGroup=name;
-openGroup(name);
-}
+    async function decrypt(base64Str, password) {
+      const raw = atob(base64Str);
+      const bytes = Uint8Array.from(raw, c => c.charCodeAt(0));
+      if (bytes.length < 16 + 12) throw new Error('Invalid input length');
+      const salt = bytes.slice(0, 16);
+      const iv = bytes.slice(16, 28);
+      const data = bytes.slice(28);
 
-function openGroup(name){
-currentGroup=name;
-document.getElementById("chatTitle").innerText=name;
-display();
-}
+      const keyMaterial = await crypto.subtle.importKey(
+        'raw',
+        new TextEncoder().encode(password),
+        { name: 'PBKDF2' },
+        false,
+        ['deriveKey']
+      );
+      const key = await crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt,
+          iterations: 250000,
+          hash: 'SHA-256',
+        },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['decrypt']
+      );
 
-/* Chat */
-async function sendMessage(){
-if(!currentGroup||!currentKey){setStatus("Join group first");return;}
-const text=document.getElementById("messageInput").value;
-if(!text)return;
+      const decrypted = await crypto.subtle.decrypt(
+        {
+          name: 'AES-GCM',
+          iv,
+        },
+        key,
+        data
+      );
+      const dec = new TextDecoder();
+      return dec.decode(decrypted);
+    }
 
-const iv=crypto.getRandomValues(new Uint8Array(12));
-const encoded=new TextEncoder().encode(text);
-const encrypted=await crypto.subtle.encrypt(
-{name:"AES-GCM",iv},
-currentKey,
-encoded
-);
+    // Encrypt Tool Elements
+    const encryptInput = document.getElementById('encryptInput');
+    const encryptPassword = document.getElementById('encryptPassword');
+    const encryptBtn = document.getElementById('encryptBtn');
+    const encryptOutput = document.getElementById('encryptOutput');
+    const encryptStatus = document.getElementById('encryptStatus');
+    const clearEncryptBtn = document.getElementById('clearEncryptBtn');
 
-groups[currentGroup].messages.push({
-iv:Array.from(iv),
-data:Array.from(new Uint8Array(encrypted))
-});
+    // Decrypt Tool Elements
+    const decryptInput = document.getElementById('decryptInput');
+    const decryptPassword = document.getElementById('decryptPassword');
+    const decryptBtn = document.getElementById('decryptBtn');
+    const decryptOutput = document.getElementById('decryptOutput');
+    const decryptStatus = document.getElementById('decryptStatus');
+    const clearDecryptBtn = document.getElementById('clearDecryptBtn');
 
-document.getElementById("messageInput").value="";
-display();
-}
+    // Chat Elements
+    const chatMessages = document.getElementById('chatMessages');
+    const chatMessageInput = document.getElementById('chatMessageInput');
+    const chatPasswordInput = document.getElementById('chatPasswordInput');
+    const chatSendBtn = document.getElementById('chatSendBtn');
+    const chatStatus = document.getElementById('chatStatus');
+    const roomSelect = document.getElementById('roomSelect');
+    const newRoomInput = document.getElementById('newRoomInput');
+    const createRoomBtn = document.getElementById('createRoomBtn');
 
-function display(){
-const box=document.getElementById("chatBox");
-box.innerHTML="";
-if(!currentGroup)return;
+    // Enable/disable encrypt button
+    function toggleEncryptBtn() {
+      encryptBtn.disabled = !(encryptInput.value.trim() && encryptPassword.value.trim());
+    }
+    encryptInput.addEventListener('input', toggleEncryptBtn);
+    encryptPassword.addEventListener('input', toggleEncryptBtn);
 
-groups[currentGroup].messages.forEach(()=>{
-const div=document.createElement("div");
-div.className="msg";
-div.innerText="Encrypted message";
-box.appendChild(div);
-});
-}
+    // Enable/disable decrypt button
+    function toggleDecryptBtn() {
+      decryptBtn.disabled = !(decryptInput.value.trim() && decryptPassword.value.trim());
+    }
+    decryptInput.addEventListener('input', toggleDecryptBtn);
+    decryptPassword.addEventListener('input', toggleDecryptBtn);
 
-async function decryptAll(){
-if(!currentGroup||!currentKey){setStatus("Join group first");return;}
+    // Enable/disable chat send button
+    function toggleChatSendBtn() {
+      chatSendBtn.disabled = !(chatMessageInput.value.trim() && chatPasswordInput.value.trim() && roomSelect.value);
+    }
+    chatMessageInput.addEventListener('input', toggleChatSendBtn);
+    chatPasswordInput.addEventListener('input', toggleChatSendBtn);
+    roomSelect.addEventListener('change', () => {
+      // Clear current messages and password when room changes
+      chatPasswordInput.value = '';
+      chatMessageInput.value = '';
+      toggleChatSendBtn();
+      renderChatMessages();
+    });
 
-const box=document.getElementById("chatBox");
-box.innerHTML="";
+    // Encrypt Button Handler
+    encryptBtn.addEventListener('click', async () => {
+      encryptStatus.textContent = '';
+      encryptStatus.className = 'status-message';
+      encryptOutput.value = '';
+      try {
+        const encrypted = await encrypt(encryptInput.value.trim(), encryptPassword.value);
+        encryptOutput.value = encrypted;
+        encryptStatus.textContent = 'Encryption successful!';
+        encryptStatus.classList.add('status-success');
+      } catch (e) {
+        encryptStatus.textContent = 'Encryption failed: ' + e.message;
+        encryptStatus.classList.add('status-error');
+      }
+    });
 
-for(let m of groups[currentGroup].messages){
-try{
-const iv=new Uint8Array(m.iv);
-const decrypted=await crypto.subtle.decrypt(
-{name:"AES-GCM",iv},
-currentKey,
-new Uint8Array(m.data)
-);
-const text=new TextDecoder().decode(decrypted);
+    clearEncryptBtn.addEventListener('click', () => {
+      encryptInput.value = '';
+      encryptPassword.value = '';
+      encryptOutput.value = '';
+      encryptStatus.textContent = '';
+      encryptBtn.disabled = true;
+    });
 
-const div=document.createElement("div");
-div.className="msg";
-div.innerText=text;
-box.appendChild(div);
+    // Decrypt Button Handler
+    decryptBtn.addEventListener('click', async () => {
+      decryptStatus.textContent = '';
+      decryptStatus.className = 'status-message';
+      decryptOutput.value = '';
+      try {
+        const decrypted = await decrypt(decryptInput.value.trim(), decryptPassword.value);
+        decryptOutput.value = decrypted;
+        decryptStatus.textContent = 'Decryption successful!';
+        decryptStatus.classList.add('status-success');
+      } catch (e) {
+        decryptStatus.textContent = 'Decryption failed: ' + e.message;
+        decryptStatus.classList.add('status-error');
+      }
+    });
 
-}catch{
-setStatus("Wrong password");
-return;
-}
-}
-}
+    clearDecryptBtn.addEventListener('click', () => {
+      decryptInput.value = '';
+      decryptPassword.value = '';
+      decryptOutput.value = '';
+      decryptStatus.textContent = '';
+      decryptBtn.disabled = true;
+    });
 
-/* Quick Tool */
-async function quickEncrypt(){
-if(!quickKey) quickKey=await deriveKey("quickSecret");
-const iv=crypto.getRandomValues(new Uint8Array(12));
-const encoded=new TextEncoder().encode(document.getElementById("quickInput").value);
-const encrypted=await crypto.subtle.encrypt(
-{name:"AES-GCM",iv},
-quickKey,
-encoded
-);
-const combined=new Uint8Array([...iv,...new Uint8Array(encrypted)]);
-document.getElementById("quickOutput").value=btoa(String.fromCharCode(...combined));
-}
+    // Group Chat Storage Key Base
+    const CHAT_STORAGE_BASE = 'jobg-group-chat-';
 
-async function quickDecrypt(){
-try{
-if(!quickKey) quickKey=await deriveKey("quickSecret");
-const data=atob(document.getElementById("quickOutput").value);
-const bytes=new Uint8Array([...data].map(c=>c.charCodeAt(0)));
-const iv=bytes.slice(0,12);
-const ciphertext=bytes.slice(12);
+    // Get saved rooms list
+    function getSavedRooms() {
+      try {
+        const roomsRaw = localStorage.getItem(CHAT_STORAGE_BASE + 'rooms');
+        if (!roomsRaw) return [];
+        return JSON.parse(roomsRaw);
+      } catch {
+        return [];
+      }
+    }
 
-const decrypted=await crypto.subtle.decrypt(
-{name:"AES-GCM",iv},
-quickKey,
-ciphertext
-);
-document.getElementById("quickInput").value=
-new TextDecoder().decode(decrypted);
-}catch{
-setQuickStatus("Decrypt failed");
-}
-}
-</script>
+    // Save rooms list
+    function saveRooms(rooms) {
+      localStorage.setItem(CHAT_STORAGE_BASE + 'rooms', JSON.stringify(rooms));
+    }
 
+    // Load rooms into select dropdown
+    function loadRooms() {
+      const rooms = getSavedRooms();
+      roomSelect.innerHTML = '';
+      if (rooms.length === 0) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = '-- No rooms available --';
+        roomSelect.appendChild(opt);
+        chatSendBtn.disabled = true;
+        chatMessages.innerHTML = '<em>Create a new room to start chatting.</em>';
+      } else {
+        rooms.forEach(room => {
+          const opt = document.createElement('option');
+          opt.value = room;
+          opt.textContent = room;
+          roomSelect.appendChild(opt);
+        });
+      }
+    }
+
+    // Save messages for a room
+    function saveRoomMessages(room, messages) {
+      localStorage.setItem(CHAT_STORAGE_BASE + room, JSON.stringify(messages));
+    }
+
+    // Get messages for a room
+    function getRoomMessages(room) {
+      try {
+        const raw = localStorage.getItem(CHAT_STORAGE_BASE + room);
+        if (!raw) return [];
+        return JSON.parse(raw);
+      } catch {
+        return [];
+      }
+    }
+
+    // Render chat messages for selected room
+    async function renderChatMessages() {
+      const room = roomSelect.value;
+      const password = chatPasswordInput.value.trim();
+      if (!room) {
+        chatMessages.innerHTML = '<em>Please select or create a chat room.</em>';
+        return;
+      }
+      if (!password) {
+        chatMessages.innerHTML = '<em>Enter the chat password to see messages decrypted here.</em>';
+        return;
+      }
+
+      chatMessages.innerHTML = '<em>Decrypting messages...</em>';
+
+      const messages = getRoomMessages(room);
+      let html = '';
+      for (const msg of messages) {
+        try {
+          const decrypted = await decrypt(msg.encrypted, password);
+          const time = new Date(msg.timestamp).toLocaleTimeString();
+          html += <div><strong>[${time}]</strong> ${decrypted}</div>;
+        } catch {
+          html += <div><strong>[${new Date(msg.timestamp).toLocaleTimeString()}]</strong> <em>Unable to decrypt message</em></div>;
+        }
+      }
+      chatMessages.innerHTML = html || '<em>No messages yet.</em>';
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Send message handler
+    async function sendMessage() {
+      const room = roomSelect.value;
+      const password = chatPasswordInput.value.trim();
+      const message = chatMessageInput.value.trim();
+
+      if (!room) {
+        chatStatus.textContent = 'Select a chat room first.';
+        chatStatus.className = 'chat-status error';
+        return;
+      }
+      if (!password) {
+        chatStatus.textContent = 'Enter the chat password.';
+        chatStatus.className = 'chat-status error';
+        return;
+      }
+      if (!message) {
+        chatStatus.textContent = 'Enter a message.';
+        chatStatus.className = 'chat-status error';
+        return;
+      }
+
+      chatSendBtn.disabled = true;
+      chatStatus.textContent = 'Encrypting & sending message...';
+      chatStatus.className = 'chat-status';
+
+      try {
+        const encryptedMsg = await encrypt(message, password);
+        const messages = getRoomMessages(room);
+        messages.push({
+          encrypted: encryptedMsg,
+          timestamp: Date.now()
+        });
+        saveRoomMessages(room, messages);
+        chatMessageInput.value = '';
+        chatStatus.textContent = 'Message sent!';
+        chatStatus.className = 'chat-status success';
+        renderChatMessages();
+
+        // Broadcast change for other tabs/windows to update
+        localStorage.setItem(CHAT_STORAGE_BASE + 'update', Date.now());
+      } catch (e) {
+        chatStatus.textContent = 'Failed to send message: ' + e.message;
+        chatStatus.className = 'chat-status error';
+      } finally {
+        toggleChatSendBtn();
+      }
+    }
+
+    // Create new room
+    createRoomBtn.addEventListener('click', () => {
+      const newRoomName = newRoomInput.value.trim();
+      if (!newRoomName) {
+        alert('Enter a valid room name.');
+        return;
+      }
+      const rooms = getSavedRooms();
+      if (rooms.includes(newRoomName)) {
+        alert('Room already exists.');
+        return;
+      }
+      rooms.push(newRoomName);
+      saveRooms(rooms);
+      loadRooms();
+      roomSelect.value = newRoomName;
+      newRoomInput.value = '';
+      chatPasswordInput.value = '';
+      chatMessageInput.value = '';
+      chatMessages.innerHTML = '<em>Enter the chat password to see messages decrypted here.</em>';
+      toggleChatSendBtn();
+      chatStatus.textContent = 'Created new room: ' + newRoomName;
+      chatStatus.className = 'chat-status success';
+
+      // Broadcast update for other tabs
+      localStorage.setItem(CHAT_STORAGE_BASE + 'update', Date.now());
+    });
+
+    chatSendBtn.addEventListener('click', sendMessage);
+
+    // Re-render messages if another tab updates storage
+    window.addEventListener('storage', e => {
+      if (e.key === CHAT_STORAGE_BASE + 'update') {
+        if (roomSelect.value) {
+          renderChatMessages();
+        }
+      }
+    });
+
+    // Initialize app state
+    showView('portfolioView');
+    loadRooms();
+
+  </script>
 </body>
 </html>
