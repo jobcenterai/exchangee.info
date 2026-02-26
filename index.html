@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Secure Matte Chat</title>
+<title>Secure Menu Chat</title>
 
 <style>
 :root{
@@ -21,10 +21,35 @@ font-family:system-ui,-apple-system,Segoe UI,Roboto;
 background:var(--bg);
 color:var(--text);
 display:flex;
+flex-direction:column;
 height:100vh;
 }
 
-/* Sidebar */
+/* TOP NAV */
+.topbar{
+display:flex;
+background:var(--panel);
+padding:10px 20px;
+gap:20px;
+border-bottom:1px solid var(--soft);
+}
+
+.nav-btn{
+cursor:pointer;
+font-weight:600;
+}
+
+.nav-btn.active{
+color:var(--accent);
+}
+
+/* MAIN LAYOUT */
+.main{
+flex:1;
+display:flex;
+}
+
+/* SIDEBAR */
 .sidebar{
 width:240px;
 background:var(--panel);
@@ -40,7 +65,6 @@ padding:8px 10px;
 background:var(--soft);
 border-radius:8px;
 cursor:pointer;
-font-size:14px;
 transition:.2s;
 }
 
@@ -48,32 +72,12 @@ transition:.2s;
 background:var(--accent);
 }
 
-button{
-background:var(--accent);
-border:none;
-padding:8px;
-border-radius:8px;
-cursor:pointer;
-color:white;
-font-weight:600;
-}
-
-button:hover{
-opacity:.85;
-}
-
-/* Chat */
-.chat{
+/* CONTENT */
+.content{
 flex:1;
+padding:25px;
 display:flex;
 flex-direction:column;
-padding:25px;
-gap:10px;
-}
-
-.chat-header{
-font-size:18px;
-font-weight:600;
 }
 
 .chat-box{
@@ -91,7 +95,6 @@ gap:8px;
 background:var(--soft);
 padding:8px 10px;
 border-radius:8px;
-font-size:14px;
 max-width:70%;
 }
 
@@ -102,34 +105,54 @@ border-radius:10px;
 border:1px solid var(--soft);
 background:var(--panel);
 color:var(--text);
-font-size:14px;
+margin-top:10px;
+}
+
+button{
+background:var(--accent);
+border:none;
+padding:8px;
+border-radius:8px;
+cursor:pointer;
+color:white;
+font-weight:600;
+margin-top:10px;
 }
 
 .status{
+margin-top:10px;
 font-size:13px;
-height:18px;
 }
 
-.error{
-color:var(--danger);
-}
-
-.success{
-color:#22c55e;
+.hidden{
+display:none;
 }
 </style>
 </head>
 <body>
 
+<!-- TOP MENU -->
+<div class="topbar">
+<div class="nav-btn active" onclick="showView('chatView', this)">💬 Chat</div>
+<div class="nav-btn" onclick="showView('encryptView', this)">🔐 Encrypt Tool</div>
+</div>
+
+<div class="main">
+
+<!-- GROUP MENU -->
 <div class="sidebar">
 <h3>Groups</h3>
 <div id="groupList"></div>
-<button onclick="createGroup()">+ Create</button>
-<button onclick="joinGroup()">Join</button>
+<button onclick="createGroup()">+ Create Group</button>
+<button onclick="joinGroup()">Join Group</button>
 </div>
 
-<div class="chat">
-<div class="chat-header" id="chatTitle">No Group Selected</div>
+<!-- CONTENT AREA -->
+<div class="content">
+
+<!-- CHAT VIEW -->
+<div id="chatView">
+<h2 id="chatTitle">No Group Selected</h2>
 <div class="chat-box" id="chatBox"></div>
 
 <textarea id="messageInput" rows="3" placeholder="Type message..."></textarea>
@@ -139,17 +162,43 @@ color:#22c55e;
 <div class="status" id="status"></div>
 </div>
 
+<!-- ENCRYPT TOOL VIEW -->
+<div id="encryptView" class="hidden">
+<h2>Quick Encrypt Tool</h2>
+
+<textarea id="quickInput" rows="3" placeholder="Type message..."></textarea>
+<button onclick="quickEncrypt()">Encrypt</button>
+<button onclick="quickDecrypt()">Decrypt</button>
+<textarea id="quickOutput" rows="3" placeholder="Output..."></textarea>
+
+<div class="status" id="quickStatus"></div>
+</div>
+
+</div>
+</div>
+
 <script>
 let groups = {};
 let currentGroup = null;
 let currentKey = null;
+let quickKey = null;
 
-function setStatus(text,type=""){
-const el=document.getElementById("status");
-el.className="status "+type;
-el.innerText=text;
+/* View Switch */
+function showView(viewId, btn){
+document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");
+
+document.getElementById("chatView").classList.add("hidden");
+document.getElementById("encryptView").classList.add("hidden");
+
+document.getElementById(viewId).classList.remove("hidden");
 }
 
+/* Status */
+function setStatus(text){document.getElementById("status").innerText=text;}
+function setQuickStatus(text){document.getElementById("quickStatus").innerText=text;}
+
+/* Key */
 async function deriveKey(password){
 const enc=new TextEncoder();
 const mat=await crypto.subtle.importKey(
@@ -158,7 +207,7 @@ const mat=await crypto.subtle.importKey(
 );
 return await crypto.subtle.deriveKey({
 name:"PBKDF2",
-salt:enc.encode("cleanSalt"),
+salt:enc.encode("menuSalt"),
 iterations:100000,
 hash:"SHA-256"
 },
@@ -169,6 +218,7 @@ false,
 );
 }
 
+/* Groups */
 function refreshGroups(){
 const list=document.getElementById("groupList");
 list.innerHTML="";
@@ -185,26 +235,20 @@ async function createGroup(){
 const name=prompt("Group name:");
 const pass=prompt("Password:");
 if(!name||!pass)return;
-
 groups[name]={messages:[]};
 currentKey=await deriveKey(pass);
 currentGroup=name;
 refreshGroups();
 openGroup(name);
-setStatus("Group created","success");
 }
 
 async function joinGroup(){
 const name=prompt("Group name:");
 const pass=prompt("Password:");
-if(!groups[name]){
-setStatus("Group not found","error");
-return;
-}
+if(!groups[name]){setStatus("Group not found");return;}
 currentKey=await deriveKey(pass);
 currentGroup=name;
 openGroup(name);
-setStatus("Joined group","success");
 }
 
 function openGroup(name){
@@ -213,12 +257,9 @@ document.getElementById("chatTitle").innerText=name;
 display();
 }
 
+/* Chat */
 async function sendMessage(){
-if(!currentGroup||!currentKey){
-setStatus("Join a group first","error");
-return;
-}
-
+if(!currentGroup||!currentKey){setStatus("Join group first");return;}
 const text=document.getElementById("messageInput").value;
 if(!text)return;
 
@@ -237,7 +278,6 @@ data:Array.from(new Uint8Array(encrypted))
 
 document.getElementById("messageInput").value="";
 display();
-setStatus("Message encrypted","success");
 }
 
 function display(){
@@ -254,10 +294,7 @@ box.appendChild(div);
 }
 
 async function decryptAll(){
-if(!currentGroup||!currentKey){
-setStatus("Join a group first","error");
-return;
-}
+if(!currentGroup||!currentKey){setStatus("Join group first");return;}
 
 const box=document.getElementById("chatBox");
 box.innerHTML="";
@@ -270,7 +307,6 @@ const decrypted=await crypto.subtle.decrypt(
 currentKey,
 new Uint8Array(m.data)
 );
-
 const text=new TextDecoder().decode(decrypted);
 
 const div=document.createElement("div");
@@ -279,12 +315,44 @@ div.innerText=text;
 box.appendChild(div);
 
 }catch{
-setStatus("Wrong password or corrupted message","error");
+setStatus("Wrong password");
 return;
 }
 }
+}
 
-setStatus("Decrypted successfully","success");
+/* Quick Tool */
+async function quickEncrypt(){
+if(!quickKey) quickKey=await deriveKey("quickSecret");
+const iv=crypto.getRandomValues(new Uint8Array(12));
+const encoded=new TextEncoder().encode(document.getElementById("quickInput").value);
+const encrypted=await crypto.subtle.encrypt(
+{name:"AES-GCM",iv},
+quickKey,
+encoded
+);
+const combined=new Uint8Array([...iv,...new Uint8Array(encrypted)]);
+document.getElementById("quickOutput").value=btoa(String.fromCharCode(...combined));
+}
+
+async function quickDecrypt(){
+try{
+if(!quickKey) quickKey=await deriveKey("quickSecret");
+const data=atob(document.getElementById("quickOutput").value);
+const bytes=new Uint8Array([...data].map(c=>c.charCodeAt(0)));
+const iv=bytes.slice(0,12);
+const ciphertext=bytes.slice(12);
+
+const decrypted=await crypto.subtle.decrypt(
+{name:"AES-GCM",iv},
+quickKey,
+ciphertext
+);
+document.getElementById("quickInput").value=
+new TextDecoder().decode(decrypted);
+}catch{
+setQuickStatus("Decrypt failed");
+}
 }
 </script>
 
